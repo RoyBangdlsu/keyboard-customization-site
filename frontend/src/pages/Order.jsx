@@ -7,9 +7,12 @@ function Order() {
     let numStabilizer = 0;
     let numTapeLayer = 0;
     let keyCapBrand = "";
+    let keyCapPrice = 50;
     let switchType = "";
     let caseFoam = "";
+    let caseFoamPrice = 50;
     let PEmod = "";
+    let PEModPrice = 50;
     let total = 0;
 
     if(type == "New") {
