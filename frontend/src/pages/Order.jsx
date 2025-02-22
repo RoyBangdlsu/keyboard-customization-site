@@ -13,6 +13,8 @@ function Order() {
   const [total, setTotal] = useState(0); // Total cost
   const [showReview, setShowReview] = useState(false); // Show review section
 
+  let blueAudio = new Audio('./sounds/blue.wav');
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -202,6 +204,7 @@ function Order() {
                       >
                         <img src="/images/blue-switch.png" alt="Outemu Blue" className="h-12 w-12" />
                       </button>
+                      <button type="button" onClick={() => blueAudio.play()} className="ml-2 bg-blue-500 text-white p-1 rounded">🔊</button>
                       <button
                         type="button"
                         onClick={() => setSwitchType("Outemu Brown")}
