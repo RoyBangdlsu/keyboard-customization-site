@@ -13,7 +13,22 @@ function Order() {
   const [total, setTotal] = useState(0); // Total cost
   const [showReview, setShowReview] = useState(false); // Show review section
 
-  let blueAudio = new Audio('./sounds/blue.wav');
+  // Audio objects
+  const blueAudio = new Audio('./sounds/blue.wav');
+  const redAudio = new Audio('./sounds/red.wav');
+  const brownAudio = new Audio('./sounds/brown.wav');
+
+  // Function to play sound and pause others
+  const playSound = (audio) => {
+    // Pause all sounds
+    blueAudio.pause();
+    redAudio.pause();
+    brownAudio.pause();
+
+    // Play the selected sound
+    audio.currentTime = 0; // Reset audio to start
+    audio.play();
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -199,18 +214,38 @@ function Order() {
                       </button>
                       <button
                         type="button"
+                        onClick={() => playSound(redAudio)}
+                        className="ml-2 bg-blue-500 text-white p-1 rounded"
+                      >
+                        🔊
+                      </button>
+                      <button
+                        type="button"
                         onClick={() => setSwitchType("Outemu Blue")}
                         className={`p-2 border rounded-md ${switchType === "Outemu Blue" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/blue-switch.png" alt="Outemu Blue" className="h-12 w-12" />
                       </button>
-                      <button type="button" onClick={() => blueAudio.play()} className="ml-2 bg-blue-500 text-white p-1 rounded">🔊</button>
+                      <button
+                        type="button"
+                        onClick={() => playSound(blueAudio)}
+                        className="ml-2 bg-blue-500 text-white p-1 rounded"
+                      >
+                        🔊
+                      </button>
                       <button
                         type="button"
                         onClick={() => setSwitchType("Outemu Brown")}
                         className={`p-2 border rounded-md ${switchType === "Outemu Brown" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/brown-switch.png" alt="Outemu Brown" className="h-12 w-12" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => playSound(brownAudio)}
+                        className="ml-2 bg-blue-500 text-white p-1 rounded"
+                      >
+                        🔊
                       </button>
                     </div>
                   </div>
