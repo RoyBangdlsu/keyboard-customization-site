@@ -18,7 +18,7 @@ function Order() {
     type: "New Customized Keyboard",
     keyboardSize: "",
     keyCapBrand: "",
-    switchType: "",
+    switchType: "Outemu Blue",
     numSwitchLubing: 0,
     numFilming: 0,
     numStabilizer: 0,
@@ -42,6 +42,18 @@ function Order() {
     audio.play();
   };
 
+  const validateStep = () => {
+    if (step === 1 && !type) return false;
+    if (step === 2 && type === "New" && !keyboardSize) return false;
+    if (step === 2 && type === "Modification" && numSwitchLubing === 0) return false;
+    if (step === 3 && type === "New" && !keyCapBrand) return false;
+    if (step === 3 && type === "Modification" && numFilming === 0) return false;
+    if (step === 4 && type === "New" && !switchType) return false;
+    if (step === 4 && type === "Modification" && numStabilizer === 0) return false;
+    if (step === 5 && type === "Modification" && numTapeLayer === 0) return false;
+    return true;
+  };
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,7 +74,11 @@ function Order() {
 
   // Handle next step
   const handleNext = () => {
-    setStep(step + 1);
+    if (validateStep()) {
+      setStep(step + 1);
+    } else {
+      alert("Please make a choice before proceeding.");
+    }
   };
 
   // Handle previous step
