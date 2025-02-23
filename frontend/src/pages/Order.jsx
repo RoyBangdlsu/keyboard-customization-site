@@ -13,18 +13,6 @@ function Order() {
   const [total, setTotal] = useState(0); // Total cost
   const [showReview, setShowReview] = useState(false); // Show review section
 
-  // State to store the current choice labels
-  const [currentChoice, setCurrentChoice] = useState({
-    type: "New Customized Keyboard",
-    keyboardSize: "",
-    keyCapBrand: "",
-    switchType: "Outemu Blue",
-    numSwitchLubing: 0,
-    numFilming: 0,
-    numStabilizer: 0,
-    numTapeLayer: 0,
-  });
-
   // Audio objects
   const blueAudio = new Audio('./sounds/blue.wav');
   const redAudio = new Audio('./sounds/red.wav');
@@ -40,18 +28,6 @@ function Order() {
     // Play the selected sound
     audio.currentTime = 0; // Reset audio to start
     audio.play();
-  };
-
-  const validateStep = () => {
-    if (step === 1 && !type) return false;
-    if (step === 2 && type === "New" && !keyboardSize) return false;
-    if (step === 2 && type === "Modification" && numSwitchLubing === 0) return false;
-    if (step === 3 && type === "New" && !keyCapBrand) return false;
-    if (step === 3 && type === "Modification" && numFilming === 0) return false;
-    if (step === 4 && type === "New" && !switchType) return false;
-    if (step === 4 && type === "Modification" && numStabilizer === 0) return false;
-    if (step === 5 && type === "Modification" && numTapeLayer === 0) return false;
-    return true;
   };
 
   // Handle form submission
@@ -74,11 +50,7 @@ function Order() {
 
   // Handle next step
   const handleNext = () => {
-    if (validateStep()) {
-      setStep(step + 1);
-    } else {
-      alert("Please make a choice before proceeding.");
-    }
+    setStep(step + 1);
   };
 
   // Handle previous step
@@ -97,16 +69,12 @@ function Order() {
               <label className="block text-sm font-medium text-gray-700">Type of Service</label>
               <select
                 value={type}
-                onChange={(e) => {
-                  setType(e.target.value);
-                  setCurrentChoice({ ...currentChoice, type: e.target.value === "New" ? "New Customized Keyboard" : "Keyboard Modification" });
-                }}
+                onChange={(e) => setType(e.target.value)}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               >
                 <option value="New">New Customized Keyboard</option>
                 <option value="Modification">Keyboard Modification</option>
               </select>
-              <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.type}</p>
             </div>
           )}
 
@@ -120,10 +88,7 @@ function Order() {
                     <label className="block text-sm font-medium text-gray-700">Keyboard Size</label>
                     <select
                       value={keyboardSize}
-                      onChange={(e) => {
-                        setKeyboardSize(e.target.value);
-                        setCurrentChoice({ ...currentChoice, keyboardSize: e.target.value });
-                      }}
+                      onChange={(e) => setKeyboardSize(e.target.value)}
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     >
                       <option value="">Select Size</option>
@@ -133,7 +98,6 @@ function Order() {
                       <option value="60%">60%</option>
                       <option value="45%">45%</option>
                     </select>
-                    <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.keyboardSize}</p>
                   </div>
                 </>
               ) : (
@@ -144,20 +108,14 @@ function Order() {
                     <div className="flex space-x-4">
                       <button
                         type="button"
-                        onClick={() => {
-                          setNumSwitchLubing(numSwitchLubing + 1);
-                          setCurrentChoice({ ...currentChoice, numSwitchLubing: numSwitchLubing + 1 });
-                        }}
+                        onClick={() => setNumSwitchLubing(numSwitchLubing + 1)}
                         className="p-2 border border-gray-300 rounded-md"
                       >
                         Yes
                       </button>
                       <button
                         type="button"
-                        onClick={() => {
-                          setNumSwitchLubing(0);
-                          setCurrentChoice({ ...currentChoice, numSwitchLubing: 0 });
-                        }}
+                        onClick={() => setNumSwitchLubing(0)}
                         className="p-2 border border-gray-300 rounded-md"
                       >
                         No
@@ -167,14 +125,10 @@ function Order() {
                       <input
                         type="number"
                         value={numSwitchLubing}
-                        onChange={(e) => {
-                          setNumSwitchLubing(Number(e.target.value));
-                          setCurrentChoice({ ...currentChoice, numSwitchLubing: Number(e.target.value) });
-                        }}
+                        onChange={(e) => setNumSwitchLubing(Number(e.target.value))}
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                       />
                     )}
-                    <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.numSwitchLubing > 0 ? `Yes (${currentChoice.numSwitchLubing})` : "No"}</p>
                   </div>
                 </>
               )}
@@ -192,26 +146,19 @@ function Order() {
                     <div className="flex space-x-4">
                       <button
                         type="button"
-                        onClick={() => {
-                          setKeyCapBrand("Akko");
-                          setCurrentChoice({ ...currentChoice, keyCapBrand: "Akko" });
-                        }}
+                        onClick={() => setKeyCapBrand("Akko")}
                         className={`p-2 border rounded-md ${keyCapBrand === "Akko" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/akko.png" alt="Akko" className="h-12 w-12" />
                       </button>
                       <button
                         type="button"
-                        onClick={() => {
-                          setKeyCapBrand("Drop");
-                          setCurrentChoice({ ...currentChoice, keyCapBrand: "Drop" });
-                        }}
+                        onClick={() => setKeyCapBrand("Drop")}
                         className={`p-2 border rounded-md ${keyCapBrand === "Drop" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/drop.png" alt="Drop" className="h-12 w-12" />
                       </button>
                     </div>
-                    <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.keyCapBrand}</p>
                   </div>
                 </>
               ) : (
@@ -222,20 +169,14 @@ function Order() {
                     <div className="flex space-x-4">
                       <button
                         type="button"
-                        onClick={() => {
-                          setNumFilming(numFilming + 1);
-                          setCurrentChoice({ ...currentChoice, numFilming: numFilming + 1 });
-                        }}
+                        onClick={() => setNumFilming(numFilming + 1)}
                         className="p-2 border border-gray-300 rounded-md"
                       >
                         Yes
                       </button>
                       <button
                         type="button"
-                        onClick={() => {
-                          setNumFilming(0);
-                          setCurrentChoice({ ...currentChoice, numFilming: 0 });
-                        }}
+                        onClick={() => setNumFilming(0)}
                         className="p-2 border border-gray-300 rounded-md"
                       >
                         No
@@ -245,14 +186,10 @@ function Order() {
                       <input
                         type="number"
                         value={numFilming}
-                        onChange={(e) => {
-                          setNumFilming(Number(e.target.value));
-                          setCurrentChoice({ ...currentChoice, numFilming: Number(e.target.value) });
-                        }}
+                        onChange={(e) => setNumFilming(Number(e.target.value))}
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                       />
                     )}
-                    <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.numFilming > 0 ? `Yes (${currentChoice.numFilming})` : "No"}</p>
                   </div>
                 </>
               )}
@@ -270,10 +207,7 @@ function Order() {
                     <div className="flex space-x-4">
                       <button
                         type="button"
-                        onClick={() => {
-                          setSwitchType("Outemu Red");
-                          setCurrentChoice({ ...currentChoice, switchType: "Outemu Red" });
-                        }}
+                        onClick={() => setSwitchType("Outemu Red")}
                         className={`p-2 border rounded-md ${switchType === "Outemu Red" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/red-switch.png" alt="Outemu Red" className="h-12 w-12" />
@@ -287,10 +221,7 @@ function Order() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => {
-                          setSwitchType("Outemu Blue");
-                          setCurrentChoice({ ...currentChoice, switchType: "Outemu Blue" });
-                        }}
+                        onClick={() => setSwitchType("Outemu Blue")}
                         className={`p-2 border rounded-md ${switchType === "Outemu Blue" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/blue-switch.png" alt="Outemu Blue" className="h-12 w-12" />
@@ -304,10 +235,7 @@ function Order() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => {
-                          setSwitchType("Outemu Brown");
-                          setCurrentChoice({ ...currentChoice, switchType: "Outemu Brown" });
-                        }}
+                        onClick={() => setSwitchType("Outemu Brown")}
                         className={`p-2 border rounded-md ${switchType === "Outemu Brown" ? "border-blue-500" : "border-gray-300"}`}
                       >
                         <img src="/images/brown-switch.png" alt="Outemu Brown" className="h-12 w-12" />
@@ -320,7 +248,6 @@ function Order() {
                         🔊
                       </button>
                     </div>
-                    <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.switchType}</p>
                   </div>
                 </>
               ) : (
@@ -331,20 +258,14 @@ function Order() {
                     <div className="flex space-x-4">
                       <button
                         type="button"
-                        onClick={() => {
-                          setNumStabilizer(numStabilizer + 1);
-                          setCurrentChoice({ ...currentChoice, numStabilizer: numStabilizer + 1 });
-                        }}
+                        onClick={() => setNumStabilizer(numStabilizer + 1)}
                         className="p-2 border border-gray-300 rounded-md"
                       >
                         Yes
                       </button>
                       <button
                         type="button"
-                        onClick={() => {
-                          setNumStabilizer(0);
-                          setCurrentChoice({ ...currentChoice, numStabilizer: 0 });
-                        }}
+                        onClick={() => setNumStabilizer(0)}
                         className="p-2 border border-gray-300 rounded-md"
                       >
                         No
@@ -354,14 +275,10 @@ function Order() {
                       <input
                         type="number"
                         value={numStabilizer}
-                        onChange={(e) => {
-                          setNumStabilizer(Number(e.target.value));
-                          setCurrentChoice({ ...currentChoice, numStabilizer: Number(e.target.value) });
-                        }}
+                        onChange={(e) => setNumStabilizer(Number(e.target.value))}
                         className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                       />
                     )}
-                    <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.numStabilizer > 0 ? `Yes (${currentChoice.numStabilizer})` : "No"}</p>
                   </div>
                 </>
               )}
@@ -377,20 +294,14 @@ function Order() {
                 <div className="flex space-x-4">
                   <button
                     type="button"
-                    onClick={() => {
-                      setNumTapeLayer(numTapeLayer + 1);
-                      setCurrentChoice({ ...currentChoice, numTapeLayer: numTapeLayer + 1 });
-                    }}
+                    onClick={() => setNumTapeLayer(numTapeLayer + 1)}
                     className="p-2 border border-gray-300 rounded-md"
                   >
                     Yes
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      setNumTapeLayer(0);
-                      setCurrentChoice({ ...currentChoice, numTapeLayer: 0 });
-                    }}
+                    onClick={() => setNumTapeLayer(0)}
                     className="p-2 border border-gray-300 rounded-md"
                   >
                     No
@@ -400,14 +311,10 @@ function Order() {
                   <input
                     type="number"
                     value={numTapeLayer}
-                    onChange={(e) => {
-                      setNumTapeLayer(Number(e.target.value));
-                      setCurrentChoice({ ...currentChoice, numTapeLayer: Number(e.target.value) });
-                    }}
+                    onChange={(e) => setNumTapeLayer(Number(e.target.value))}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                   />
                 )}
-                <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.numTapeLayer > 0 ? `Yes (${currentChoice.numTapeLayer})` : "No"}</p>
               </div>
             </>
           )}

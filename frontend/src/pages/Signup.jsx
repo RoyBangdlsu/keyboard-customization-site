@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "./Signup.css";
 
 function Signup() {
+  // Added state for full name, email, and password
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,34 +26,81 @@ function Signup() {
   };
 
   return (
-    <div className="p-8 bg-white shadow-xl rounded-lg w-1/3 mx-auto border border-gray-200">
-      <h1 className="text-3xl font-bold mb-4">Sign Up</h1>
-      <form onSubmit={handleSignup} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-        />
-        <button type="submit" className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-800">
-          Sign Up
-        </button>
-      </form>
+    <div
+      style={{
+        background: "url('../src/assets/bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {/* Using the same container class as in Login.jsx */}
+      <div className="login-container">
+        <h1 className="custom-heading">Sign Up</h1>
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div className="relative-my4">
+            <input
+              type="text"
+              placeholder=" "
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="custom-input floating-input"
+            />
+            <label htmlFor="name" className="floating-label">
+              Full Name
+            </label>
+          </div>
+          <div className="relative-my4">
+            <input
+              type="email"
+              placeholder=" "
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="custom-input floating-input"
+            />
+            <label htmlFor="email" className="floating-label">
+              Your Email
+            </label>
+          </div>
+          <div className="relative-my4">
+            <input
+              type="password"
+              placeholder=" "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="custom-input floating-input"
+            />
+            <label htmlFor="password" className="floating-label">
+              Your Password
+            </label>
+          </div>
+          {/* Checkbox for terms and conditions */}
+          <div className="custom-flex">
+            <div className="flex">
+              <input type="checkbox" id="terms" name="terms" />
+              <label htmlFor="terms" className="white-text">
+                I agree to the terms &amp; conditions
+              </label>
+            </div>
+          </div>
+          <div>
+            <button type="submit" className="custom-button">
+              Register
+            </button>
+          </div>
+        </form>
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
+          <span style={{ color: "white" }}>
+            Already have an account?{" "}
+            <Link className="text1" to="/login">
+              Sign In
+            </Link>
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
