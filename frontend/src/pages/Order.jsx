@@ -86,6 +86,52 @@ function Order() {
     setStep(step - 1);
   };
 
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+    let calculatedTotal = 0;
+
+    if (type === "New") {
+      calculatedTotal = 100; // Base price for a new keyboard
+    } else if (type === "Modification") {
+      calculatedTotal += numSwitchLubing * 0.5;
+      calculatedTotal += numFilming * 0.3;
+      calculatedTotal += numStabilizer * 2;
+      calculatedTotal += numTapeLayer * 0.1;
+    }
+
+    setTotal(calculatedTotal);
+    setShowReview(true);
+
+    const res = await fetch("http://localhost:5000/api/orders/placeorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, total }),
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      alert("Order Placed.");
+      navigate("/login");
+    } else {
+      alert(data.message);
+    }
+  };
+
+  /*const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:5000/api/orders/placeorder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, total }),
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      alert("Order Placed.");
+      navigate("/login");
+    } else {
+      alert(data.message);
+    }
+  };*/
+
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold">Order Your Keyboard</h1>
@@ -444,6 +490,7 @@ function Order() {
         </form>
       ) : (
         <div>
+          <form action="/orders" onSubmit={handlePlaceOrder}>
           <h2 className="text-lg font-bold">Order Review</h2>
           {type === "New" ? (
             <>
@@ -465,9 +512,10 @@ function Order() {
           <button onClick={() => setShowReview(false)} className="mt-4 bg-green-500 text-white p-2 rounded-md">
             Edit Order
           </button>
-          <button onClick={() => alert("Order placed!")} className="mt-4 bg-green-500 text-white p-2 rounded-md ml-2">
+          <button type="submit" className="mt-4 bg-green-500 text-white p-2 rounded-md ml-2">
             Place Order
           </button>
+          </form>
         </div>
       )}
     </div>
