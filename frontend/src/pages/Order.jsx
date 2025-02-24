@@ -88,21 +88,7 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    let calculatedTotal = 0;
-
-    if (type === "New") {
-      calculatedTotal = 100; // Base price for a new keyboard
-    } else if (type === "Modification") {
-      calculatedTotal += numSwitchLubing * 0.5;
-      calculatedTotal += numFilming * 0.3;
-      calculatedTotal += numStabilizer * 2;
-      calculatedTotal += numTapeLayer * 0.1;
-    }
-
-    setTotal(calculatedTotal);
-    setShowReview(true);
-
-    const res = await fetch("http://localhost:5000/api/orders/placeorder", {
+    const res = await fetch("http://localhost:5000/api/orders/placeOrder", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, total }),
@@ -110,27 +96,11 @@ function Order() {
     const data = await res.json();
     if (res.status === 201) {
       alert("Order Placed.");
-      navigate("/login");
+      //navigate("/login");
     } else {
       alert(data.message);
     }
   };
-
-  /*const handlePlaceOrder = async (e) => {
-    e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/orders/placeorder", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, total }),
-    });
-    const data = await res.json();
-    if (res.status === 201) {
-      alert("Order Placed.");
-      navigate("/login");
-    } else {
-      alert(data.message);
-    }
-  };*/
 
   return (
     <div className="p-4">
