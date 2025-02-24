@@ -88,7 +88,7 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/orders/placeOrder", {
+    const res = await fetch("http://localhost:5000/api/orders/placeorder", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, total }),
