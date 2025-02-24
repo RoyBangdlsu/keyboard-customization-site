@@ -8,6 +8,7 @@ import {AiOutlineUnlock} from "react-icons/ai";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -20,8 +21,13 @@ function Login() {
     const data = await res.json();
     if (data.token) {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", "true");
+      }
       alert("Login successful!");
-      navigate("/"); // Redirect to Home after login
+      navigate("/");
+      window.location.reload();
     } else {
       alert(data.message);
     }
