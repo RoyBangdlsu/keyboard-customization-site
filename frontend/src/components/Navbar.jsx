@@ -1,17 +1,30 @@
-// Navbar.jsx
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./navbar.css";
+import logo from "../assets/logo.png"; // Adjust the path as needed
 
 function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="bg-gradient-to-r from-purple-500 to-indigo-700 text-white p-5 shadow-lg flex justify-between items-center rounded-b-lg">
-      <h1 className="text-3xl font-extrabold">🎹 Keyboard Customizer</h1>
-      <div className="flex gap-6 text-lg">
-        <Link to="/" className="hover:text-yellow-300 transition duration-200">Home</Link>
-        <Link to="/about" className="hover:text-yellow-300 transition duration-200">About</Link>
-        <Link to="/customize" className="hover:text-yellow-300 transition duration-200">Customize</Link>
-        <Link to="/order" className="hover:text-yellow-300 transition duration-200">Order</Link>
-        <Link to="/login" className="hover:text-yellow-300 transition duration-200">Login</Link>
-        <Link to="/signup" className="hover:text-yellow-300 transition duration-200">Signup</Link>
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+      <div className="navbar-container">
+        <div className="navbar-brand">
+          <img src={logo} alt="Logo" className="navbar-logo" />
+          <h2 className="navbar-title">Cobs Keebs</h2>
+        </div>
+        <Link to="/" className="navbar-navigations">Home</Link>
+        <Link to="/about" className="navbar-navigations">About</Link>
+        <Link to="/login" className="navbar-navigations">Login</Link>
       </div>
     </nav>
   );
