@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 
 function Signup() {
-  // Added state for full name, email, and password
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +18,7 @@ function Signup() {
     const data = await res.json();
     if (res.status === 201) {
       alert("Signup successful! You can now log in.");
-      navigate("/login"); // Redirect to Login after signup
+      navigate("/login");
     } else {
       alert(data.message);
     }

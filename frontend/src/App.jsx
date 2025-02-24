@@ -6,6 +6,7 @@ import Customize from "./pages/Customize";
 import Order from "./pages/Order";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";  // ✅ Import Profile page
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile />} />  {/* ✅ Profile Route */}
       </Routes>
     </>
   );
