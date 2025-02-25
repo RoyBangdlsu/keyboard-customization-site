@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Order() {
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [step, setStep] = useState(1); // Current step in the form
   const [type, setType] = useState("New"); // Type of service
@@ -14,6 +15,16 @@ function Order() {
   const [numTapeLayer, setNumTapeLayer] = useState(0); // Number of tape layers
   const [total, setTotal] = useState(0); // Total cost
   const [showReview, setShowReview] = useState(false); // Show review section
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const customerName = user.name;
+  const customerEmail = user.email;
 
   // State to store the current choice labels
   const [currentChoice, setCurrentChoice] = useState({
@@ -52,6 +63,20 @@ function Order() {
     return true;
   };
 
+  // Handle next step
+  const handleNext = () => {
+    if (validateStep()) {
+      setStep(step + 1);
+    } else {
+      alert("Please make a choice before proceeding.");
+    }
+  };
+
+  // Handle previous step
+  const handlePrev = () => {
+    setStep(step - 1);
+  };
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,20 +95,6 @@ function Order() {
     setShowReview(true);
   };
 
-  // Handle next step
-  const handleNext = () => {
-    if (validateStep()) {
-      setStep(step + 1);
-    } else {
-      alert("Please make a choice before proceeding.");
-    }
-  };
-
-  // Handle previous step
-  const handlePrev = () => {
-    setStep(step - 1);
-  };
-
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if(type === "Modification" && numSwitchLubing === 0 && numFilming === 0 && numStabilizer === 0 && numTapeLayer === 0) {
@@ -92,7 +103,7 @@ function Order() {
       const resNew = await fetch("http://localhost:5000/api/orders/placeneworder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, total }),
+        body: JSON.stringify({ customerName, customerEmail, type, keyboardSize, keyCapBrand, switchType, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, total }),
       });
       const dataNew = await resNew.json();
       if (resNew.status === 201) {
@@ -105,6 +116,10 @@ function Order() {
     }
       
   };
+
+  if (!user) {
+    return <p className="text-center mt-10 text-xl">No user found. Please log in.</p>;
+  }
 
   return (
     <div className="p-4">
