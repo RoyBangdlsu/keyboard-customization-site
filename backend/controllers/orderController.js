@@ -1,14 +1,18 @@
 import Order from "../models/Order.js";
 
-export const placeOrder = async (req, res) => {
+export const placeNewOrder = async (req, res) => {
   try {
-    const { type, keyboardSize, keyCapBrand, switchType, total } = req.body; // Use frontend field names
+    const { type, keyboardSize, keyCapBrand, switchType, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, total } = req.body; // Use frontend field names
 
     const newOrder = new Order({
       serviceType: type,  // Convert to match backend field name
-      keyboardSize,
+      keyboardSize: keyboardSize,
       keycapBrand: keyCapBrand,  // Convert to match backend field name
-      switchType,
+      switchType: switchType,
+      switchLubing: numSwitchLubing,
+      filming: numFilming,
+      stabilizers: numStabilizer,
+      tapeLayers: numTapeLayer,
       price: total,  // Convert to match backend field name
     });
 

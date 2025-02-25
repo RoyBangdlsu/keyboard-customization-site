@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Order() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1); // Current step in the form
   const [type, setType] = useState("New"); // Type of service
-  const [keyboardSize, setKeyboardSize] = useState(""); // Keyboard size
-  const [keyCapBrand, setKeyCapBrand] = useState(""); // Keycap brand
-  const [switchType, setSwitchType] = useState(""); // Switch type
+  const [keyboardSize, setKeyboardSize] = useState("N/A"); // Keyboard size
+  const [keyCapBrand, setKeyCapBrand] = useState("N/A"); // Keycap brand
+  const [switchType, setSwitchType] = useState("N/A"); // Switch type
   const [numSwitchLubing, setNumSwitchLubing] = useState(0); // Number of switches for lubing
   const [numFilming, setNumFilming] = useState(0); // Number of films
   const [numStabilizer, setNumStabilizer] = useState(0); // Number of stabilizers
@@ -88,18 +90,19 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/orders/placeorder", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, total }),
-    });
-    const data = await res.json();
-    if (res.status === 201) {
-      alert("Order Placed.");
-      //navigate("/login");
-    } else {
-      alert(data.message);
-    }
+      const resNew = await fetch("http://localhost:5000/api/orders/placeneworder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, keyboardSize, keyCapBrand, switchType, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, total }),
+      });
+      const dataNew = await resNew.json();
+      if (resNew.status === 201) {
+        alert("Order Placed!");
+        navigate("/");
+        window.location.reload();
+      } else {
+        alert(dataNew.message);
+      }
   };
 
   return (
@@ -145,9 +148,7 @@ function Order() {
                       <option value="">Select Size</option>
                       <option value="Full-size">Full-size</option>
                       <option value="TKL">Tenkeyless (TKL)</option>
-                      <option value="75%">75%</option>
                       <option value="60%">60%</option>
-                      <option value="45%">45%</option>
                     </select>
                     <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.keyboardSize}</p>
                   </div>

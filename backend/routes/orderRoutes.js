@@ -1,10 +1,10 @@
 import express from "express";
-import { placeOrder } from "../controllers/orderController.js";
+import { placeNewOrder } from "../controllers/orderController.js";
 
 const router = express.Router();
 
 // Route to place a new order
-router.post("/placeorder", placeOrder);
+router.post("/placeneworder", placeNewOrder);
 
 // Route to get all orders
 //router.get("/", getOrders);
