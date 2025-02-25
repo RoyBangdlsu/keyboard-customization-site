@@ -20,7 +20,7 @@ function Order() {
     type: "New Customized Keyboard",
     keyboardSize: "",
     keyCapBrand: "",
-    switchType: "Outemu Blue",
+    switchType: "",
     numSwitchLubing: 0,
     numFilming: 0,
     numStabilizer: 0,
@@ -47,12 +47,8 @@ function Order() {
   const validateStep = () => {
     if (step === 1 && !type) return false;
     if (step === 2 && type === "New" && !keyboardSize) return false;
-    if (step === 2 && type === "Modification" && numSwitchLubing === 0) return false;
     if (step === 3 && type === "New" && !keyCapBrand) return false;
-    if (step === 3 && type === "Modification" && numFilming === 0) return false;
     if (step === 4 && type === "New" && !switchType) return false;
-    if (step === 4 && type === "Modification" && numStabilizer === 0) return false;
-    if (step === 5 && type === "Modification" && numTapeLayer === 0) return false;
     return true;
   };
 
@@ -90,6 +86,9 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    if(type === "Modification" && numSwitchLubing === 0 && numFilming === 0 && numStabilizer === 0 && numTapeLayer === 0) {
+      alert("Cannot Place Modification Request: Empty Request");
+    } else {
       const resNew = await fetch("http://localhost:5000/api/orders/placeneworder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -103,11 +102,13 @@ function Order() {
       } else {
         alert(dataNew.message);
       }
+    }
+      
   };
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold">Order Your Keyboard</h1>
+      <h1 className="text-xl font-bold">Order/Modify Your Keyboard</h1>
       {!showReview ? (
         <form onSubmit={handleSubmit}>
           {/* Step 1: Type of Service */}
