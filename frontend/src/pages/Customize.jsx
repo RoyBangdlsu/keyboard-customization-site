@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import domtoimage from 'dom-to-image';
 import './customize.css';
 
 function Customize() {
+  const navigate = useNavigate();
   const baseState = {
     layout: 'full',
     bodyColor: '#000000',
@@ -157,9 +159,11 @@ function Customize() {
 
   // Remaining functionality to be added later
   const handleOrder = () => {
-    if (window.confirm('Are you sure you want to proceed with this design?')) {
-      // Add order link here
-    }
+    //if (window.confirm('Are you sure you want to proceed with this design?')) {
+      localStorage.setItem('keyboardSwitchType', switchType);
+      localStorage.setItem('keyboardLayout', layout);
+      navigate("/order");
+    //}
   };
 
   return (
