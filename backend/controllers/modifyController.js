@@ -1,4 +1,4 @@
-import Order from "../models/Order.js";
+import Modify from "../models/Modify.js";
 import nodemailer from "nodemailer";
 
 // Configure Nodemailer Transporter
@@ -11,38 +11,38 @@ const transporter = nodemailer.createTransport({
 });
 
 
-export const placeNewOrder = async (req, res) => {
+export const placeRequest = async (req, res) => {
   try {
-    const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total } = req.body; // Use frontend field names
+    const { customerName, customerEmail, address, keyboardSize, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, total } = req.body; // Use frontend field names
 
     const email = customerEmail;
 
-    const newOrder = new Order({
+    const newRequest = new Modify({
       customerName: customerName, 
       customerEmail: customerEmail,
       address: address, 
-      serviceType: type,
       keyboardSize: keyboardSize,
-      keycapBrand: keyCapBrand,
-      switchType: switchType,
+      switchLubing: numSwitchLubing,
+      filming: numFilming,
+      stabilizers: numStabilizer,
+      tapeLayers: numTapeLayer,
       price: total,
-      orderStatus: "Pending"
     });
 
 
-    await newOrder.save();
+    await newRequest.save();
     
     // Send Email Notification
-    const mailOptions = {
+    /*const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email, // Customer's email
       subject: "Order Confirmation - Cobs Keebs",
       text: `Thank you for your order!\n\nOrder Details:\nType: ${type}\nKeyboard Size: ${keyboardSize}\nKeycap Brand: ${keyCapBrand}\nSwitch Type: ${switchType}\nTotal: ₱${total}\n\nWe will update you once your order is processed!`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);*/
     
-    res.status(201).json({ message: "Order placed successfully and email sent", newOrder });
+    res.status(201).json({ message: "Order placed successfully and email sent", newRequest });
   } catch (error) {
     console.error("Error placing order:", error);
     res.status(500).json({ message: error.message });
