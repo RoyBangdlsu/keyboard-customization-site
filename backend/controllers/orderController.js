@@ -1,4 +1,18 @@
 import Order from "../models/Order.js";
+import nodemailer from "nodemailer";
+
+
+// Configure Nodemailer Transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail", // You can use other email providers
+  auth: {
+    user: process.env.EMAIL_USER, // Your email address
+    pass: process.env.EMAIL_PASS, // Your email app password
+  },
+});
+
+
+
 
 export const placeNewOrder = async (req, res) => {
   try {
@@ -18,8 +32,24 @@ export const placeNewOrder = async (req, res) => {
       price: total,  // Convert to match backend field name
     });
 
+
     await newOrder.save();
-    res.status(201).json({ message: "Order placed successfully", newOrder });
+    
+    
+    
+    // Send Email Notification
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email, // Customer's email
+      subject: "Order Confirmation - Cobs Keebs",
+      text: `Thank you for your order!\n\nOrder Details:\nType: ${type}\nKeyboard Size: ${keyboardSize}\nKeycap Brand: ${keyCapBrand}\nSwitch Type: ${switchType}\nTotal: ₱${total}\n\nWe will update you once your order is processed!`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    
+    
+    
+    res.status(201).json({ message: "Order placed successfully and email sent", newOrder });
   } catch (error) {
     console.error("Error placing order:", error);
     res.status(500).json({ message: error.message });
