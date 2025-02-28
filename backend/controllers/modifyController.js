@@ -33,18 +33,17 @@ export const placeRequest = async (req, res) => {
     await newRequest.save();
     
     // Send Email Notification
-    /*const mailOptions = {
+    const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email, // Customer's email
-      subject: "Order Confirmation - Cobs Keebs",
-      text: `Thank you for your order!\n\nOrder Details:\nType: ${type}\nKeyboard Size: ${keyboardSize}\nKeycap Brand: ${keyCapBrand}\nSwitch Type: ${switchType}\nTotal: ₱${total}\n\nWe will update you once your order is processed!`,
+      subject: "Keyboard Modification Request Confirmation - Cobs Keebs",
+      text: `Thank you for using our service!\n\nRequest Details: \nKeyboard Size: ${keyboardSize}\nNumber of Switch Lubing: ${numSwitchLubing}\nNumber of Filming: ${numFilming}\nNumber of Stabilizers: ${numStabilizer}\nNumber of Tape Layers: ${numTapeLayer}\nTotal: ₱${total}\n\nWe will update you once your request is processed!`,
     };
-
-    await transporter.sendMail(mailOptions);*/
+    await transporter.sendMail(mailOptions);
     
-    res.status(201).json({ message: "Order placed successfully and email sent", newRequest });
+    res.status(201).json({ message: "Request placed successfully and email sent", newRequest });
   } catch (error) {
-    console.error("Error placing order:", error);
+    console.error("Error processing request:", error);
     res.status(500).json({ message: error.message });
   }
 };
