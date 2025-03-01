@@ -5,6 +5,7 @@ import User from "../models/User.js";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import dotenv from "dotenv";
+import sendEmail from "../utils/sendEmail.js";
 
 
 export const signup = async (req, res) => {
@@ -57,10 +58,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-import crypto from "crypto";
-import bcrypt from "bcryptjs";
-import User from "../models/User.js";
-import sendEmail from "../utils/sendEmail.js";
+
 
 const generateTempPassword = () => Math.floor(100000 + Math.random() * 900000).toString();
 
