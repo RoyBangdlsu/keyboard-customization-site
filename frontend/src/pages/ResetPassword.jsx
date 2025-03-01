@@ -5,30 +5,34 @@ function ResetPassword() {
   const { token } = useParams();
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-    console.log("Sending data:", { token, newPassword }); // Debugging log
-  
-    const res = await fetch("http://localhost:5000/api/auth/reset-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, newPassword }),
-    });
-  
-    const data = await res.json();
-    console.log("Response received:", data); // Debugging log
-  
-    if (res.status === 200) {
-      alert("Password reset successful! You can now log in.");
-      navigate("/login");
-    } else {
-      alert(data.message);
+    setMessage("");
+    setError("");
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, newPassword }),
+      });
+
+      const data = await res.json();
+      if (res.status === 200) {
+        setMessage("Password reset successful! Redirecting to login...");
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        setError(data.message || "Password reset failed.");
+      }
+    } catch (err) {
+      setError("Failed to reset password. Try again later.");
     }
   };
-  
-  
 
   return (
     <div className="login-container">
@@ -43,7 +47,8 @@ function ResetPassword() {
         />
         <button type="submit" className="custom-button">Set New Password</button>
       </form>
-      {message && <p className="text-white mt-4">{message}</p>}
+      {message && <p className="success-message">{message}</p>}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }
