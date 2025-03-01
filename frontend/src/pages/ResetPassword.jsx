@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+/*import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 function ResetPassword() {
@@ -57,6 +57,43 @@ function ResetPassword() {
       )}
       {message && <p className="success-message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
+    </div>
+  );
+}
+
+export default ResetPassword;
+*/
+
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+function ResetPassword() {
+  const { token } = useParams();
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Extracted token from URL:", token); // ✅ Debugging
+  }, [token]);
+
+  return (
+    <div className="login-container">
+      <h1 className="custom-heading">Reset Password</h1>
+      {token ? (
+        <form>
+          <input
+            type="password"
+            placeholder="New Password"
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="custom-input"
+          />
+          <button type="submit" className="custom-button">Set New Password</button>
+        </form>
+      ) : (
+        <p className="error-message">Invalid or expired reset link.</p>
+      )}
     </div>
   );
 }
