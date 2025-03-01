@@ -62,7 +62,7 @@ const transporter = nodemailer.createTransport({
 
 const generateTempPassword = () => Math.floor(100000 + Math.random() * 900000).toString();
 
-// 📌 Step 1: Send Temporary Password
+// 📌 Step 1: Generate & Store Temporary Password
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -70,12 +70,15 @@ export const forgotPassword = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Generate and hash temp password
-    const tempPassword = generateTempPassword();
-    user.tempPassword = await bcrypt.hash(tempPassword, 10);
+    // Generate a 6-digit temporary password
+    const tempPassword = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedTempPassword = await bcrypt.hash(tempPassword, 10);
+
+    // Store temp password in database
+    user.tempPassword = hashedTempPassword; // ✅ Save temp password
     await user.save();
 
-    // Send email
+    // Send temp password via email
     await sendEmail(
       user.email,
       "Your Temporary Password",
@@ -90,16 +93,25 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-// 📌 Step 2: Verify Temporary Password
 export const verifyTempPassword = async (req, res) => {
   try {
     const { email, tempPassword } = req.body;
+
+    if (!email || !tempPassword) {
+      return res.status(400).json({ message: "Email and temporary password are required." });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    if (!user.tempPassword) {
+      return res.status(400).json({ message: "No temporary password found. Request a new one." });
+    }
+
+    // Compare hashed temp password
     const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
-    if (!isMatch) return res.status(400).json({ message: "Incorrect temporary password" });
+    if (!isMatch) return res.status(400).json({ message: "Incorrect temporary password." });
 
     res.status(200).json({ message: "Temporary password verified." });
 
