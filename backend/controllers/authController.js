@@ -60,94 +60,39 @@ const transporter = nodemailer.createTransport({
 
 
 
-const generateTempPassword = () => Math.floor(100000 + Math.random() * 900000).toString();
-
-// 📌 Step 1: Generate & Store Temporary Password
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    // Generate a 6-digit temporary password
-    const tempPassword = Math.floor(100000 + Math.random() * 900000).toString();
-    const hashedTempPassword = await bcrypt.hash(tempPassword, 10);
-
-    // Store temp password in database
-    user.tempPassword = hashedTempPassword; // ✅ Save temp password
-    await user.save();
-
-    // Send temp password via email
-    await sendEmail(
-      user.email,
-      "Your Temporary Password",
-      `Your temporary password is: ${tempPassword}. Use this to reset your password.`
-    );
-
-    res.status(200).json({ message: "Temporary password sent to email." });
-
-  } catch (error) {
-    console.error("Forgot password error:", error);
-    res.status(500).json({ message: "Server error." });
-  }
-};
-
-
-export const verifyTempPassword = async (req, res) => {
-  try {
-    const { email, tempPassword } = req.body;
 
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(400).json({ message: "User not found." });
     }
 
-    if (!user.tempPassword || !user.tempPasswordExpire || user.tempPasswordExpire < Date.now()) {
-      return res.status(400).json({ message: "Temporary password expired or invalid." });
-    }
+    // ✅ Generate a 6-digit temporary password
+    const tempPassword = Math.random().toString(36).slice(-6);
+    
+    // ✅ Hash the temporary password
+    const hashedTempPassword = await bcrypt.hash(tempPassword, 10);
 
-    // ✅ Compare temp password with hashed temp password in DB
-    const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: "Incorrect temporary password." });
-    }
-
-    // ✅ Set new password as temp password (hashed)
-    user.password = user.tempPassword;
-    user.tempPassword = undefined;  // Remove temp password after use
-    user.tempPasswordExpire = undefined;
+    // ✅ Update the user's password to the temporary password
+    user.password = hashedTempPassword;
     await user.save();
 
-    res.status(200).json({ message: "Temporary password verified! Your password has been updated." });
+    // ✅ Send the email with the temporary password
+    await sendEmail({
+      to: user.email,
+      subject: "Your Temporary Password",
+      text: `Your temporary password is: ${tempPassword}\n\nUse this password to log in and change it immediately.`,
+    });
+
+    res.status(200).json({ message: "Temporary password sent to your email." });
   } catch (error) {
-    console.error("Verify temp password error:", error);
+    console.error("Forgot password error:", error);
     res.status(500).json({ message: "Server error. Try again later." });
   }
 };
 
-
-// 📌 Step 3: Reset Password
-export const resetPassword = async (req, res) => {
-  try {
-    const { email, newPassword } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    user.password = await bcrypt.hash(newPassword, 10);
-    user.tempPassword = undefined; // Remove temp password
-    await user.save();
-
-    res.status(200).json({ message: "Password reset successfully." });
-
-  } catch (error) {
-    console.error("Reset password error:", error);
-    res.status(500).json({ message: "Server error." });
-  }
-};
 
 
 
