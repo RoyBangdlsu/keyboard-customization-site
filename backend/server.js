@@ -9,6 +9,14 @@ import customizeRoutes from "./routes/customizeRoutes.js"; // Make sure this is 
 
 
 
+import cors from "cors";
+
+// Enable CORS
+app.use(cors({
+  origin: ["https://your-frontend.onrender.com"], // Allow frontend URL
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true
+}));
 
 dotenv.config();
 connectDB();
