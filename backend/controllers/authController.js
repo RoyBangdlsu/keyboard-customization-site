@@ -93,47 +93,41 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
+
 export const verifyTempPassword = async (req, res) => {
   try {
     const { email, tempPassword } = req.body;
 
-    if (!email || !tempPassword) {
-      return res.status(400).json({ message: "Email and temporary password are required." });
-    }
-
     const user = await User.findOne({ email });
 
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    if (!user.tempPassword) {
-      return res.status(400).json({ message: "No temporary password found. Request a new one." });
+    if (!user) {
+      return res.status(400).json({ message: "User not found." });
     }
 
-    // Compare hashed temp password
+    if (!user.tempPassword || !user.tempPasswordExpire || user.tempPasswordExpire < Date.now()) {
+      return res.status(400).json({ message: "Temporary password expired or invalid." });
+    }
+
+    // ✅ Compare temp password with hashed temp password in DB
     const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
-    if (!isMatch) return res.status(400).json({ message: "Incorrect temporary password." });
 
-    // ✅ Generate JWT Token for Auto Login
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    if (!isMatch) {
+      return res.status(400).json({ message: "Incorrect temporary password." });
+    }
 
-    // ✅ Clear temp password from DB after successful login
-    user.tempPassword = undefined;
+    // ✅ Set new password as temp password (hashed)
+    user.password = user.tempPassword;
+    user.tempPassword = undefined;  // Remove temp password after use
+    user.tempPasswordExpire = undefined;
     await user.save();
 
-    // ✅ Send token & user data to frontend
-    res.status(200).json({
-      message: "Temporary password verified. You are now logged in!",
-      token,
-      user: { name: user.name, email: user.email },
-    });
-
+    res.status(200).json({ message: "Temporary password verified! Your password has been updated." });
   } catch (error) {
     console.error("Verify temp password error:", error);
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Server error. Try again later." });
   }
 };
+
 
 // 📌 Step 3: Reset Password
 export const resetPassword = async (req, res) => {
