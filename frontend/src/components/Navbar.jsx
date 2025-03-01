@@ -43,8 +43,9 @@ function Navbar() {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser(null);
-    navigate("/login");
-    window.location.reload();
+    // ✅ Navigate to Login Page after Logout
+    navigate("/login", { replace: true });
+    setTimeout(() => window.location.reload(), 500);
   };
 
   return (

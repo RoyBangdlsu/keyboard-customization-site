@@ -27,6 +27,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />  {/* ✅ Profile Route */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="*" element={<h1>404 Page Not Found</h1>} /> {/* ✅ Catch all unknown routes */}
 
       </Routes>
     </>
