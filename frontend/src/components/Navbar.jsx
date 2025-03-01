@@ -24,6 +24,10 @@ function Navbar() {
           if (data.name) {
             setUser(data);
             localStorage.setItem("user", JSON.stringify(data)); // Store user data
+          } else {
+            setIsLoggedIn(false); // ❌ If user data is invalid, log out
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
           }
         })
         .catch(() => {
@@ -31,6 +35,9 @@ function Navbar() {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
         });
+    } else {
+      setIsLoggedIn(false);
+      setUser(null);
     }
   }, []);
 
@@ -55,11 +62,9 @@ function Navbar() {
         <Link to="/customize" className="navbar-navigations">Customize</Link>
         <Link to="/order" className="navbar-navigations">Order</Link>
 
-        {isLoggedIn ? (
+        {isLoggedIn && user ? (
           <>
-            <Link to="/profile" className="navbar-navigations">
-              {user ? user.name : "Profile"}
-            </Link>
+            <Link to="/profile" className="navbar-navigations">{user.name}</Link>
             <button onClick={handleLogout} className="navbar-navigations logout-button">
               Logout
             </button>
