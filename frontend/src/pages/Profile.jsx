@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // 👁️ Eye Icons for Password Toggle
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -8,6 +9,9 @@ function Profile() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
@@ -94,31 +98,73 @@ function Profile() {
           <p><strong>Email:</strong> {user.email}</p>
 
           {/* Password Change Form */}
-          <form onSubmit={handlePasswordChange}>
-            <input
-              type="password"
-              placeholder="Old Password"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              className="custom-input"
-              required
-            />
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="custom-input"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="custom-input"
-              required
-            />
+          <form onSubmit={handlePasswordChange} className="password-form">
+            {/* Old Password Input */}
+            <div className="input-group">
+              <label>Old Password</label>
+              <div className="password-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter old password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className="custom-input"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="toggle-password"
+                >
+                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                </button>
+              </div>
+            </div>
+
+            {/* New Password Input */}
+            <div className="input-group">
+              <label>New Password</label>
+              <div className="password-wrapper">
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  placeholder="Enter new password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="custom-input"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="toggle-password"
+                >
+                  {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm New Password Input */}
+            <div className="input-group">
+              <label>Confirm New Password</label>
+              <div className="password-wrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="custom-input"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="toggle-password"
+                >
+                  {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                </button>
+              </div>
+            </div>
+
             <button type="submit" className="custom-button">Change Password</button>
           </form>
 
