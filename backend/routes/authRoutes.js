@@ -7,8 +7,6 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
-router.post("/verify-temp-password", verifyTempPassword);
-router.post("/reset-password", resetPassword);
 router.get("/me", protect, getUserProfile); // ✅ NEW: Get logged-in user's profile
 
 export default router;
