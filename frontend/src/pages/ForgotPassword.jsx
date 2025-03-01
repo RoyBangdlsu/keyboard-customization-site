@@ -40,18 +40,24 @@ function ForgotPassword() {
     e.preventDefault();
     setMessage("");
     setError("");
-
+  
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/verify-temp-password`, {
+      const res = await fetch("https://cobskeebsback.onrender.com/api/auth/verify-temp-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, tempPassword }),
       });
-
+  
       const data = await res.json();
       if (res.status === 200) {
-        setMessage("Temporary password verified! Enter a new password.");
-        setStep(3); // Move to step 3 (set new password)
+        setMessage("Temporary password verified! You are now logged in.");
+        
+        // ✅ Store JWT Token for authentication
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+  
+        // ✅ Redirect to Homepage or Dashboard
+        setTimeout(() => navigate("/"), 2000);
       } else {
         setError(data.message || "Incorrect temporary password.");
       }
@@ -59,6 +65,7 @@ function ForgotPassword() {
       setError("Server error. Try again later.");
     }
   };
+  
 
   // Step 3: Reset to a new password
   const handleResetPassword = async (e) => {

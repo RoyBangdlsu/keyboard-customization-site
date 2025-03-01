@@ -113,7 +113,21 @@ export const verifyTempPassword = async (req, res) => {
     const isMatch = await bcrypt.compare(tempPassword, user.tempPassword);
     if (!isMatch) return res.status(400).json({ message: "Incorrect temporary password." });
 
-    res.status(200).json({ message: "Temporary password verified." });
+    // ✅ Generate JWT Token for Auto Login
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    // ✅ Clear temp password from DB after successful login
+    user.tempPassword = undefined;
+    await user.save();
+
+    // ✅ Send token & user data to frontend
+    res.status(200).json({
+      message: "Temporary password verified. You are now logged in!",
+      token,
+      user: { name: user.name, email: user.email },
+    });
 
   } catch (error) {
     console.error("Verify temp password error:", error);
