@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";  // ✅ Import navigate
+import { useNavigate } from "react-router-dom";  // ✅ Import this
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ function ForgotPassword() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate(); // ✅ Add this
+  const navigate = useNavigate(); // ✅ Declare navigate inside component
 
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
@@ -33,8 +33,10 @@ function ForgotPassword() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        // ✅ Redirect to Homepage after 2 seconds
-        setTimeout(() => navigate("/"), 2000);
+        // ✅ Fix: Use a function inside setTimeout to capture `navigate`
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
         setError(data.message || "Incorrect temporary password.");
       }
