@@ -10,10 +10,27 @@ function Navbar() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-    setIsLoggedIn(!!token);
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+
+    if (token) {
+      setIsLoggedIn(true);
+
+      // ✅ Fetch user data from backend
+      fetch("https://cobskeebsback.onrender.com/api/auth/me", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.name) {
+            setUser(data);
+            localStorage.setItem("user", JSON.stringify(data)); // Store user data
+          }
+        })
+        .catch(() => {
+          setIsLoggedIn(false);
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+        });
     }
   }, []);
 
@@ -37,10 +54,15 @@ function Navbar() {
         <Link to="/about" className="navbar-navigations">About</Link>
         <Link to="/customize" className="navbar-navigations">Customize</Link>
         <Link to="/order" className="navbar-navigations">Order</Link>
+
         {isLoggedIn ? (
           <>
-            <Link to="/profile" className="navbar-navigations">{user?.name || "Profile"}</Link>
-            <button onClick={handleLogout} className="navbar-navigations logout-button">Logout</button>
+            <Link to="/profile" className="navbar-navigations">
+              {user ? user.name : "Profile"}
+            </Link>
+            <button onClick={handleLogout} className="navbar-navigations logout-button">
+              Logout
+            </button>
           </>
         ) : (
           <>
