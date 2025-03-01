@@ -13,31 +13,28 @@ function Navbar() {
 
     if (token) {
       setIsLoggedIn(true);
+      const storedUser = localStorage.getItem("user");
 
-      // ✅ Fetch user data from backend
-      fetch("https://cobskeebsback.onrender.com/api/auth/me", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.name) {
-            setUser(data);
-            localStorage.setItem("user", JSON.stringify(data)); // Store user data
-          } else {
-            setIsLoggedIn(false); // ❌ If user data is invalid, log out
+      if (storedUser) {
+        setUser(JSON.parse(storedUser)); // ✅ Use stored user data
+      } else {
+        fetch("https://cobskeebsback.onrender.com/api/auth/me", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.name) {
+              setUser(data);
+              localStorage.setItem("user", JSON.stringify(data)); // ✅ Store user data
+            }
+          })
+          .catch(() => {
+            setIsLoggedIn(false);
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-          }
-        })
-        .catch(() => {
-          setIsLoggedIn(false);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-        });
-    } else {
-      setIsLoggedIn(false);
-      setUser(null);
+          });
+      }
     }
   }, []);
 
