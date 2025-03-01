@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 function ResetPassword() {
@@ -9,6 +9,10 @@ function ResetPassword() {
   const navigate = useNavigate();
 
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
+
+  useEffect(() => {
+    console.log("Extracted token from URL:", token);
+  }, [token]);  // ✅ Debugging: Log token
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -37,16 +41,20 @@ function ResetPassword() {
   return (
     <div className="login-container">
       <h1 className="custom-heading">Reset Password</h1>
-      <form onSubmit={handleResetPassword}>
-        <input
-          type="password"
-          value={newPassword}
-          placeholder="New Password"
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="custom-input"
-        />
-        <button type="submit" className="custom-button">Set New Password</button>
-      </form>
+      {token ? (
+        <form onSubmit={handleResetPassword}>
+          <input
+            type="password"
+            value={newPassword}
+            placeholder="New Password"
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="custom-input"
+          />
+          <button type="submit" className="custom-button">Set New Password</button>
+        </form>
+      ) : (
+        <p className="error-message">Invalid or expired reset link.</p> // ✅ Show error if token is missing
+      )}
       {message && <p className="success-message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
     </div>
