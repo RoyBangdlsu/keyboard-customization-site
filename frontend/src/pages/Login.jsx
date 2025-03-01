@@ -11,27 +11,25 @@ function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      if (rememberMe) {
-        localStorage.setItem("rememberMe", "true");
-      }
-      alert("Login successful!");
-      navigate("/");
-      window.location.reload();
-    } else {
-      alert(data.message);
-    }
-  };
+  const API_BASE_URL = "https://your-backend.onrender.com"; // Change this to your actual backend URL
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+
+  if (res.ok) {
+    localStorage.setItem("token", data.token);
+    alert("Login successful!");
+    navigate("/");
+  } else {
+    alert(data.message || "Login failed.");
+  }
+};
 
   return (
     <div
