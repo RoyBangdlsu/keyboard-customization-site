@@ -18,7 +18,7 @@ const app = express(); // ✅ Initialize `app` FIRST
 
 // ✅ Enable CORS AFTER initializing `app`
 app.use(cors({
-    origin: ["https://cobskeebs-b0ra.onrender.com"], // Allow frontend URL
+    origin: ["https://cobskeebs.onrender.com"], // Allow frontend URL
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }));
