@@ -172,11 +172,25 @@ function Customize() {
 
   // Remaining functionality to be added later
   const handleOrder = () => {
-    //if (window.confirm('Are you sure you want to proceed with this design?')) {
-      localStorage.setItem('keyboardSwitchType', switchType);
-      localStorage.setItem('keyboardLayout', layout);
-      navigate("/order");
-    //}
+    const keyboardElement = document.querySelector('.keyboard-body');
+    if (keyboardElement) {
+    domtoimage.toPng(keyboardElement)
+      .then((dataUrl) => {
+        // Save the Base64 image string to localStorage
+        localStorage.setItem('keyboardImage', dataUrl);
+
+        // Save other keyboard details to localStorage
+        localStorage.setItem('keyboardSwitchType', switchType);
+        localStorage.setItem('keyboardLayout', layout);
+        localStorage.setItem('keyboardKeycapBrand', keycapBrand);
+
+        // Navigate to the Order page
+        navigate("/order");
+      })
+      .catch((error) => {
+        console.error('Error exporting as PNG:', error);
+      });
+  }
   };
 
   return (
