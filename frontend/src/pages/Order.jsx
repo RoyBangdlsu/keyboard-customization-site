@@ -12,6 +12,8 @@ function Order() {
   const [keyboardImage, setKeyboardImage] = useState(""); // Address input
   let [total, setTotal] = useState(0); // Total cost
 
+  const API_BASE_URL = "https://cobskeebsback.onrender.com";
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -48,7 +50,7 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-      const resNew = await fetch("http://localhost:5000/api/orders/placeneworder", {
+      const resNew = await fetch(`${API_BASE_URL}/api/orders/placeneworder`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage }),
