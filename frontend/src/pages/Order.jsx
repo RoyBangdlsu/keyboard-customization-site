@@ -9,6 +9,7 @@ function Order() {
   const [keyCapBrand, setKeyCapBrand] = useState("N/A"); // Keycap brand
   const [switchType, setSwitchType] = useState("N/A"); // Switch type
   const [address, setAddress] = useState(""); // Address input
+  const [keyboardImage, setKeyboardImage] = useState(""); // Address input
   let [total, setTotal] = useState(0); // Total cost
 
   useEffect(() => {
@@ -18,6 +19,7 @@ function Order() {
     }
     const storedSwitchType = localStorage.getItem("keyboardSwitchType");
     const storedKeyboardSize = localStorage.getItem("keyboardLayout");
+    const storedKeyboardImage = localStorage.getItem("keyboardImage");
 
     if (storedSwitchType) {
       setSwitchType(storedSwitchType);
@@ -33,6 +35,10 @@ function Order() {
       setKeyboardSize("60%");
       setTotal(total=25);
     }
+
+    if (storedKeyboardImage) {
+      setKeyboardImage(storedKeyboardImage); // Set the image in state
+    }
   }, []);
 
   const handlePlaceOrder = async (e) => {
@@ -40,7 +46,7 @@ function Order() {
       const resNew = await fetch("http://localhost:5000/api/orders/placeneworder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total }),
+        body: JSON.stringify({ customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage }),
       });
 
       const dataNew = await resNew.json();
@@ -66,6 +72,19 @@ function Order() {
       <h1 className="text-xl font-bold">Review Order</h1>
         <div>
             <>
+            <p>Keyboard Preview</p>
+            {/* Display the keyboard image */}
+            {keyboardImage && (
+              <div className="mt-4">
+                <img
+                  src={keyboardImage}
+                  alt="Custom Keyboard Design"
+                  className="mt-2 border border-gray-300 rounded-md"
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                />
+              </div>
+            )}
+
               <p>Type of Service: New Customized Keyboard</p>
               <p>Keyboard Size: {keyboardSize}</p>
               <p>Keycap Brand: {keyCapBrand}</p>

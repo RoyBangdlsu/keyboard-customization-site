@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-
-
 function Profile() {
   const [user, setUser] = useState(null);
 
@@ -21,6 +19,7 @@ function Profile() {
       <h1 className="text-3xl font-bold mb-4">Profile</h1>
       <p className="text-lg"><strong>Name:</strong> {user.name}</p>
       <p className="text-lg"><strong>Email:</strong> {user.email}</p>
+      <p className="text-lg"><strong>List of Orders</strong> {user.email}</p>
     </div>
   );
 }
