@@ -16,7 +16,7 @@ export const placeNewOrder = async (req, res) => {
     const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage } = req.body; // Use frontend field names
 
     const email = customerEmail;
-    const adminEmail = "rappylatkig@gmail.com";
+    const adminEmail = "OWNER_EMAIL@gmail.com";
     const imageBuffer = Buffer.from(keyboardImage.split(",")[1], "base64");
 
     const newOrder = new Order({
