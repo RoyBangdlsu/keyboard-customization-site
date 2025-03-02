@@ -239,9 +239,12 @@ function Customize() {
           <label>Switch Type:</label>
           <select value={switchType} onChange={handleSwitchTypeChange}>
           <option value="Default">Default</option>
-            <option value="Brown">Brown</option>
-            <option value="Blue">Blue</option>
-            <option value="Red">Red</option>
+            <option value="Brown">Cherry MX Brown</option>
+            <option value="Blue">Cherry MX Blue</option>
+            <option value="Red">Cherry MX Red</option>
+            <option value="Green">Razer Green</option>
+            <option value="Orange">Razer Orange</option>
+            <option value="Yellow">Razer Yellow</option>
           </select>
         </div>
 
