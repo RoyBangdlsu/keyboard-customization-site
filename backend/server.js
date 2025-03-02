@@ -18,7 +18,7 @@ const app = express(); // ✅ Initialize `app` FIRST
 
 // ✅ Enable CORS AFTER initializing `app`
 app.use(cors({
-    origin: ["https://cobskeebs.onrender.com"], // Allow frontend URL
+    origin: ["https://keyboard-customization-site-okgs.onrender.com"], // Allow frontend URL
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }));
