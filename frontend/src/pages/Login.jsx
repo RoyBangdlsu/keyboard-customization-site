@@ -2,34 +2,34 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import "./Login.css";
-import {BiUser} from "react-icons/bi";
-import {AiOutlineUnlock} from "react-icons/ai";
+import { BiUser } from "react-icons/bi";
+import { AiOutlineUnlock } from "react-icons/ai";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  const API_BASE_URL = "https://cobskeebsback.onrender.com"; 
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/auth/login", {
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
+
     const data = await res.json();
-    if (data.token) {
+
+    if (res.ok) {
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      if (rememberMe) {
-        localStorage.setItem("rememberMe", "true");
-      }
+      localStorage.setItem("user", JSON.stringify({ name: data.user.name })); // ✅ Store user name
       alert("Login successful!");
       navigate("/");
-      window.location.reload();
+      window.location.reload(); // ✅ Ensure Navbar updates immediately
     } else {
-      alert(data.message);
+      alert(data.message || "Login failed.");
     }
   };
 

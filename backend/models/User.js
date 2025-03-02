@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
   resetToken: { type: String, default: null },
-  resetTokenExpire: { type: Date, default: null }
+  resetTokenExpire: { type: Date, default: null },
+  tempPassword: String, // ✅ Add tempPassword field
 });
 
 const User = mongoose.model("User", userSchema);
