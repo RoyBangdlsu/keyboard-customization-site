@@ -10,6 +10,7 @@ function Customize() {
     bodyColor: '#000000',
     switchType: 'Default',
     keycapColors: {},
+    keycapBrand: 'Akko', // Default keycap brand
   };
 
   const loggedInUser = localStorage.getItem('user');
@@ -29,6 +30,9 @@ function Customize() {
   const [keycapColors, setKeycapColors] = useState(
     JSON.parse(localStorage.getItem(getUserStorageKey('keyboardKeycapColors'))) || baseState.keycapColors
   );
+  const [keycapBrand, setKeycapBrand] = useState(
+    localStorage.getItem(getUserStorageKey('keyboardKeycapBrand')) || baseState.keycapBrand
+  );
   const [selectedKey, setSelectedKey] = useState(null);
 
   useEffect(() => {
@@ -37,8 +41,9 @@ function Customize() {
       localStorage.setItem(getUserStorageKey('keyboardBodyColor'), bodyColor);
       localStorage.setItem(getUserStorageKey('keyboardSwitchType'), switchType);
       localStorage.setItem(getUserStorageKey('keyboardKeycapColors'), JSON.stringify(keycapColors));
+      localStorage.setItem(getUserStorageKey('keyboardKeycapBrand'), keycapBrand);
     }
-  }, [layout, bodyColor, switchType, keycapColors, loggedInUser]);
+  }, [layout, bodyColor, switchType, keycapColors, keycapBrand, loggedInUser]);
 
   if (!loggedInUser) {
     return <div>Please log in to customize your keyboard.</div>;
@@ -51,10 +56,12 @@ function Customize() {
       setBodyColor(baseState.bodyColor);
       setSwitchType(baseState.switchType);
       setKeycapColors(baseState.keycapColors);
+      setKeycapBrand(baseState.keycapBrand);
       localStorage.setItem('keyboardLayout', baseState.layout);
       localStorage.setItem('keyboardBodyColor', baseState.bodyColor);
       localStorage.setItem('keyboardSwitchType', baseState.switchType);
       localStorage.setItem('keyboardKeycapColors', JSON.stringify(baseState.keycapColors));
+      localStorage.setItem('keyboardKeycapBrand', baseState.keycapBrand);
     }
   };
 
@@ -64,7 +71,8 @@ function Customize() {
     localStorage.setItem('keyboardBodyColor', bodyColor);
     localStorage.setItem('keyboardSwitchType', switchType);
     localStorage.setItem('keyboardKeycapColors', JSON.stringify(keycapColors));
-  }, [layout, bodyColor, switchType, keycapColors]);
+    localStorage.setItem('keyboardKeycapBrand', keycapBrand);
+  }, [layout, bodyColor, switchType, keycapColors, keycapBrand]);
 
   // Define keycap layouts for Full, TKL, and 60% keyboards
   const keycapLayouts = {
@@ -106,6 +114,11 @@ function Customize() {
   // Handles changes to Key Switches (Blue, Red, Brown, etc.)
   const handleSwitchTypeChange = (event) => {
     setSwitchType(event.target.value);
+  };
+
+  // Handles changes to Keycap Brand
+  const handleKeycapBrandChange = (event) => {
+    setKeycapBrand(event.target.value);
   };
 
   // Handle right-click on keycaps
@@ -169,6 +182,7 @@ function Customize() {
         // Save other keyboard details to localStorage
         localStorage.setItem('keyboardSwitchType', switchType);
         localStorage.setItem('keyboardLayout', layout);
+        localStorage.setItem('keyboardKeycapBrand', keycapBrand);
 
         // Navigate to the Order page
         navigate("/order");
@@ -221,6 +235,16 @@ function Customize() {
             <option value="Red">Red</option>
           </select>
         </div>
+
+        <div className="option">
+          <label>Keycap Brand:</label>
+          <select value={keycapBrand} onChange={handleKeycapBrandChange}>
+            <option value="Akko">Akko</option>
+            <option value="Drop">Drop</option>
+            <option value="YMDK">YMDK</option>
+            <option value="HyperX">HyperX</option>
+          </select>
+        </div>
       </div>
 
       <div className="preview">
@@ -250,6 +274,7 @@ function Customize() {
           </div>
         </div>
         <p>Switch Type: {switchType}</p>
+        <p>Keycap Brand: {keycapBrand}</p>
       </div>
 
       {/* Color Picker for Keycaps */}
