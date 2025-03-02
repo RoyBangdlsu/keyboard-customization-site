@@ -66,8 +66,8 @@ function Modify() {
     calculatedTotal += numTapeLayer * 10;
 
     // Add costs for Case Foam and PE Foam
-    if (caseFoam === "Yes") calculatedTotal += 20; // Example cost for Case Foam
-    if (PEFoam === "Yes") calculatedTotal += 15; // Example cost for PE Foam
+    if (caseFoam === "Yes") calculatedTotal += 50; // Example cost for Case Foam
+    if (PEFoam === "Yes") calculatedTotal += 50; // Example cost for PE Foam
 
     setTotal(calculatedTotal);
     setShowReview(true);

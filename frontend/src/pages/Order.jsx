@@ -19,6 +19,7 @@ function Order() {
     }
     const storedSwitchType = localStorage.getItem("keyboardSwitchType");
     const storedKeyboardSize = localStorage.getItem("keyboardLayout");
+    const storedKeycapBrand = localStorage.getItem("keyboardKeycapBrand");
     const storedKeyboardImage = localStorage.getItem("keyboardImage");
 
     if (storedSwitchType) {
@@ -34,6 +35,10 @@ function Order() {
     } else if(storedKeyboardSize === '60') {
       setKeyboardSize("60%");
       setTotal(total=25);
+    }
+
+    if(storedKeycapBrand) {
+      setKeyCapBrand(storedKeycapBrand);
     }
 
     if (storedKeyboardImage) {

@@ -10,7 +10,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 export const placeNewOrder = async (req, res) => {
   try {
     const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage } = req.body; // Use frontend field names

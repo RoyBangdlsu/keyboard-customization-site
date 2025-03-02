@@ -13,9 +13,10 @@ const transporter = nodemailer.createTransport({
 
 export const placeRequest = async (req, res) => {
   try {
-    const { customerName, customerEmail, address, keyboardSize, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, total } = req.body; // Use frontend field names
+    const { customerName, customerEmail, address, keyboardSize, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, caseFoam, PEFoam, total } = req.body; // Use frontend field names
 
     const email = customerEmail;
+    const adminEmail = "OWNER_EMAIL@gmail.com";
 
     const newRequest = new Modify({
       customerName: customerName, 
@@ -26,6 +27,8 @@ export const placeRequest = async (req, res) => {
       filming: numFilming,
       stabilizers: numStabilizer,
       tapeLayers: numTapeLayer,
+      caseFoam: caseFoam,
+      PEFoam: PEFoam,
       price: total,
     });
 
@@ -37,7 +40,17 @@ export const placeRequest = async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email, // Customer's email
       subject: "Keyboard Modification Request Confirmation - Cobs Keebs",
-      text: `Thank you for using our service!\n\nRequest Details: \nKeyboard Size: ${keyboardSize}\nNumber of Switch Lubing: ${numSwitchLubing}\nNumber of Filming: ${numFilming}\nNumber of Stabilizers: ${numStabilizer}\nNumber of Tape Layers: ${numTapeLayer}\nTotal: ₱${total}\n\nWe will update you once your request is processed!`,
+      text: `Thank you for using our service!
+      \n\nRequest Details: 
+      \nKeyboard Size: ${keyboardSize}
+      \nNumber of Switch Lubing: ${numSwitchLubing}
+      \nNumber of Filming: ${numFilming}
+      \nNumber of Stabilizers: ${numStabilizer}
+      \nNumber of Tape Layers: ${numTapeLayer}
+      \nCase Foam Mod?: ${caseFoam}
+      \nPE Foam Mod?: ${PEFoam}
+      \nTotal: ₱${total}
+      \n\nWe will update you once your request is processed!`,
     };
     await transporter.sendMail(mailOptions);
     
