@@ -16,6 +16,7 @@ export const placeNewOrder = async (req, res) => {
     const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage } = req.body; // Use frontend field names
 
     const email = customerEmail;
+    const adminEmail = "rappylatkig@gmail.com";
     const imageBuffer = Buffer.from(keyboardImage.split(",")[1], "base64");
 
     const newOrder = new Order({
@@ -66,7 +67,37 @@ export const placeNewOrder = async (req, res) => {
       ],
     };
 
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: adminEmail, // Send to the admin
+      subject: "New Order Received - Cobs Keebs",
+      html: `
+        <p>A new order has been placed!</p>
+        <p><strong>Order Details:</strong></p>
+        <ul>
+          <li>Customer Name: ${customerName}</li>
+          <li>Customer Email: ${customerEmail}</li>
+          <li>Type: ${type}</li>
+          <li>Keyboard Size: ${keyboardSize}</li>
+          <li>Keycap Brand: ${keyCapBrand}</li>
+          <li>Switch Type: ${switchType}</li>
+          <li>Total: ₱${total}</li>
+        </ul>
+        <p><strong>Custom Keyboard Design:</strong></p>
+        <img src="cid:keyboardImage" alt="Custom Keyboard Design" style="max-width: 100%; height: auto;" />
+      `,
+      attachments: [
+        {
+          filename: "keyboard-design.png",
+          content: keyboardImage.split("base64,")[1], // Remove the Base64 prefix
+          encoding: "base64",
+          cid: "keyboardImage", // Content ID to reference in the HTML
+        },
+      ],
+    };
+
     await transporter.sendMail(mailOptions);
+    await transporter.sendMail(adminMailOptions);
     
     res.status(201).json({ message: "Order placed successfully and email sent", newOrder });
   } catch (error) {
