@@ -8,13 +8,13 @@ function Navbar() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (token) {
       setIsLoggedIn(true);
       const storedUser = localStorage.getItem("user");
-
       if (storedUser) {
         setUser(JSON.parse(storedUser)); // ✅ Use stored user data
       } else {
@@ -38,18 +38,33 @@ function Navbar() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setIsLoggedIn(false);
-    setUser(null);
-    // ✅ Navigate to Login Page after Logout
+    setUser(null); // ✅ Navigate to Login Page after Logout
     navigate("/login", { replace: true });
     setTimeout(() => window.location.reload(), 500);
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
         <div className="navbar-brand">
           <img src={logo} alt="Logo" className="navbar-logo" />
@@ -61,7 +76,7 @@ function Navbar() {
         <Link to="/modify" className="navbar-navigations">Modify</Link>
         {isLoggedIn ? (
           <>
-            <Link to="/profile" className="navbar-navigations">{user.name}</Link>
+            <Link to="/profile" className="navbar-navigations">{user?.name}</Link>
             <button onClick={handleLogout} className="navbar-navigations logout-button">
               Logout
             </button>
