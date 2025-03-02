@@ -29,6 +29,7 @@ export const placeRequest = async (req, res) => {
       tapeLayers: numTapeLayer,
       caseFoam: caseFoam,
       PEFoam: PEFoam,
+      requestStatus: "Pending",
       price: total,
     });
 

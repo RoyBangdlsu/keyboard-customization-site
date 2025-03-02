@@ -10,6 +10,7 @@ const ModifySchema = new mongoose.Schema({
   tapeLayers: { type: Number, required: true },
   caseFoam: { type: String, required: true },
   PEFoam: { type: String, required: true },
+  requestStatus: { type: String, required: true },
   price: { type: Number, required: true },
 }, { timestamps: true });
 
