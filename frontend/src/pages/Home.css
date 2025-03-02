@@ -1,0 +1,142 @@
+
+.hero-container {
+    position: relative;
+    height: 100vh; 
+    background: url("../src/assets/homebg.jpg") no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;              
+    justify-content: space-between;  
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;                
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4); 
+    z-index: 1;                   
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    max-width: 50%;
+    color: #fff;
+    margin-right: 2rem;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  .title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+  }
+  
+  .subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+  
+  .description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-carousel {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .carousel-box {
+    position: relative;
+    background-color: #333;  
+    border-radius: 8px;
+    padding: 1rem;
+    width: 80%;
+    max-width: 600px;      
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .carousel-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .arrow-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
+  .arrow-button.left {
+    left: 10px;
+  }
+  
+  .arrow-button.right {
+    right: 10px;
+  }
+  
+  .dots {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    gap: 6px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  
+  .dot.active {
+    opacity: 1;
+  }
+  
+
+  .start-button {
+    background-color: #BADDFF;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .start-button:hover {
+    background-color: #fff;
+    color: #BADDFF;
+  }
+  
