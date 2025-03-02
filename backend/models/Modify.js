@@ -8,6 +8,8 @@ const ModifySchema = new mongoose.Schema({
   filming: { type: Number, required: true },
   stabilizers: { type: Number, required: true },
   tapeLayers: { type: Number, required: true },
+  caseFoam: { type: String, required: true },
+  PEFoam: { type: String, required: true },
   price: { type: Number, required: true },
 }, { timestamps: true });
 
