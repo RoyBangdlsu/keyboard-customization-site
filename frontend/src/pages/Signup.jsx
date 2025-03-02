@@ -28,41 +28,69 @@ function Signup() {
   };
 
   return (
+    <div
+    style={{
+      background: "url('../src/assets/bg.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      height: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}>
     <div className="login-container">
-      <h1 className="custom-heading">Sign Up</h1>
+      <h1 className="custom-heading">Registration</h1>
       <form onSubmit={handleSignup} className="space-y-4">
         <div className="relative-my4">
           <input
             type="text"
-            placeholder="Full Name"
+            placeholder=" "
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="custom-input"
+            className="custom-input floating-input"
           />
+              <label htmlFor="name" className="floating-label">
+              Full Name
+            </label>
         </div>
         <div className="relative-my4">
           <input
             type="email"
-            placeholder="Your Email"
+            placeholder=" "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="custom-input"
+            className="custom-input floating-input"
           />
+            <label htmlFor="email" className="floating-label">
+              Your Email
+            </label>
         </div>
         <div className="relative-my4">
           <input
             type="password"
-            placeholder="Your Password"
+            placeholder=" "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="custom-input"
+            className="custom-input floating-input"
           />
+            <label htmlFor="password" className="floating-label">
+              Your Password
+            </label>
         </div>
+        <div className="custom-flex">
+            <div className="flex">
+              <input type="checkbox" id="terms" name="terms" />
+              <label htmlFor="terms" className="white-text">
+                I agree to the terms &amp; conditions
+              </label>
+            </div>
+          </div>
         <button type="submit" className="custom-button">Register</button>
       </form>
       <div style={{ textAlign: "center", marginTop: "1rem" }}>
-        <span>Already have an account? <Link to="/login">Sign In</Link></span>
+        <span>Already have an account? <Link className="text1" to="/login">Sign In</Link></span>
       </div>
+    </div>
     </div>
   );
 }
