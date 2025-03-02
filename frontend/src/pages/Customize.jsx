@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import domtoimage from 'dom-to-image';
 import './customize.css';
@@ -34,6 +34,11 @@ function Customize() {
     localStorage.getItem(getUserStorageKey('keyboardKeycapBrand')) || baseState.keycapBrand
   );
   const [selectedKey, setSelectedKey] = useState(null);
+
+  // Audio references for switch sounds
+  let brownSound = new Audio('./sounds/brown.wav'); // Path to brown switch sound
+  let blueSound = new Audio('./sounds/blue.wav'); // Path to blue switch sound
+  let redSound = new Audio('./sounds/red.wav'); // Path to red switch sound
 
   useEffect(() => {
     if (loggedInUser) {
@@ -92,14 +97,6 @@ function Customize() {
       ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', ' ', ' ', '↑'],
       ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→'],
     ],
-    '75': [
-      ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12'],
-      ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
-      ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
-      ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
-      ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
-      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl'],
-    ],
     '60': [
       ['Esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
@@ -122,6 +119,23 @@ function Customize() {
   // Handles changes to Key Switches (Blue, Red, Brown, etc.)
   const handleSwitchTypeChange = (event) => {
     setSwitchType(event.target.value);
+  };
+
+  // Play sound for the currently selected switch type
+  const playSwitchSound = () => {
+    switch (switchType) {
+      case 'Brown':
+        brownSound.play();
+        break;
+      case 'Blue':
+        blueSound.play();
+        break;
+      case 'Red':
+        redSound.play();
+        break;
+      default:
+        break;
+    }
   };
 
   // Handles changes to Keycap Brand
@@ -221,7 +235,6 @@ function Customize() {
           <select value={layout} onChange={handleLayoutChange}>
             <option value="full">Full Keyboard</option>
             <option value="tkl">TKL (Tenkeyless)</option>
-            <option value="75">75%</option>
             <option value="60">60%</option>
           </select>
         </div>
@@ -239,13 +252,12 @@ function Customize() {
           <label>Switch Type:</label>
           <select value={switchType} onChange={handleSwitchTypeChange}>
           <option value="Default">Default</option>
-            <option value="Brown">Cherry MX Brown</option>
-            <option value="Blue">Cherry MX Blue</option>
-            <option value="Red">Cherry MX Red</option>
-            <option value="Green">Razer Green</option>
-            <option value="Orange">Razer Orange</option>
-            <option value="Yellow">Razer Yellow</option>
+            <option value="Brown">Brown</option>
+            <option value="Blue">Blue</option>
+            <option value="Red">Red</option>
           </select>
+          {/* Button to play switch sound */}
+          <button onClick={playSwitchSound} style={{ marginLeft: '10px' }}>Play Sound</button>
         </div>
 
         <div className="option">
