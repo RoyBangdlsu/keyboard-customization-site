@@ -10,9 +10,11 @@ function Modify() {
   const [numFilming, setNumFilming] = useState(0); // Number of films
   const [numStabilizer, setNumStabilizer] = useState(0); // Number of stabilizers
   const [numTapeLayer, setNumTapeLayer] = useState(0); // Number of tape layers
+  const [caseFoam, setCaseFoam] = useState(""); // Case Foam choice
+  const [PEFoam, setPEFoam] = useState(""); // PE Foam choice
   const [total, setTotal] = useState(0); // Total cost
   const [showReview, setShowReview] = useState(false); // Show review section
-  const [address, setAddress] = useState(""); // Number of tape layers
+  const [address, setAddress] = useState(""); // Address for delivery
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -28,6 +30,8 @@ function Modify() {
     numFilming: 0,
     numStabilizer: 0,
     numTapeLayer: 0,
+    caseFoam: "",
+    PEFoam: "",
   });
 
   // Function to validate the current step
@@ -56,10 +60,14 @@ function Modify() {
     let calculatedTotal = 0;
 
     // Calculate total based on modifications
-    calculatedTotal += numSwitchLubing * 0.5;
-    calculatedTotal += numFilming * 0.3;
-    calculatedTotal += numStabilizer * 2;
-    calculatedTotal += numTapeLayer * 0.1;
+    calculatedTotal += numSwitchLubing * 8;
+    calculatedTotal += numFilming * 6;
+    calculatedTotal += numStabilizer * 50;
+    calculatedTotal += numTapeLayer * 10;
+
+    // Add costs for Case Foam and PE Foam
+    if (caseFoam === "Yes") calculatedTotal += 20; // Example cost for Case Foam
+    if (PEFoam === "Yes") calculatedTotal += 15; // Example cost for PE Foam
 
     setTotal(calculatedTotal);
     setShowReview(true);
@@ -67,7 +75,14 @@ function Modify() {
 
   const handlePlaceRequest = async (e) => {
     e.preventDefault();
-    if (numSwitchLubing === 0 && numFilming === 0 && numStabilizer === 0 && numTapeLayer === 0) {
+    if (
+      numSwitchLubing === 0 &&
+      numFilming === 0 &&
+      numStabilizer === 0 &&
+      numTapeLayer === 0 &&
+      caseFoam === "No" &&
+      PEFoam === "No"
+    ) {
       alert("Cannot Place Modification Request: Empty Request");
     } else {
       const resNew = await fetch("http://localhost:5000/api/modify/placerequest", {
@@ -82,6 +97,8 @@ function Modify() {
           numFilming,
           numStabilizer,
           numTapeLayer,
+          caseFoam,
+          PEFoam,
           total,
         }),
       });
@@ -293,6 +310,66 @@ function Modify() {
             </div>
           )}
 
+          {/* Step 6: Case Foam */}
+          {step === 6 && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">Do you need Case Foam?</label>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCaseFoam("Yes");
+                    setCurrentChoice({ ...currentChoice, caseFoam: "Yes" });
+                  }}
+                  className="p-2 border border-gray-300 rounded-md"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCaseFoam("No");
+                    setCurrentChoice({ ...currentChoice, caseFoam: "No" });
+                  }}
+                  className="p-2 border border-gray-300 rounded-md"
+                >
+                  No
+                </button>
+              </div>
+              <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.caseFoam}</p>
+            </div>
+          )}
+
+          {/* Step 7: PE Foam */}
+          {step === 7 && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">Do you need PE Foam?</label>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPEFoam("Yes");
+                    setCurrentChoice({ ...currentChoice, PEFoam: "Yes" });
+                  }}
+                  className="p-2 border border-gray-300 rounded-md"
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPEFoam("No");
+                    setCurrentChoice({ ...currentChoice, PEFoam: "No" });
+                  }}
+                  className="p-2 border border-gray-300 rounded-md"
+                >
+                  No
+                </button>
+              </div>
+              <p className="mt-2 text-sm text-gray-600">Current Choice: {currentChoice.PEFoam}</p>
+            </div>
+          )}
+
           {/* Navigation Buttons */}
           <div className="flex justify-between mt-4">
             {step > 1 && (
@@ -304,7 +381,7 @@ function Modify() {
                 Previous
               </button>
             )}
-            {step < 5 && (
+            {step < 7 && (
               <button
                 type="button"
                 onClick={handleNext}
@@ -313,7 +390,7 @@ function Modify() {
                 Next
               </button>
             )}
-            {step === 5 && (
+            {step === 7 && (
               <button
                 type="submit"
                 className="bg-green-500 text-white p-2 rounded-md"
@@ -332,18 +409,20 @@ function Modify() {
             <p>Filming: {numFilming}</p>
             <p>Stabilizers: {numStabilizer}</p>
             <p>Tape Layers: {numTapeLayer}</p>
+            <p>Case Foam: {caseFoam}</p>
+            <p>PE Foam: {PEFoam}</p>
             <p>Total: ₱{total.toFixed(2)}</p>
             <div className="mt-4">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                required
+              />
             </div>
             <button onClick={() => setShowReview(false)} className="mt-4 bg-green-500 text-white p-2 rounded-md">
               Edit Order
