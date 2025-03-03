@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export const placeNewOrder = async (req, res) => {
   try {
-    const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage } = req.body; // Use frontend field names
+    const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage, keyCapBrandPrice, keyboardSizePrice, switchTypePrice } = req.body; // Use frontend field names
 
     const email = customerEmail;
     const adminEmail = "OWNER_EMAIL@gmail.com";
@@ -34,7 +34,6 @@ export const placeNewOrder = async (req, res) => {
       },
     });
 
-
     await newOrder.save();
     
     // Send Email Notification
@@ -47,9 +46,9 @@ export const placeNewOrder = async (req, res) => {
         <p><strong>Order Details:</strong></p>
         <ul>
           <li>Type: ${type}</li>
-          <li>Keyboard Size: ${keyboardSize}</li>
-          <li>Keycap Brand: ${keyCapBrand}</li>
-          <li>Switch Type: ${switchType}</li>
+          <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice}</li>
+          <li>Keycap Brand: ${keyCapBrand} - ₱${keyCapBrandPrice}</li>
+          <li>Switch Type: ${switchType} - ₱${switchTypePrice}</li>
           <li>Total: ₱${total}</li>
         </ul>
         <p>We will update you once your order is processed!</p>
@@ -77,9 +76,9 @@ export const placeNewOrder = async (req, res) => {
           <li>Customer Name: ${customerName}</li>
           <li>Customer Email: ${customerEmail}</li>
           <li>Type: ${type}</li>
-          <li>Keyboard Size: ${keyboardSize}</li>
-          <li>Keycap Brand: ${keyCapBrand}</li>
-          <li>Switch Type: ${switchType}</li>
+          <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice}</li>
+          <li>Keycap Brand: ${keyCapBrand} - ₱${keyCapBrandPrice}</li>
+          <li>Switch Type: ${switchType} - ₱${switchTypePrice}</li>
           <li>Total: ₱${total}</li>
         </ul>
         <p><strong>Custom Keyboard Design:</strong></p>

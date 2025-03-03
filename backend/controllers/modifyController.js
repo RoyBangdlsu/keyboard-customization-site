@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 export const placeRequest = async (req, res) => {
   try {
-    const { customerName, customerEmail, address, keyboardSize, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, caseFoam, PEFoam, total } = req.body; // Use frontend field names
+    const { customerName, customerEmail, address, keyboardSize, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, caseFoam, PEFoam, total, swtichLubingPrice, filmingPrice, stabilizerPrice, tapeLayerPrice } = req.body; // Use frontend field names
 
     const email = customerEmail;
     const adminEmail = "OWNER_EMAIL@gmail.com";
@@ -44,16 +44,40 @@ export const placeRequest = async (req, res) => {
       text: `Thank you for using our service!
       \n\nRequest Details: 
       \nKeyboard Size: ${keyboardSize}
-      \nNumber of Switch Lubing: ${numSwitchLubing}
-      \nNumber of Filming: ${numFilming}
-      \nNumber of Stabilizers: ${numStabilizer}
-      \nNumber of Tape Layers: ${numTapeLayer}
-      \nCase Foam Mod?: ${caseFoam}
-      \nPE Foam Mod?: ${PEFoam}
+      \nNumber of Switch Lubing: ${numSwitchLubing} - ${swtichLubingPrice}
+      \nNumber of Filming: ${numFilming} - ${filmingPrice}
+      \nNumber of Stabilizers: ${numStabilizer} - ${stabilizerPrice}
+      \nNumber of Tape Layers: ${numTapeLayer} - ${tapeLayerPrice}
+      \nCase Foam Mod? (₱50): ${caseFoam}
+      \nPE Foam Mod? (₱50): ${PEFoam}
       \nTotal: ₱${total}
       \n\nWe will update you once your request is processed!`,
     };
+
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: adminEmail, // Send to the admin
+      subject: "New Order Received - Cobs Keebs",
+      html: `
+        <p>A new order has been placed!</p>
+        <p><strong>Order Details:</strong></p>
+        <ul>
+          <li>Customer Name: ${customerName}</li>
+          <li>Customer Email: ${customerEmail}</li>
+          <li>Type: ${type}</li>
+          <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice}</li>
+          <li>Number of Switch Lubing: ${numSwitchLubing} - ₱${swtichLubingPrice}</li>
+          <li>Number of Filming: ${numFilming} - ₱${filmingPrice}</li>
+          <li>Number of Stabilizers: ${numStabilizer} - ₱${stabilizerPrice}</li>
+          <li>Number of Tape Layers: ${numTapeLayer} - ₱${tapeLayerPrice}</li>
+          <li>Case Foam Mod?: ${caseFoam}</li>
+          <li>PE Foam Mod?: ${PEFoam}</li>
+          <li>Total: ₱${total}</li>
+        </ul>
+      `
+    };
     await transporter.sendMail(mailOptions);
+    await transporter.sendMail(adminMailOptions);
     
     res.status(201).json({ message: "Request placed successfully and email sent", newRequest });
   } catch (error) {

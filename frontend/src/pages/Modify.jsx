@@ -7,15 +7,21 @@ function Modify() {
   const [step, setStep] = useState(1); // Current step in the form
   const [keyboardSize, setKeyboardSize] = useState(""); // Keyboard size
   const [numSwitchLubing, setNumSwitchLubing] = useState(0); // Number of switches for lubing
+  const [swtichLubingPrice, setSwitchLubingPrice] = useState(0); // Number of switches for lubing
   const [numFilming, setNumFilming] = useState(0); // Number of films
+  const [filmingPrice, setFilmingPrice] = useState(0); // Number of switches for lubing
   const [numStabilizer, setNumStabilizer] = useState(0); // Number of stabilizers
+  const [stabilizerPrice, setStabilizerPrice] = useState(0); // Number of switches for lubing
   const [numTapeLayer, setNumTapeLayer] = useState(0); // Number of tape layers
+  const [tapeLayerPrice, setTapeLayerPrice] = useState(0); // Number of switches for lubing
   const [caseFoam, setCaseFoam] = useState(""); // Case Foam choice
   const [PEFoam, setPEFoam] = useState(""); // PE Foam choice
   const [total, setTotal] = useState(0); // Total cost
   const [showReview, setShowReview] = useState(false); // Show review section
   const [address, setAddress] = useState(""); // Address for delivery
 
+  let calculatedTotal = 0;
+  
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -30,8 +36,8 @@ function Modify() {
     numFilming: 0,
     numStabilizer: 0,
     numTapeLayer: 0,
-    caseFoam: "",
-    PEFoam: "",
+    caseFoam: "No",
+    PEFoam: "No",
   });
 
   // Function to validate the current step
@@ -57,13 +63,16 @@ function Modify() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    let calculatedTotal = 0;
 
     // Calculate total based on modifications
     calculatedTotal += numSwitchLubing * 8;
     calculatedTotal += numFilming * 6;
     calculatedTotal += numStabilizer * 50;
     calculatedTotal += numTapeLayer * 10;
+    setSwitchLubingPrice(numSwitchLubing * 8);
+    setFilmingPrice(numFilming * 6);
+    setStabilizerPrice(numStabilizer * 50);
+    setTapeLayerPrice(numTapeLayer * 10);
 
     // Add costs for Case Foam and PE Foam
     if (caseFoam === "Yes") calculatedTotal += 50; // Example cost for Case Foam
@@ -100,6 +109,10 @@ function Modify() {
           caseFoam,
           PEFoam,
           total,
+          swtichLubingPrice,
+          filmingPrice,
+          stabilizerPrice,
+          tapeLayerPrice
         }),
       });
       const dataNew = await resNew.json();
@@ -405,12 +418,12 @@ function Modify() {
           <form action="/orders" onSubmit={handlePlaceRequest}>
             <h2 className="text-lg font-bold">Request Review</h2>
             <p>Keyboard Size: {keyboardSize}</p>
-            <p>Switch Lubing: {numSwitchLubing}</p>
-            <p>Filming: {numFilming}</p>
-            <p>Stabilizers: {numStabilizer}</p>
-            <p>Tape Layers: {numTapeLayer}</p>
-            <p>Case Foam: {caseFoam}</p>
-            <p>PE Foam: {PEFoam}</p>
+            <p>Switch Lubing: {numSwitchLubing} - ₱{(swtichLubingPrice).toFixed(2)}</p>
+            <p>Filming: {numFilming} - ₱{(filmingPrice).toFixed(2)}</p>
+            <p>Stabilizers: {numStabilizer} - ₱{(stabilizerPrice).toFixed(2)}</p>
+            <p>Tape Layers: {numTapeLayer} - ₱{(tapeLayerPrice).toFixed(2)}</p>
+            <p>Case Foam (₱50): {caseFoam}</p>
+            <p>PE Foam (₱50): {PEFoam}</p>
             <p>Total: ₱{total.toFixed(2)}</p>
             <div className="mt-4">
               <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
