@@ -124,13 +124,13 @@ function Customize() {
   // Play sound for the currently selected switch type
   const playSwitchSound = () => {
     switch (switchType) {
-      case 'Brown':
+      case 'Outemu Brown':
         brownSound.play();
         break;
-      case 'Blue':
+      case 'Outemu Blue':
         blueSound.play();
         break;
-      case 'Red':
+      case 'Outemu Red':
         redSound.play();
         break;
       default:
@@ -252,9 +252,9 @@ function Customize() {
           <label>Switch Type:</label>
           <select value={switchType} onChange={handleSwitchTypeChange}>
           <option value="Default">Default</option>
-            <option value="Brown">Brown</option>
-            <option value="Blue">Blue</option>
-            <option value="Red">Red</option>
+            <option value="Outemu Brown">Outemu Brown</option>
+            <option value="Outemu Blue">Outemu Blue</option>
+            <option value="Outemu Red">Outemu Red</option>
           </select>
           {/* Button to play switch sound */}
           <button onClick={playSwitchSound} style={{ marginLeft: '10px' }}>Play Sound</button>
