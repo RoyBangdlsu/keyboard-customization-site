@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import Modal from 'react-modal';
 import domtoimage from 'dom-to-image';
 import './customize.css';
 
 function Customize() {
+
   const navigate = useNavigate();
+  const API_BASE_URL = "https://cobskeebsback.onrender.com";
+
   const baseState = {
     layout: 'full',
     bodyColor: '#000000',
@@ -13,7 +17,9 @@ function Customize() {
     keycapBrand: 'Akko', // Default keycap brand
   };
 
-  const loggedInUser = localStorage.getItem('user');
+  const loggedInUser = localStorage.getItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userEmail = user.email;
 
   // Load saved state for the logged-in user
   const getUserStorageKey = (key) => `user_${loggedInUser}_${key}`;
@@ -79,7 +85,7 @@ function Customize() {
     localStorage.setItem('keyboardKeycapBrand', keycapBrand);
   }, [layout, bodyColor, switchType, keycapColors, keycapBrand]);
 
-  // Define keycap layouts for Full, TKL, and 60% keyboards
+  // Define keycap layouts for Full, TKL, 75%, and 60% keyboards
   const keycapLayouts = {
     full: [
       ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', ' ', 'PrtSc', 'ScrLk', 'Pause'],
@@ -87,7 +93,7 @@ function Customize() {
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', ' ', 'Del', 'End', 'PgDn', '', 'Num7', 'Num8', 'Num9', '+'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter', ' ', ' ', ' ', ' ', ' ', 'Num4', 'Num5', 'Num6'],
       ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', ' ', ' ', '↑', ' ', ' ', 'Num1', 'Num2', 'Num3', 'Num Enter'],
-      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→' ,' ', '0 Ins', 'Del'],
+      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→' ,' ', '0 Ins', 'Num Del'],
     ],
     tkl: [
       ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', ' ', 'PrtSc', 'ScrLk', 'Pause'],
@@ -96,6 +102,14 @@ function Customize() {
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
       ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', ' ', ' ', '↑'],
       ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→'],
+    ],
+    '75': [
+      ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12'],
+      ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+      ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
+      ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
+      ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl'],
     ],
     '60': [
       ['Esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
@@ -215,6 +229,113 @@ function Customize() {
   }
   };
 
+  const saveDesign = async (e) => {
+    e.preventDefault();
+    const designName = prompt('Enter a name for your design:');
+    if (!designName) return;
+
+    const keyboardElement = document.querySelector('.keyboard-body');
+    if (!keyboardElement) {
+      alert('Keyboard element not found.');
+      return;
+    }
+
+    const keycapsColor = JSON.stringify(keycapColors);
+    try {
+      const dataUrl = await domtoimage.toPng(keyboardElement); // Convert the keyboard to a Base64 image
+      const keyboardImage = dataUrl.split(',')[1];
+
+      const response = await fetch(`http://localhost:5000/api/designs/save`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userEmail,
+          designName,
+          layout,
+          bodyColor,
+          keycapsColor,
+          switchType,
+          keycapBrand,
+          keyboardImage,
+        }),
+      });
+  
+      const data = await response.json();
+      if (response.status === 201) {
+        alert('Design saved successfully!');
+      } else {
+        alert('Failed to save design: ' + data.message);
+      }
+    } catch(error) {
+        alert('Failed to save design.' + error);
+    }
+  };
+
+  const [designs, setDesigns] = useState([]); // State to store loaded designs
+  const [showDesignsModal, setShowDesignsModal] = useState(false); // State to control modal visibility
+
+  // Load all designs for the logged-in user
+  const loadDesigns = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/designs/load/${userEmail}`); // Use the logged-in user's email
+      const data = await response.json();
+      if (response.ok) {
+        // Convert the Buffer to a Base64 string for each design
+        const designsWithImages = data.designs.map((design) => ({
+          ...design,
+          keyboardImage: `data:${design.keyboardImage.contentType};base64,${design.keyboardImage.data.toString('base64')}`,
+        }));
+        setDesigns(designsWithImages);
+        setShowDesignsModal(true); // Show the designs modal
+      } else {
+        alert('Failed to load designs: ' + data.message);
+      }
+    } catch (error) {
+      alert('Failed to load designs.');
+    }
+  };
+
+  // Apply a selected design
+  const applyDesign = (design) => {
+    setLayout(design.layout);
+    setBodyColor(design.bodyColor);
+    setKeycapColors(JSON.parse(design.keycapsColor));
+    setSwitchType(design.switchType);
+    setKeycapBrand(design.keycapBrand);
+    setShowDesignsModal(false); // Close the modal
+  };
+
+  const modalStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '80%',
+      maxWidth: '600px',
+    },
+  };
+
+  <Modal
+    isOpen={showDesignsModal}
+    onRequestClose={() => setShowDesignsModal(false)}
+    style={modalStyles}
+    contentLabel="Saved Designs"
+  >
+    <h2>Saved Designs</h2>
+    <div className="designs-grid">
+      {designs.map((design, index) => (
+        <div key={index} className="design-card">
+          <img src={design.keyboardImage} alt={`Design ${design.designName}`} className="design-image" />
+          <button onClick={() => applyDesign(design)}>Apply</button>
+        </div>
+      ))}
+    </div>
+    <button onClick={() => setShowDesignsModal(false)}>Close</button>
+  </Modal>
+
   return (
     <div className="keyboard-customization"
       style={{
@@ -235,6 +356,7 @@ function Customize() {
           <select value={layout} onChange={handleLayoutChange}>
             <option value="full">Full Keyboard</option>
             <option value="tkl">TKL (Tenkeyless)</option>
+            <option value="75">75%</option>
             <option value="60">60%</option>
           </select>
         </div>
@@ -318,7 +440,9 @@ function Customize() {
         <button onClick={exportAsPNG}>Export as PNG</button>
         <button onClick={handleReset}>Reset</button>
         <button onClick={handleOrder}>Order this Design</button>
-      </div>
+        <button onClick={saveDesign}>Save Design</button>
+        <button onClick={loadDesigns}>Load Design</button>
+    </div>
     </div>
   );
 }
