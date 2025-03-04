@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import Modal from 'react-modal';
 import domtoimage from 'dom-to-image';
 import './customize.css';
 
@@ -40,6 +39,7 @@ function Customize() {
     localStorage.getItem(getUserStorageKey('keyboardKeycapBrand')) || baseState.keycapBrand
   );
   const [selectedKey, setSelectedKey] = useState(null);
+  const [designs, setDesigns] = useState([]);
 
   // Audio references for switch sounds
   let brownSound = new Audio('./sounds/brown.wav'); // Path to brown switch sound
@@ -271,22 +271,17 @@ function Customize() {
     }
   };
 
-  const [designs, setDesigns] = useState([]); // State to store loaded designs
-  const [showDesignsModal, setShowDesignsModal] = useState(false); // State to control modal visibility
-
   // Load all designs for the logged-in user
   const loadDesigns = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/designs/load/${userEmail}`); // Use the logged-in user's email
+      const response = await fetch(`http://localhost:5000/api/designs/load/${userEmail}`);
       const data = await response.json();
       if (response.ok) {
-        // Convert the Buffer to a Base64 string for each design
         const designsWithImages = data.designs.map((design) => ({
           ...design,
           keyboardImage: `data:${design.keyboardImage.contentType};base64,${design.keyboardImage.data.toString('base64')}`,
         }));
         setDesigns(designsWithImages);
-        setShowDesignsModal(true); // Show the designs modal
       } else {
         alert('Failed to load designs: ' + data.message);
       }
@@ -302,53 +297,10 @@ function Customize() {
     setKeycapColors(JSON.parse(design.keycapsColor));
     setSwitchType(design.switchType);
     setKeycapBrand(design.keycapBrand);
-    setShowDesignsModal(false); // Close the modal
   };
-
-  const modalStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '80%',
-      maxWidth: '600px',
-    },
-  };
-
-  <Modal
-    isOpen={showDesignsModal}
-    onRequestClose={() => setShowDesignsModal(false)}
-    style={modalStyles}
-    contentLabel="Saved Designs"
-  >
-    <h2>Saved Designs</h2>
-    <div className="designs-grid">
-      {designs.map((design, index) => (
-        <div key={index} className="design-card">
-          <img src={design.keyboardImage} alt={`Design ${design.designName}`} className="design-image" />
-          <button onClick={() => applyDesign(design)}>Apply</button>
-        </div>
-      ))}
-    </div>
-    <button onClick={() => setShowDesignsModal(false)}>Close</button>
-  </Modal>
 
   return (
-    <div className="keyboard-customization"
-      style={{
-        background: "url('../src/assets/bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column", 
-        justifyContent: "center",
-        alignItems: "center",
-    }}
-      >
+    <div className="keyboard-customization">
       <h1>Keyboard Customization</h1>
       <div className="options">
         <div className="option">
@@ -435,14 +387,35 @@ function Customize() {
         </div>
       )}
 
-      {/* Save and Export Buttons */}
+      {/* Buttons */}
       <div className="actions">
         <button onClick={exportAsPNG}>Export as PNG</button>
         <button onClick={handleReset}>Reset</button>
         <button onClick={handleOrder}>Order this Design</button>
         <button onClick={saveDesign}>Save Design</button>
         <button onClick={loadDesigns}>Load Design</button>
-    </div>
+      </div>
+
+      {/* Load Designs */}
+      <div className="load-designs">
+        {designs.length > 0 && (
+          <div className="designs-list">
+            {designs.map((design) => (
+              <div key={design._id} className="design-item" onClick={() => applyDesign(design)}>
+                <h3>{design.designName}</h3>
+                <img
+                  src={design.keyboardImage}
+                  alt={design.designName}
+                  style={{ width: '100px', height: 'auto' }}
+                />
+                <p>Layout: {design.layout}</p>
+                <p>Switch Type: {design.switchType}</p>
+                <p>Keycap Brand: {design.keycapBrand}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
