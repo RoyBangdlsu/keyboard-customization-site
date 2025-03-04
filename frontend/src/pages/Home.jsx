@@ -6,12 +6,12 @@ import Button from "../components/Button";
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Updated keyboard images with direct Google Drive links
+  // Replace the first image with the direct Imgur URL
   const keyboardImages = [
-    "https://drive.google.com/uc?export=view&id=1mqCNuFbfqdOA1VtUDy4H6BX3S_cLf3Nc",
-    "https://drive.google.com/uc?export=view&id=19LEoNRkljXV2mk9w8H6Jcl_x1JkijdAA",
-    "https://drive.google.com/uc?export=view&id=1AOi1uHPUq-Nom5pNE6Ipr2jeWV3s6VFV",
-    "https://drive.google.com/uc?export=view&id=1hyFZbbuLD13EL-PKReF733ffwnEWaY4G"
+    "https://i.imgur.com/zUFqaNU.jpeg", // Direct image URL from Imgur
+    "https://i.imgur.com/RNJTcwx.jpeg",
+    "https://i.imgur.com/ubSLBOk.jpeg",
+    "https://i.imgur.com/8jJhBcn.jpeg"
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
