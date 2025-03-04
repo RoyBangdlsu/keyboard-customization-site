@@ -92,7 +92,7 @@ function Customize() {
       ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', ' ', 'Ins', 'Home', 'PgUp', '', 'Num' ,'/', '*', '-'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', ' ', 'Del', 'End', 'PgDn', '', 'Num7', 'Num8', 'Num9', '+'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter', ' ', ' ', ' ', ' ', ' ', 'Num4', 'Num5', 'Num6'],
-      ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', ' ', ' ', '↑', ' ', ' ', 'Num1', 'Num2', 'Num3', 'Num Enter'],
+      ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift', ' ', ' ', '↑', ' ', ' ', 'Num1', 'Num2', 'Num3', 'Num Enter'],
       ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→' ,' ', '0 Ins', 'Num Del'],
     ],
     tkl: [
@@ -100,7 +100,7 @@ function Customize() {
       ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', ' ', 'Ins', 'Home', 'PgUp'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', ' ', 'Del', 'End', 'PgDn'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
-      ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift', ' ', ' ', '↑'],
+      ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift', ' ', ' ', '↑'],
       ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→'],
     ],
     '75': [
@@ -108,14 +108,14 @@ function Customize() {
       ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
-      ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+      ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift'],
       ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl'],
     ],
     '60': [
       ['Esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
-      ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+      ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift'],
       ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl'],
     ],
   };
@@ -180,7 +180,7 @@ function Customize() {
     if (key === '\\') return '62px';
     if (key === 'Tab') return '62px';
     if (key === 'Caps') return '69px';
-    if (key === 'Shift') return '119px';
+    if (key === 'LShift' || key === 'RShift') return '119px';
     if (key === 'Enter') return '112px';
     if (key === 'Ctrl' || key === 'Alt' || key === 'Win' || key === 'Menu') return '40px';
     if (key === '0 Ins') return '40px';
@@ -243,9 +243,9 @@ function Customize() {
     const keycapsColor = JSON.stringify(keycapColors);
     try {
       const dataUrl = await domtoimage.toPng(keyboardElement); // Convert the keyboard to a Base64 image
-      const keyboardImage = dataUrl.split(',')[1];
+      const keyboardImage = dataUrl;
 
-      const response = await fetch(`http://localhost:5000/api/designs/save`, {
+      const response = await fetch(`${API_BASE_URL}/api/designs/save`, {    // http://localhost:5000 or ${API_BASE_URL}
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -274,16 +274,12 @@ function Customize() {
   // Load all designs for the logged-in user
   const loadDesigns = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/designs/load/${userEmail}`);
+      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);    // http://localhost:5000 or ${API_BASE_URL}
       const data = await response.json();
       if (response.ok) {
-        const designsWithImages = data.designs.map((design) => ({
-          ...design,
-          keyboardImage: `data:${design.keyboardImage.contentType};base64,${design.keyboardImage.data.toString('base64')}`,
-        }));
-        setDesigns(designsWithImages);
+        setDesigns(data.designs);
       } else {
-        alert('Failed to load designs: ' + data.message);
+        alert('You have no designs: ' + data.message);
       }
     } catch (error) {
       alert('Failed to load designs.');
@@ -297,6 +293,27 @@ function Customize() {
     setKeycapColors(JSON.parse(design.keycapsColor));
     setSwitchType(design.switchType);
     setKeycapBrand(design.keycapBrand);
+  };
+
+  const deleteDesign = async (designId) => {
+    if (window.confirm('Are you sure you want to delete this design?')) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, {    // http://localhost:5000 or ${API_BASE_URL}
+          method: 'DELETE',
+        });
+  
+        if (response.ok) {
+          // Remove the deleted design from the state
+          setDesigns((prevDesigns) => prevDesigns.filter((design) => design._id !== designId));
+          alert('Design deleted successfully!');
+        } else {
+          alert('Failed to delete design.');
+        }
+      } catch (error) {
+        console.error('Error deleting design:', error);
+        alert('An error occurred while deleting the design.');
+      }
+    }
   };
 
   return (
@@ -411,6 +428,7 @@ function Customize() {
                 <p>Layout: {design.layout}</p>
                 <p>Switch Type: {design.switchType}</p>
                 <p>Keycap Brand: {design.keycapBrand}</p>
+                <button onClick={() => deleteDesign(design._id)}>Delete</button>
               </div>
             ))}
           </div>

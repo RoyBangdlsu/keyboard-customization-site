@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveDesign, loadDesigns, loadDesignById } from '../controllers/designController.js';
+import { saveDesign, loadDesigns, deleteDesign } from '../controllers/designController.js';
 
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.post('/save', saveDesign);
 // Load all designs for a user
 router.get('/load/:userEmail', loadDesigns);
 
-// Load a specific design by ID
-router.get('/:designId', loadDesignById);
+// Delete designs
+router.delete('/delete/:designId', deleteDesign);
 
 export default router;

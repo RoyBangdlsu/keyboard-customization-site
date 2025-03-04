@@ -8,10 +8,7 @@ const DesignSchema = new mongoose.Schema({
   keycapsColor: { type: String, required: true }, 
   switchType: { type: String, required: true }, 
   keycapBrand: { type: String, required: true }, 
-  keyboardImage: { 
-    data: Buffer, // Binary data for the image
-    contentType: String // MIME type of the image (e.g., 'image/jpeg')
-  }
+  keyboardImage: { type: String, required: true }
 }, { timestamps: true });
 
 export default mongoose.model('Design', DesignSchema);

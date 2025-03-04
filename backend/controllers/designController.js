@@ -5,8 +5,6 @@ export const saveDesign = async (req, res) => {
   try {
     const { userEmail, designName, layout, bodyColor, keycapsColor, switchType, keycapBrand, keyboardImage } = req.body;
 
-    const imageBuffer = Buffer.from(keyboardImage, 'base64');
-
     const newDesign = new Design({
       userEmail: userEmail,
       designName: designName,
@@ -15,11 +13,8 @@ export const saveDesign = async (req, res) => {
       keycapsColor: keycapsColor,
       switchType: switchType,
       keycapBrand: keycapBrand,
-      keyboardImage: {
-        data: imageBuffer, // Store the binary data
-        contentType: 'image/png', // Set the MIME type
-      },
-    });
+      keyboardImage: keyboardImage},
+    );
 
     // Save the design to the database
     await newDesign.save();
@@ -44,19 +39,18 @@ export const loadDesigns = async (req, res) => {
   }
 };
 
-// Load a specific design by ID
-export const loadDesignById = async (req, res) => {
+export const deleteDesign = async (req, res) => {
   try {
     const { designId } = req.params;
 
-    // Find the design by ID
-    const design = await Design.findById(designId);
+    // Find and delete the design by ID
+    const deletedDesign = await Design.findByIdAndDelete(designId);
 
-    if (!design) {
+    if (!deletedDesign) {
       return res.status(404).json({ message: 'Design not found' });
     }
 
-    res.status(200).json({ design });
+    res.status(200).json({ message: 'Design deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
