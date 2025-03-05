@@ -30,7 +30,7 @@ function Signup() {
   return (
     <div
     style={{
-      background: "url('../src/assets/bg.jpg')",
+      background: "url('https://i.imgur.com/OM3MMmv.jpeg')",
       backgroundSize: "cover",
       backgroundPosition: "center",
       height: "100vh",
