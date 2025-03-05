@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import domtoimage from 'dom-to-image';
 import './customize.css';
 
 function Customize() {
-
   const navigate = useNavigate();
+  const location = useLocation();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   const baseState = {
@@ -40,6 +40,17 @@ function Customize() {
   );
   const [selectedKey, setSelectedKey] = useState(null);
   const [designs, setDesigns] = useState([]);
+
+  useEffect(() => {
+    if (location.state?.design) {
+      const { design } = location.state;
+      setLayout(design.layout);
+      setBodyColor(design.bodyColor);
+      setKeycapColors(JSON.parse(design.keycapsColor));
+      setSwitchType(design.switchType);
+      setKeycapBrand(design.keycapBrand);
+    }
+  }, [location.state]);
 
   // Audio references for switch sounds
   let brownSound = new Audio('./sounds/brown.wav'); // Path to brown switch sound
@@ -279,7 +290,7 @@ function Customize() {
       if (response.ok) {
         setDesigns(data.designs);
       } else {
-        alert('You have no designs: ' + data.message);
+        alert('Failed to load designs OR you have no designs.');
       }
     } catch (error) {
       alert('Failed to load designs.');
@@ -428,7 +439,7 @@ function Customize() {
                 <p>Layout: {design.layout}</p>
                 <p>Switch Type: {design.switchType}</p>
                 <p>Keycap Brand: {design.keycapBrand}</p>
-                <button onClick={() => deleteDesign(design._id)}>Delete</button>
+                <button onClick={() => deleteDesign(design._id)} style={{ backgroundColor: "#c82333" }}>Delete</button>
               </div>
             ))}
           </div>

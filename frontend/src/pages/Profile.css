@@ -1,56 +1,183 @@
-.profile-container {
-    max-width: 400px;
-    margin: auto;
+.profile {
+  font-family: 'Montserrat', sans-serif;
+    margin: 0 auto;
+    padding: 20px;
     text-align: center;
-  }
-  
-  .password-form {
-    margin-top: 20px;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .input-group label {
-    font-size: 14px;
+    background: url('../src/assets/bg2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.custom-heading {
+    font-size: 24px;
     font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.profile-container p {
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+}
+
+.profile-container strong {
+    color: #333;
+}
+
+.password-form {
+    margin-top: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
     display: block;
-    margin-bottom: 5px;
-  }
-  
-  .password-wrapper {
+    margin-bottom: 8px;
+}
+
+.password-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-  }
-  
-  .password-wrapper input {
+}
+
+.password-wrapper input {
     width: 100%;
+    padding: 10px;
     padding-right: 40px;
-  }
-  
-  .toggle-password {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    color: #000; /* Ensure text color is black */
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+    color: #000; /* Explicitly set text color for both password and text inputs */
+}
+
+.password-wrapper input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.toggle-password {
     position: absolute;
     right: 10px;
     background: none;
     border: none;
     cursor: pointer;
     font-size: 18px;
-  }
-  
-  .success-message {
-    color: green;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: #007bff;
+}
+
+.custom-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     margin-top: 10px;
-  }
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
-  .logout-btn {
-    background-color: red;
-  }
-  
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
+
+.logout-btn {
+    background-color: #dc3545;
+    margin-top: 20px;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
+.load-designs {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.designs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.design-item {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.design-item img {
+  width: 100px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.design-item h3 {
+  margin: 5px 0;
+}
+
+.design-item p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+/* Loading State */
+.profile-container p.loading {
+    font-size: 16px;
+    color: #666;
+    font-style: italic;
+}

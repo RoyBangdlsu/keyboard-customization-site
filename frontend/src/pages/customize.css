@@ -1,6 +1,6 @@
 /* Customize.css */
 .keyboard-customization {
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0 auto;
     padding: 20px;
     text-align: center;
@@ -57,7 +57,7 @@
   }
   
   .keyboard-body {
-    padding: 20px;
+    padding: 10px;
     border: 2px solid #333;
     border-radius: 10px;
     display: inline-block;

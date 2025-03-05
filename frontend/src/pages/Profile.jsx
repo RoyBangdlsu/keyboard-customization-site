@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // 👁️ Eye Icons for Password Toggle
+import './profile.css';
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -12,11 +13,12 @@ function Profile() {
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [designs, setDesigns] = useState([]); // State to store designs
 
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
-  // ✅ Fetch user details when the page loads
+  // ✅ Fetch user details and designs when the page loads
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -26,7 +28,8 @@ function Profile() {
           return;
         }
 
-        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+        // Fetch user profile
+        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, { // http://localhost:5000 or ${API_BASE_URL}
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -34,6 +37,8 @@ function Profile() {
         const data = await res.json();
         if (res.status === 200) {
           setUser(data);
+          // Load designs after user data is fetched
+          await loadDesigns(data.email); // Pass the user's email to load designs
         } else {
           setError("Failed to fetch user details.");
         }
@@ -88,96 +93,165 @@ function Profile() {
     navigate("/login");
   };
 
+  // ✅ Handle Load Designs
+  const loadDesigns = async (userEmail) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`); // http://localhost:5000 or ${API_BASE_URL}
+      const data = await response.json();
+      if (response.ok) {
+        setDesigns(data.designs);
+      } else {
+        alert('You have no designs: ' + data.message);
+      }
+    } catch (error) {
+      alert('Failed to load designs.');
+    }
+  };
+
+  // ✅ Handle View Design
+  const viewDesign = (design) => {
+    navigate("/customize", { state: { design } }); // Pass the selected design data to the Customize page
+  };
+
+  // ✅ Handle Delete Design
+  const deleteDesign = async (designId) => {
+    if (window.confirm('Are you sure you want to delete this design?')) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, { // http://localhost:5000 or ${API_BASE_URL}
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          // Remove the deleted design from the state
+          setDesigns((prevDesigns) => prevDesigns.filter((design) => design._id !== designId));
+          alert('Design deleted successfully!');
+        } else {
+          alert('Failed to delete design.');
+        }
+      } catch (error) {
+        console.error('Error deleting design:', error);
+        alert('An error occurred while deleting the design.');
+      }
+    }
+  };
+
   return (
-    <div className="profile-container">
-      <h1 className="custom-heading">Profile</h1>
+    <div className="profile">
+      <div className="profile-container">
+        <h1>Profile</h1>
 
-      {user ? (
-        <>
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
+        {user ? (
+          <>
+            <p><strong>Name:</strong> {user.name}</p>
+            <p><strong>Email:</strong> {user.email}</p>
 
-          {/* Password Change Form */}
-          <form onSubmit={handlePasswordChange} className="password-form">
-            {/* Old Password Input */}
-            <div className="input-group">
-              <label>Old Password</label>
-              <div className="password-wrapper">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter old password"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  className="custom-input"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="toggle-password"
-                >
-                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                </button>
+            {/* Password Change Form */}
+            <form onSubmit={handlePasswordChange} className="password-form">
+              {/* Old Password Input */}
+              <div className="input-group">
+                <label>Old Password</label>
+                <div className="password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter old password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    className="custom-input"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="toggle-password"
+                  >
+                    {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  </button>
+                </div>
               </div>
+
+              {/* New Password Input */}
+              <div className="input-group">
+                <label>New Password</label>
+                <div className="password-wrapper">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    placeholder="Enter new password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="custom-input"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="toggle-password"
+                  >
+                    {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Confirm New Password Input */}
+              <div className="input-group">
+                <label>Confirm New Password</label>
+                <div className="password-wrapper">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm new password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="custom-input"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="toggle-password"
+                  >
+                    {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" className="custom-button">Change Password</button>
+            </form>
+
+            {/* Logout Button */}
+            <button onClick={handleLogout} className="custom-button logout-btn">Logout</button>
+
+            {/* Show Messages */}
+            {message && <p className="success-message">{message}</p>}
+            {error && <p className="error-message">{error}</p>}
+          </>
+        ) : (
+          <p>Loading profile...</p>
+        )}
+      </div>
+        {/* Load Designs */}
+        <div className="load-designs">
+              {designs.length > 0 ? (
+                <div className="designs-list">
+                  {designs.map((design) => (
+                    <div key={design._id} className="design-item">
+                      <h3>{design.designName}</h3>
+                      <img
+                        src={design.keyboardImage}
+                        alt={design.designName}
+                        style={{ width: '410px', height: 'auto' }}
+                      />
+                      <p>Layout: {design.layout}</p>
+                      <p>Switch Type: {design.switchType}</p>
+                      <p>Keycap Brand: {design.keycapBrand}</p>
+                      <button onClick={() => viewDesign(design)}>View</button>
+                      <button onClick={() => deleteDesign(design._id)} style={{ backgroundColor: "#c82333" }}>Delete</button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No designs found.</p>
+              )}
             </div>
 
-            {/* New Password Input */}
-            <div className="input-group">
-              <label>New Password</label>
-              <div className="password-wrapper">
-                <input
-                  type={showNewPassword ? "text" : "password"}
-                  placeholder="Enter new password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="custom-input"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="toggle-password"
-                >
-                  {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                </button>
-              </div>
-            </div>
-
-            {/* Confirm New Password Input */}
-            <div className="input-group">
-              <label>Confirm New Password</label>
-              <div className="password-wrapper">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="custom-input"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="toggle-password"
-                >
-                  {showConfirmPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" className="custom-button">Change Password</button>
-          </form>
-
-          {/* Logout Button */}
-          <button onClick={handleLogout} className="custom-button logout-btn">Logout</button>
-
-          {/* Show Messages */}
-          {message && <p className="success-message">{message}</p>}
-          {error && <p className="error-message">{error}</p>}
-        </>
-      ) : (
-        <p>Loading profile...</p>
-      )}
     </div>
   );
 }
