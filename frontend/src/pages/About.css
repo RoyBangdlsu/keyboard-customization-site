@@ -1,0 +1,18 @@
+.about-container {
+    background: url("https://i.imgur.com/sypfl5p.jpeg") no-repeat center center;
+    background-size: cover;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white; /* Adjust based on image contrast */
+  }
+  
+  .about-content {
+    /* Optional: Add a semi-transparent overlay for better text readability */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+  }
+  

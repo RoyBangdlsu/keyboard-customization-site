@@ -6,7 +6,7 @@ import './customize.css';
 function Customize() {
   const navigate = useNavigate();
   const location = useLocation();
-  const API_BASE_URL = "https://cobskeebsback.onrender.com";
+  const API_BASE_URL = "https://keyboard-customization-site-okgs.onrender.com";
 
   const baseState = {
     layout: 'full',
