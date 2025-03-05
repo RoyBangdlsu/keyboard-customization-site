@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // 👁️ Eye Icons for Password Toggle
-import './profile.css';
+import './Profile.css';
 
 function Profile() {
   const [user, setUser] = useState(null);
