@@ -103,3 +103,17 @@ export const placeNewOrder = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Load all designs for a user
+export const getOrders = async (req, res) => {
+  try {
+    const { customerEmail } = req.params;
+
+    // Find all designs for the user
+    const orders = await Order.find({ customerEmail });
+
+    res.status(200).json({ orders });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

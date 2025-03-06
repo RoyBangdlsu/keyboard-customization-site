@@ -36,10 +36,14 @@ function Order() {
     // Keyboard Size Price Breakdown
     if (storedKeyboardSize === 'full') {
       setKeyboardSize("Full-Sized");
-      setKeyboardSizePrice(100);
-      calculatedTotal += 100;
+      setKeyboardSizePrice(200);
+      calculatedTotal += 200;
     } else if(storedKeyboardSize === 'tkl') {
       setKeyboardSize("TKL (Tenkeyless)");
+      setKeyboardSizePrice(100);
+      calculatedTotal += 100;
+    }  else if(storedKeyboardSize === '75') {
+      setKeyboardSize("75%");
       setKeyboardSizePrice(50);
       calculatedTotal += 50;
     } else if(storedKeyboardSize === '60') {
@@ -57,6 +61,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setKeyCapBrandPrice(20.77 * 87);
         calculatedTotal += 20.77 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setKeyCapBrandPrice(20.77 * 75);
+        calculatedTotal += 20.77 * 75;
       } else if (storedKeyboardSize === '60') {
         setKeyCapBrandPrice(20.77 * 61);
         calculatedTotal += 20.77 * 61;
@@ -71,6 +78,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setKeyCapBrandPrice(79.25 * 87);
         calculatedTotal += 79.25 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setKeyCapBrandPrice(79.25 * 75);
+        calculatedTotal += 79.25 * 75;
       } else if (storedKeyboardSize === '60') {
         setKeyCapBrandPrice(79.25 * 61);
         calculatedTotal += 79.25 * 61;
@@ -85,6 +95,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setKeyCapBrandPrice(13.04 * 87);
         calculatedTotal += 13.04 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setKeyCapBrandPrice(13.04 * 75);
+        calculatedTotal += 13.04 * 75;
       } else if (storedKeyboardSize === '60') {
         setKeyCapBrandPrice(13.04 * 61);
         calculatedTotal += 13.04 * 61;
@@ -99,6 +112,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setKeyCapBrandPrice(117.71 * 87);
         calculatedTotal += 117.71 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setKeyCapBrandPrice(117.71 * 75);
+        calculatedTotal += 117.71 * 75;
       } else if (storedKeyboardSize === '60') {
         setKeyCapBrandPrice(117.71 * 61);
         calculatedTotal += 117.71 * 61;
@@ -114,6 +130,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setSwitchTypePrice(3.87 * 87);
         calculatedTotal += 3.87 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setSwitchTypePrice(3.87 * 75);
+        calculatedTotal += 3.87 * 75;
       } else if (storedKeyboardSize === '60') {
         setSwitchTypePrice(3.87 * 61);
         calculatedTotal += 3.87 * 61;
@@ -128,6 +147,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setSwitchTypePrice(3.76 * 87);
         calculatedTotal += 3.76 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setSwitchTypePrice(3.76 * 75);
+        calculatedTotal += 3.76 * 75;
       } else if (storedKeyboardSize === '60') {
         setSwitchTypePrice(3.76 * 61);
         calculatedTotal += 3.76 * 61;
@@ -142,6 +164,9 @@ function Order() {
       } else if (storedKeyboardSize === 'tkl') {
         setSwitchTypePrice(3.86 * 87);
         calculatedTotal += 3.86 * 87;
+      } else if (storedKeyboardSize === '75') {
+        setSwitchTypePrice(3.86 * 75);
+        calculatedTotal += 3.86 * 75;
       } else if (storedKeyboardSize === '60') {
         setSwitchTypePrice(3.86 * 61);
         calculatedTotal += 3.86 * 61;
