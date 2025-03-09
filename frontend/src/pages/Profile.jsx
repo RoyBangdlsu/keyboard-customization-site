@@ -14,11 +14,12 @@ function Profile() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [designs, setDesigns] = useState([]); // State to store designs
+  const [orders, setOrders] = useState([]); // State to store orders
 
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
-  // ✅ Fetch user details and designs when the page loads
+  // ✅ Fetch user details, designs, and orders when the page loads
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -29,7 +30,7 @@ function Profile() {
         }
 
         // Fetch user profile
-        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, { // http://localhost:5000 or ${API_BASE_URL}
+        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -37,8 +38,9 @@ function Profile() {
         const data = await res.json();
         if (res.status === 200) {
           setUser(data);
-          // Load designs after user data is fetched
-          await loadDesigns(data.email); // Pass the user's email to load designs
+          // Load designs and orders after user data is fetched
+          await loadDesigns(data.email);
+          await loadOrders(data.email);
         } else {
           setError("Failed to fetch user details.");
         }
@@ -96,7 +98,7 @@ function Profile() {
   // ✅ Handle Load Designs
   const loadDesigns = async (userEmail) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`); // http://localhost:5000 or ${API_BASE_URL}
+      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);
       const data = await response.json();
       if (response.ok) {
         setDesigns(data.designs);
@@ -108,21 +110,35 @@ function Profile() {
     }
   };
 
+  // ✅ Handle Load Orders
+  const loadOrders = async (userEmail) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/orders/${userEmail}`);
+      const data = await response.json();
+      if (response.ok) {
+        setOrders(data.orders);
+      } else {
+        alert('You have no orders: ' + data.message);
+      }
+    } catch (error) {
+      alert('Failed to load orders.');
+    }
+  };
+
   // ✅ Handle View Design
   const viewDesign = (design) => {
-    navigate("/customize", { state: { design } }); // Pass the selected design data to the Customize page
+    navigate("/customize", { state: { design } });
   };
 
   // ✅ Handle Delete Design
   const deleteDesign = async (designId) => {
     if (window.confirm('Are you sure you want to delete this design?')) {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, { // http://localhost:5000 or ${API_BASE_URL}
+        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, {
           method: 'DELETE',
         });
 
         if (response.ok) {
-          // Remove the deleted design from the state
           setDesigns((prevDesigns) => prevDesigns.filter((design) => design._id !== designId));
           alert('Design deleted successfully!');
         } else {
@@ -227,31 +243,61 @@ function Profile() {
           <p>Loading profile...</p>
         )}
       </div>
-        {/* Load Designs */}
-        <div className="load-designs">
-              {designs.length > 0 ? (
-                <div className="designs-list">
-                  {designs.map((design) => (
-                    <div key={design._id} className="design-item">
-                      <h3>{design.designName}</h3>
-                      <img
-                        src={design.keyboardImage}
-                        alt={design.designName}
-                        style={{ width: '410px', height: 'auto' }}
-                      />
-                      <p>Layout: {design.layout}</p>
-                      <p>Switch Type: {design.switchType}</p>
-                      <p>Keycap Brand: {design.keycapBrand}</p>
-                      <button onClick={() => viewDesign(design)}>View</button>
-                      <button onClick={() => deleteDesign(design._id)} style={{ backgroundColor: "#c82333" }}>Delete</button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>No designs found.</p>
-              )}
-            </div>
 
+      {/* Load Designs */}
+      <div className="load-designs">
+        {designs.length > 0 ? (
+          <div className="designs-list">
+            {designs.map((design) => (
+              <div key={design._id} className="design-item">
+                <h3>{design.designName}</h3>
+                <img
+                  src={design.keyboardImage}
+                  alt={design.designName}
+                  style={{ width: '410px', height: 'auto' }}
+                />
+                <p>Layout: {design.layout}</p>
+                <p>Switch Type: {design.switchType}</p>
+                <p>Keycap Brand: {design.keycapBrand}</p>
+                <button onClick={() => viewDesign(design)}>View</button>
+                <button onClick={() => deleteDesign(design._id)} style={{ backgroundColor: "#c82333" }}>Delete</button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No designs found.</p>
+        )}
+      </div>
+
+      {/* Load Orders */}
+      <div className="load-orders">
+        <h2>Your Orders</h2>
+        {orders.length > 0 ? (
+          <div className="orders-list">
+            {orders.map((order) => (
+              <div key={order._id} className="order-item">
+                <h3>Order ID: {order._id}</h3>
+                <p>Customer Name: {order.customerName}</p>
+                <p>Customer Email: {order.customerEmail}</p>
+                <p>Address: {order.address}</p>
+                <p>Service Type: {order.serviceType}</p>
+                <p>Keyboard Size: {order.keyboardSize}</p>
+                <p>Keycap Brand: {order.keycapBrand}</p>
+                <p>Switch Type: {order.switchType}</p>
+                <p>Price: ₱{order.price}</p>
+                <p>Order Status: {order.orderStatus}</p>
+                <img
+                  src={`data:image/png;base64,${order.keyboardImage.data.toString('base64')}`}
+                  alt="Custom Keyboard Design"
+                  style={{ width: '410px', height: 'auto' }}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No orders found.</p>
+        )}
+      </div>
     </div>
   );
 }

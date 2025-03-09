@@ -104,7 +104,7 @@ export const placeNewOrder = async (req, res) => {
   }
 };
 
-// Load all designs for a user
+// Load all orders for a user
 export const getOrders = async (req, res) => {
   try {
     const { customerEmail } = req.params;
