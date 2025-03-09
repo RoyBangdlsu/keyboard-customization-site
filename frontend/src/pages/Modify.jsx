@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./Modify.css";
 
 function Modify() {
   const navigate = useNavigate();
@@ -134,7 +135,7 @@ function Modify() {
   const customerEmail = user.email;
 
   return (
-    <div className="p-4">
+    <div className="p-4 modify-container">
       <h1 className="text-xl font-bold">Keyboard Modification</h1>
       {!showReview ? (
         <form onSubmit={handleSubmit}>
