@@ -96,9 +96,9 @@ function Profile() {
   };
 
   // ✅ Handle Load Designs
-  const loadDesigns = async (customerEmail) => {
+  const loadDesigns = async (userEmail) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/designs/load/${customerEmail}`);
+      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);
       const data = await response.json();
       if (response.ok) {
         setDesigns(data.designs);
@@ -111,9 +111,9 @@ function Profile() {
   };
 
   // ✅ Handle Load Orders
-  const loadOrders = async (userEmail) => {
+  const loadOrders = async (customerEmail) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/orders/${userEmail}`);
+      const response = await fetch(`${API_BASE_URL}/api/orders/${customerEmail}`);
       const data = await response.json();
       if (response.ok) {
         setOrders(data.orders);
