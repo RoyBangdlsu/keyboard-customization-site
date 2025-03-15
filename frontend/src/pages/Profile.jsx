@@ -96,9 +96,9 @@ function Profile() {
   };
 
   // ✅ Handle Load Designs
-  const loadDesigns = async (userEmail) => {
+  const loadDesigns = async (customerEmail) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);
+      const response = await fetch(`${API_BASE_URL}/api/designs/load/${customerEmail}`);
       const data = await response.json();
       if (response.ok) {
         setDesigns(data.designs);
