@@ -7,6 +7,6 @@ const router = express.Router();
 router.post("/placeneworder", placeNewOrder);
 
 // Route to get all orders
-router.get('/load/:userEmail', loadOrders);
+router.get('/load/:customerEmail', loadOrders);
 
 export default router;
