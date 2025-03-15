@@ -1,5 +1,5 @@
 import express from "express";
-import { placeNewOrder } from "../controllers/orderController.js";
+import { placeNewOrder, loadOrders } from "../controllers/orderController.js";
 
 const router = express.Router();
 
@@ -7,6 +7,6 @@ const router = express.Router();
 router.post("/placeneworder", placeNewOrder);
 
 // Route to get all orders
-//router.get("/", getOrders);
+router.get('/load/:userEmail', loadOrders);
 
 export default router;

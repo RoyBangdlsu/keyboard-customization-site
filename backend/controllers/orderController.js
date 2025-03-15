@@ -105,7 +105,7 @@ export const placeNewOrder = async (req, res) => {
 };
 
 // Load all orders for a user
-export const getOrders = async (req, res) => {
+export const loadOrders = async (req, res) => {
   try {
     const { customerEmail } = req.params;
 
@@ -113,6 +113,24 @@ export const getOrders = async (req, res) => {
     const orders = await Order.find({ customerEmail });
 
     res.status(200).json({ orders });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    // Find and delete the design by ID
+    const deletedOrder = await Order.findByIdAndDelete(orderId);
+
+    if (!deletedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({ message: 'Order deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
