@@ -276,7 +276,6 @@ function Profile() {
           <div className="orders-list">
             {orders.map((order) => (
               <div key={order._id} className="order-item">
-                <h3>Order ID: {order._id}</h3>
                 <p>Customer Name: {order.customerName}</p>
                 <p>Customer Email: {order.customerEmail}</p>
                 <p>Address: {order.address}</p>
@@ -287,7 +286,7 @@ function Profile() {
                 <p>Price: ₱{order.price}</p>
                 <p>Order Status: {order.orderStatus}</p>
                 <img
-                  src={`data:image/png;base64,${order.keyboardImage.data.toString('base64')}`}
+                  src={`data:${order.keyboardImage.contentType};base64,${Buffer.from(order.keyboardImage.data).toString('base64')}`}
                   alt="Custom Keyboard Design"
                   style={{ width: '410px', height: 'auto' }}
                 />
