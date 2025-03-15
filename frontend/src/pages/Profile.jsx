@@ -113,7 +113,7 @@ function Profile() {
   // ✅ Handle Load Orders
   const loadOrders = async (customerEmail) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/orders/${customerEmail}`);
+      const response = await fetch(`${API_BASE_URL}/api/orders/load/${customerEmail}`);
       const data = await response.json();
       if (response.ok) {
         setOrders(data.orders);
