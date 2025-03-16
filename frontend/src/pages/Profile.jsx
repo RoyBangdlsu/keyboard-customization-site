@@ -286,7 +286,7 @@ function Profile() {
                 <p>Price: ₱{order.price}</p>
                 <p>Order Status: {order.orderStatus}</p>
                 <img
-                  src={`data:${order.keyboardImage.contentType};base64,${order.keyboardImage.data}`}
+                  src={order.keyboardImage}
                   alt="Custom Keyboard Design"
                   style={{ width: '410px', height: 'auto' }}
                 />
