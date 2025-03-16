@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import domtoimage from 'dom-to-image';
 
 function Order() {
   const navigate = useNavigate();

@@ -16,7 +16,6 @@ export const placeNewOrder = async (req, res) => {
 
     const email = customerEmail;
     const adminEmail = "OWNER_EMAIL@gmail.com";
-    const imageBuffer = Buffer.from(keyboardImage.split(",")[1], "base64");
 
     const newOrder = new Order({
       customerName: customerName, 
@@ -28,10 +27,7 @@ export const placeNewOrder = async (req, res) => {
       switchType: switchType,
       price: total,
       orderStatus: "Pending",
-      keyboardImage: {
-        data: imageBuffer, // Store the image as Buffer
-        contentType: "image/png", // Set the MIME type (e.g., 'image/png')
-      },
+      keyboardImage: keyboardImage
     });
 
     await newOrder.save();
