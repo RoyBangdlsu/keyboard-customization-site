@@ -284,7 +284,6 @@ function Profile() {
                 <p>Keycap Brand: {order.keycapBrand}</p>
                 <p>Switch Type: {order.switchType}</p>
                 <p>Price: ₱{order.price}</p>
-                <p>Order Status: {order.orderStatus}</p>
                 <img
                   src={order.keyboardImage}
                   alt="Custom Keyboard Design"
