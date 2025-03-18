@@ -26,7 +26,6 @@ export const placeNewOrder = async (req, res) => {
       keycapBrand: keyCapBrand,
       switchType: switchType,
       price: total,
-      orderStatus: "Pending",
       keyboardImage: keyboardImage
     });
 

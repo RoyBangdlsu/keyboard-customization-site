@@ -9,7 +9,6 @@ const OrderSchema = new mongoose.Schema({
   keycapBrand: { type: String, required: true },
   switchType: { type: String, required: true },
   price: { type: Number, required: true },
-  orderStatus: { type: String, required: true },
   keyboardImage: { type: String, required: true}
 }, { timestamps: true });
 
