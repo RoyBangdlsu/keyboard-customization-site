@@ -70,6 +70,7 @@ export const placeNewOrder = async (req, res) => {
         <ul>
           <li>Customer Name: ${customerName}</li>
           <li>Customer Email: ${customerEmail}</li>
+          <li>Address: ${address}</li>
           <li>Type: ${type}</li>
           <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice}</li>
           <li>Keycap Brand: ${keyCapBrand} - ₱${keyCapBrandPrice}</li>
