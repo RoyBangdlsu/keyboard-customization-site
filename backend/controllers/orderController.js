@@ -15,7 +15,7 @@ export const placeNewOrder = async (req, res) => {
     const { customerName, customerEmail, address, type, keyboardSize, keyCapBrand, switchType, total, keyboardImage, keyCapBrandPrice, keyboardSizePrice, switchTypePrice } = req.body; // Use frontend field names
 
     const email = customerEmail;
-    const adminEmail = "OWNER_EMAIL@gmail.com";
+    const adminEmail = "rappykarlopi@gmail.com";
 
     const newOrder = new Order({
       customerName: customerName, 

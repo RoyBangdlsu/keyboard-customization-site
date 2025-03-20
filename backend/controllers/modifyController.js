@@ -16,7 +16,7 @@ export const placeRequest = async (req, res) => {
     const { customerName, customerEmail, address, keyboardSize, numSwitchLubing, numFilming, numStabilizer, numTapeLayer, caseFoam, PEFoam, total, swtichLubingPrice, filmingPrice, stabilizerPrice, tapeLayerPrice } = req.body; // Use frontend field names
 
     const email = customerEmail;
-    const adminEmail = "OWNER_EMAIL@gmail.com";
+    const adminEmail = "rappykarlopi@gmail.com";
 
     const newRequest = new Modify({
       customerName: customerName, 

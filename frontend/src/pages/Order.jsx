@@ -185,33 +185,41 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-      const resNew = await fetch(`${API_BASE_URL}/api/orders/placeneworder`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          customerName, 
-          customerEmail, 
-          address, 
-          type, 
-          keyboardSize, 
-          keyCapBrand, 
-          switchType, 
-          total, 
-          keyboardImage, 
-          keyCapBrandPrice,
-          keyboardSizePrice, 
-          switchTypePrice }),
-      });
 
-      const dataNew = await resNew.json();
-      if (resNew.status === 201) {
-        alert("Order Placed!");
-        navigate("/");
-        window.location.reload();
-      } else {
-        alert(dataNew.message);
-      }
-      
+    // Check if the address is empty
+    if (!address.trim()) {
+      alert("Please enter your address before placing the order.");
+      return; // Exit the function early if the address is empty
+    }
+
+    // Proceed with placing the order if the address is provided
+    const resNew = await fetch(`${API_BASE_URL}/api/orders/placeneworder`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        customerName, 
+        customerEmail, 
+        address, 
+        type, 
+        keyboardSize, 
+        keyCapBrand, 
+        switchType, 
+        total, 
+        keyboardImage, 
+        keyCapBrandPrice,
+        keyboardSizePrice, 
+        switchTypePrice 
+      }),
+    });
+
+    const dataNew = await resNew.json();
+    if (resNew.status === 201) {
+      alert("Order Placed!");
+      navigate("/");
+      window.location.reload();
+    } else {
+      alert(dataNew.message);
+    }
   };
 
   if (!user) {

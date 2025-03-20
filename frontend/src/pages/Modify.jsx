@@ -22,7 +22,7 @@ function Modify() {
   const [address, setAddress] = useState(""); // Address for delivery
 
   let calculatedTotal = 0;
-  
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -85,6 +85,14 @@ function Modify() {
 
   const handlePlaceRequest = async (e) => {
     e.preventDefault();
+
+    // Check if the address is empty
+    if (!address.trim()) {
+      alert("Please enter your address before placing the modification request.");
+      return; // Exit the function early if the address is empty
+    }
+
+    // Check if the modification request is empty
     if (
       numSwitchLubing === 0 &&
       numFilming === 0 &&
@@ -94,36 +102,39 @@ function Modify() {
       PEFoam === "No"
     ) {
       alert("Cannot Place Modification Request: Empty Request");
+      return; // Exit the function early if the request is empty
+    }
+
+    // Proceed with placing the request if the address is provided and the request is not empty
+    const resNew = await fetch("http://localhost:5000/api/modify/placerequest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        customerName,
+        customerEmail,
+        address,
+        keyboardSize,
+        numSwitchLubing,
+        numFilming,
+        numStabilizer,
+        numTapeLayer,
+        caseFoam,
+        PEFoam,
+        total,
+        swtichLubingPrice,
+        filmingPrice,
+        stabilizerPrice,
+        tapeLayerPrice,
+      }),
+    });
+
+    const dataNew = await resNew.json();
+    if (resNew.status === 201) {
+      alert("Modification Request Placed!");
+      navigate("/");
+      window.location.reload();
     } else {
-      const resNew = await fetch("http://localhost:5000/api/modify/placerequest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerName,
-          customerEmail,
-          address,
-          keyboardSize,
-          numSwitchLubing,
-          numFilming,
-          numStabilizer,
-          numTapeLayer,
-          caseFoam,
-          PEFoam,
-          total,
-          swtichLubingPrice,
-          filmingPrice,
-          stabilizerPrice,
-          tapeLayerPrice
-        }),
-      });
-      const dataNew = await resNew.json();
-      if (resNew.status === 201) {
-        alert("Order Placed!");
-        navigate("/");
-        window.location.reload();
-      } else {
-        alert(dataNew.message);
-      }
+      alert(dataNew.message);
     }
   };
 
