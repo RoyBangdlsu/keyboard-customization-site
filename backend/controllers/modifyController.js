@@ -64,6 +64,7 @@ export const placeRequest = async (req, res) => {
         <ul>
           <li>Customer Name: ${customerName}</li>
           <li>Customer Email: ${customerEmail}</li>
+          <li>Address: ${address}</li>
           <li>Type: ${type}</li>
           <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice}</li>
           <li>Number of Switch Lubing: ${numSwitchLubing} - ₱${swtichLubingPrice}</li>
