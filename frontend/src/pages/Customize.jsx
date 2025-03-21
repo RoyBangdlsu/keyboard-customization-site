@@ -11,7 +11,7 @@ function Customize() {
   const baseState = {
     layout: 'full',
     bodyColor: '#000000',
-    switchType: 'Default',
+    switchType: 'Outemu Blue',
     keycapColors: {},
     keycapBrand: 'Akko', // Default keycap brand
   };
@@ -40,6 +40,15 @@ function Customize() {
   );
   const [selectedKey, setSelectedKey] = useState(null);
   const [designs, setDesigns] = useState([]);
+
+  // Add-ons state
+  const [numSwitchLubing, setNumSwitchLubing] = useState(0);
+  const [numFilming, setNumFilming] = useState(0);
+  const [numStabilizer, setNumStabilizer] = useState(0);
+  const [numTapeLayer, setNumTapeLayer] = useState(0);
+  const [caseFoam, setCaseFoam] = useState("No");
+  const [PEFoam, setPEFoam] = useState("No");
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (location.state?.design) {
@@ -327,6 +336,22 @@ function Customize() {
     }
   };
 
+  // Calculate total cost of add-ons
+  const calculateTotal = () => {
+    let calculatedTotal = 0;
+    calculatedTotal += numSwitchLubing * 8;
+    calculatedTotal += numFilming * 6;
+    calculatedTotal += numStabilizer * 50;
+    calculatedTotal += numTapeLayer * 10;
+    if (caseFoam === "Yes") calculatedTotal += 50;
+    if (PEFoam === "Yes") calculatedTotal += 50;
+    setTotal(calculatedTotal);
+  };
+
+  useEffect(() => {
+    calculateTotal();
+  }, [numSwitchLubing, numFilming, numStabilizer, numTapeLayer, caseFoam, PEFoam]);
+
   return (
     <div className="keyboard-customization">
       <h1>Keyboard Customization</h1>
@@ -370,6 +395,64 @@ function Customize() {
             <option value="YMDK">YMDK</option>
             <option value="HyperX">HyperX</option>
           </select>
+        </div>
+
+        {/* Add-ons Section */}
+        <div className="option">
+          <label>Add-ons:</label>
+          <div className="add-ons">
+            <div className="add-on">
+              <label>Switch Lubing:</label>
+              <input
+                type="number"
+                value={numSwitchLubing}
+                onChange={(e) => setNumSwitchLubing(Number(e.target.value))}
+                min="0"
+              />
+            </div>
+            <div className="add-on">
+              <label>Filming:</label>
+              <input
+                type="number"
+                value={numFilming}
+                onChange={(e) => setNumFilming(Number(e.target.value))}
+                min="0"
+              />
+            </div>
+            <div className="add-on">
+              <label>Stabilizers:</label>
+              <input
+                type="number"
+                value={numStabilizer}
+                onChange={(e) => setNumStabilizer(Number(e.target.value))}
+                min="0"
+              />
+            </div>
+            <div className="add-on">
+              <label>Tape Mod:</label>
+              <input
+                type="number"
+                value={numTapeLayer}
+                onChange={(e) => setNumTapeLayer(Number(e.target.value))}
+                min="0"
+              />
+            </div>
+            <div className="add-on">
+              <label>Case Foam:</label>
+              <select value={caseFoam} onChange={(e) => setCaseFoam(e.target.value)}>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </div>
+            <div className="add-on">
+              <label>PE Foam:</label>
+              <select value={PEFoam} onChange={(e) => setPEFoam(e.target.value)}>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </div>
+          </div>
+          <p>Total Add-ons Cost: ₱{total.toFixed(2)}</p>
         </div>
       </div>
 
