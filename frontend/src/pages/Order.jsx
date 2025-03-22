@@ -255,7 +255,17 @@ function Order() {
         type, 
         keyboardSize, 
         keyCapBrand, 
-        switchType, 
+        switchType,
+        numSwitchLubing,
+        switchLubingPrice,
+        numFilming,
+        filmingPrice,
+        numStabilizer,
+        stabilizerPrice,
+        numTapeLayer,
+        tapeLayerPrice,
+        caseFoam,
+        PEFoam,
         total, 
         keyboardImage, 
         keyCapBrandPrice,
@@ -305,9 +315,9 @@ function Order() {
               <p>Switch Lubing: {numSwitchLubing} - ₱{swtichLubingPrice.toFixed(2)}</p>
               <p>Filming: {numFilming} - ₱{filmingPrice.toFixed(2)}</p>
               <p>Stabilizer: {numStabilizer} - ₱{stabilizerPrice.toFixed(2)}</p>
+              <p>Tape Layer: {numTapeLayer} - ₱{tapeLayerPrice.toFixed(2)}</p>
               <p>Case Foam (₱50): {caseFoam}</p>
               <p>PE Foam (₱50): {PEFoam}</p>
-              <p>Case Foam: {caseFoam} - ₱{stabilizerPrice.toFixed(2)}</p>
             </>
           <p>Total: ₱{total.toFixed(2)}</p>
           
