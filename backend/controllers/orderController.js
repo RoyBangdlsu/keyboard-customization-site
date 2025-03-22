@@ -69,7 +69,7 @@ export const placeNewOrder = async (req, res) => {
           <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice.toFixed(2)}</li>
           <li>Keycap Brand: ${keyCapBrand} - ₱${keyCapBrandPrice.toFixed(2)}</li>
           <li>Switch Type: ${switchType} - ₱${switchTypePrice.toFixed(2)}</li>
-          <li>Switch Lubing: ${numSwitchLubing} - ₱${swtichLubingPrice.toFixed(2)}</li>
+          <li>Switch Lubing: ${numSwitchLubing} - ₱${switchLubingPrice.toFixed(2)}</li>
           <li>Filming: ${numFilming} - ₱${filmingPrice.toFixed(2)}</li>
           <li>Stabilizer: ${numStabilizer} - ₱${stabilizerPrice.toFixed(2)}</li>
           <li>Tape Layer: ${numTapeLayer} - ₱${tapeLayerPrice.toFixed(2)}</li>
