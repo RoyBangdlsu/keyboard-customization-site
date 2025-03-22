@@ -1,8 +1,65 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import domtoimage from 'dom-to-image';
 import './customize.css';
 
+// Define the AddOnsModal component
+const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
+  const currentAddOns = keyAddOns[selectedKey] || { stabilizers: false, lubing: false, filming: false };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setKeyAddOns((prevAddOns) => ({
+      ...prevAddOns,
+      [selectedKey]: {
+        ...currentAddOns,
+        [name]: checked,
+      },
+    }));
+  };
+
+  return (
+    <div className="add-ons-modal">
+      <h3>Add-ons for {selectedKey}</h3>
+      <div>
+        <label>
+          Stabilizers:
+          <input
+            type="checkbox"
+            name="stabilizers"
+            checked={currentAddOns.stabilizers}
+            onChange={handleCheckboxChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Lubing:
+          <input
+            type="checkbox"
+            name="lubing"
+            checked={currentAddOns.lubing}
+            onChange={handleCheckboxChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Filming:
+          <input
+            type="checkbox"
+            name="filming"
+            checked={currentAddOns.filming}
+            onChange={handleCheckboxChange}
+          />
+        </label>
+      </div>
+      <button onClick={onClose}>Close</button>
+    </div>
+  );
+};
+
+// Main Customize component
 function Customize() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,6 +97,8 @@ function Customize() {
   );
   const [selectedKey, setSelectedKey] = useState(null);
   const [designs, setDesigns] = useState([]);
+  const [keyAddOns, setKeyAddOns] = useState({});
+  const [showAddOnsModal, setShowAddOnsModal] = useState(false);
 
   // Add-ons state
   const [numSwitchLubing, setNumSwitchLubing] = useState(0);
@@ -180,7 +239,16 @@ function Customize() {
   // Handle right-click on keycaps
   const handleRightClick = (key, e) => {
     e.preventDefault(); // Prevent the default context menu
-    setSelectedKey(key); // Set the selected key for color change
+    setSelectedKey(key); // Set the selected key
+    setShowAddOnsModal(true); // Show the add-ons modal
+
+    // Initialize add-ons for the new key if it doesn't already have any
+    if (!keyAddOns[key]) {
+      setKeyAddOns((prevAddOns) => ({
+        ...prevAddOns,
+        [key]: { stabilizers: false, lubing: false, filming: false },
+      }));
+    }
   };
 
   // Handle color change for the selected keycap
@@ -191,6 +259,11 @@ function Customize() {
         [selectedKey]: event.target.value,
       }));
     }
+  };
+
+  // Close the add-ons modal
+  const closeAddOnsModal = () => {
+    setShowAddOnsModal(false);
   };
 
   // Determine the width of a keycap based on its label
@@ -226,27 +299,52 @@ function Customize() {
     }
   };
 
-  // Remaining functionality to be added later
+  // Handle the "Order This Design" button click
   const handleOrder = () => {
+    // Count the number of stabilizers, lubing, and filming
+    let stabilizerCount = 0;
+    let lubingCount = 0;
+    let filmingCount = 0;
+
+    Object.values(keyAddOns).forEach((addOns) => {
+      if (addOns.stabilizers) stabilizerCount++;
+      if (addOns.lubing) lubingCount++;
+      if (addOns.filming) filmingCount++;
+    });
+
+    // Update the state with the counts
+    setNumStabilizer(stabilizerCount);
+    setNumSwitchLubing(lubingCount);
+    setNumFilming(filmingCount);
+
+    // Export the keyboard layout as a PNG
     const keyboardElement = document.querySelector('.keyboard-body');
     if (keyboardElement) {
-    domtoimage.toPng(keyboardElement)
-      .then((dataUrl) => {
-        // Save the Base64 image string to localStorage
-        localStorage.setItem('keyboardImage', dataUrl);
+      domtoimage.toPng(keyboardElement)
+        .then((dataUrl) => {
+          // Save the Base64 image string to localStorage
+          localStorage.setItem('keyboardImage', dataUrl);
 
-        // Save other keyboard details to localStorage
-        localStorage.setItem('keyboardSwitchType', switchType);
-        localStorage.setItem('keyboardLayout', layout);
-        localStorage.setItem('keyboardKeycapBrand', keycapBrand);
+          // Save other keyboard details to localStorage
+          localStorage.setItem('keyboardSwitchType', switchType);
+          localStorage.setItem('keyboardLayout', layout);
+          localStorage.setItem('keyboardKeycapBrand', keycapBrand);
 
-        // Navigate to the Order page
-        navigate("/order");
-      })
-      .catch((error) => {
-        console.error('Error exporting as PNG:', error);
-      });
-  }
+          // Save add-ons counts to localStorage
+          localStorage.setItem('PEFoam', PEFoam);
+          localStorage.setItem('caseFoam', caseFoam);
+          localStorage.setItem('numTapeLayers', numTapeLayer);
+          localStorage.setItem('numStabilizer', stabilizerCount);
+          localStorage.setItem('numSwitchLubing', lubingCount);
+          localStorage.setItem('numFilming', filmingCount);
+
+          // Navigate to the Order page
+          navigate("/order");
+        })
+        .catch((error) => {
+          console.error('Error exporting as PNG:', error);
+        });
+    }
   };
 
   const saveDesign = async (e) => {
@@ -336,22 +434,6 @@ function Customize() {
     }
   };
 
-  // Calculate total cost of add-ons
-  const calculateTotal = () => {
-    let calculatedTotal = 0;
-    calculatedTotal += numSwitchLubing * 8;
-    calculatedTotal += numFilming * 6;
-    calculatedTotal += numStabilizer * 50;
-    calculatedTotal += numTapeLayer * 10;
-    if (caseFoam === "Yes") calculatedTotal += 50;
-    if (PEFoam === "Yes") calculatedTotal += 50;
-    setTotal(calculatedTotal);
-  };
-
-  useEffect(() => {
-    calculateTotal();
-  }, [numSwitchLubing, numFilming, numStabilizer, numTapeLayer, caseFoam, PEFoam]);
-
   return (
     <div className="keyboard-customization">
       <h1>Keyboard Customization</h1>
@@ -396,38 +478,13 @@ function Customize() {
             <option value="HyperX">HyperX</option>
           </select>
         </div>
+      </div>
 
-        {/* Add-ons Section */}
-        <div className="option">
-          <label>Add-ons:</label>
+      
+      <h1>Add-ons</h1>
+      {/* Add-ons Section */}
+      <div className="option">
           <div className="add-ons">
-            <div className="add-on">
-              <label>Switch Lubing:</label>
-              <input
-                type="number"
-                value={numSwitchLubing}
-                onChange={(e) => setNumSwitchLubing(Number(e.target.value))}
-                min="0"
-              />
-            </div>
-            <div className="add-on">
-              <label>Filming:</label>
-              <input
-                type="number"
-                value={numFilming}
-                onChange={(e) => setNumFilming(Number(e.target.value))}
-                min="0"
-              />
-            </div>
-            <div className="add-on">
-              <label>Stabilizers:</label>
-              <input
-                type="number"
-                value={numStabilizer}
-                onChange={(e) => setNumStabilizer(Number(e.target.value))}
-                min="0"
-              />
-            </div>
             <div className="add-on">
               <label>Tape Mod:</label>
               <input
@@ -452,9 +509,7 @@ function Customize() {
               </select>
             </div>
           </div>
-          <p>Total Add-ons Cost: ₱{total.toFixed(2)}</p>
         </div>
-      </div>
 
       <div className="preview">
         <h2>Preview</h2>
@@ -475,7 +530,7 @@ function Customize() {
                     }}
                     onContextMenu={(e) => key !== '' && handleRightClick(key, e)}
                   >
-                    {key}
+                    {key} {/* Only display the key label */}
                   </div>
                 ))}
               </div>
@@ -496,6 +551,16 @@ function Customize() {
             onChange={handleKeycapColorChange}
           />
         </div>
+      )}
+
+      {/* Add-ons Modal */}
+      {showAddOnsModal && (
+        <AddOnsModal
+          selectedKey={selectedKey}
+          keyAddOns={keyAddOns}
+          setKeyAddOns={setKeyAddOns}
+          onClose={closeAddOnsModal}
+        />
       )}
 
       {/* Buttons */}

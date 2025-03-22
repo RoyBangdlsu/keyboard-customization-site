@@ -73,7 +73,6 @@ function Navbar() {
         <Link to="/" className="navbar-navigations">Home</Link>
         <Link to="/about" className="navbar-navigations">About</Link>
         <Link to="/customize" className="navbar-navigations">Customize</Link>
-        <Link to="/modify" className="navbar-navigations">Modify</Link>
         {isLoggedIn ? (
           <>
             <Link to="/profile" className="navbar-navigations">{user?.name}</Link>

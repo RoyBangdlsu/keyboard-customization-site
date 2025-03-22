@@ -12,6 +12,16 @@ function Order() {
   let [keyCapBrandPrice, setKeyCapBrandPrice] = useState(0); // Keycap brand price
   const [switchType, setSwitchType] = useState("N/A"); // Switch type
   let [switchTypePrice, setSwitchTypePrice] = useState(0); // switch type brand price
+  const [numSwitchLubing, setNumSwitchLubing] = useState(0); // Number of switches for lubing
+  const [swtichLubingPrice, setSwitchLubingPrice] = useState(0); // Number of switches for lubing
+  const [numFilming, setNumFilming] = useState(0); // Number of films
+  const [filmingPrice, setFilmingPrice] = useState(0); // Number of switches for lubing
+  const [numStabilizer, setNumStabilizer] = useState(0); // Number of stabilizers
+  const [stabilizerPrice, setStabilizerPrice] = useState(0); // Number of switches for lubing
+  const [numTapeLayer, setNumTapeLayer] = useState(0); // Number of tape layers
+  const [tapeLayerPrice, setTapeLayerPrice] = useState(0); // Number of switches for lubing
+  const [caseFoam, setCaseFoam] = useState(""); // Case Foam choice
+  const [PEFoam, setPEFoam] = useState(""); // PE Foam choice
   const [address, setAddress] = useState(""); // Address input
   const [keyboardImage, setKeyboardImage] = useState(""); // Address input
   const [total, setTotal] = useState(0); // Total cost
@@ -27,11 +37,53 @@ function Order() {
     const storedKeyboardSize = localStorage.getItem("keyboardLayout");
     const storedKeycapBrand = localStorage.getItem("keyboardKeycapBrand");
     const storedKeyboardImage = localStorage.getItem("keyboardImage");
+    const storedNumStabilizers = localStorage.getItem("numStabilizer");
+    const storedNumFilming = localStorage.getItem("numFilming");
+    const storedNumSwitchLubing = localStorage.getItem("numSwitchLubing");
+    const storedNumTapeLayer = localStorage.getItem("numTapeLayer");
+    const storedPEFoam = localStorage.getItem("PEFoam");
+    const storedCaseFoam = localStorage.getItem("caseFoam");
   
     let calculatedTotal = 0;
   
     if (storedSwitchType) {
       setSwitchType(storedSwitchType);
+    }
+
+    if (storedNumTapeLayer) {
+      setNumTapeLayer(storedNumTapeLayer);
+      setTapeLayerPrice(storedNumTapeLayer * 10);
+      calculatedTotal += storedNumTapeLayer * 10;
+    }
+
+    if (storedPEFoam) {
+      setPEFoam(storedPEFoam);
+      if(storedPEFoam === 'Yes') {
+        calculatedTotal += 50;
+      }
+    }
+
+    if (storedCaseFoam) {
+      setCaseFoam(storedCaseFoam);
+      if(storedCaseFoam === "Yes") {
+        calculatedTotal += 50;
+      }
+    }
+
+    if (storedNumStabilizers) {
+      setNumStabilizer(storedNumStabilizers);
+      setStabilizerPrice(storedNumStabilizers * 50);
+      calculatedTotal += storedNumStabilizers * 50;
+    }
+    if (storedNumFilming) {
+      setNumFilming(storedNumFilming);
+      setFilmingPrice(storedNumFilming * 6);
+      calculatedTotal += storedNumFilming * 6;
+    }
+    if (storedNumSwitchLubing) {
+      setNumSwitchLubing(storedNumSwitchLubing);
+      setSwitchLubingPrice(storedNumSwitchLubing * 8);
+      calculatedTotal += storedNumSwitchLubing * 8;
     }
   
     // Keyboard Size Price Breakdown
@@ -247,10 +299,15 @@ function Order() {
               </div>
             )}
 
-              <p>Type of Service: New Customized Keyboard</p>
               <p>Keyboard Size: {keyboardSize} - ₱{keyboardSizePrice.toFixed(2)}</p>
               <p>Keycap Brand: {keyCapBrand} - ₱{keyCapBrandPrice.toFixed(2)}</p>
               <p>Switch Type: {switchType} - ₱{switchTypePrice.toFixed(2)}</p>
+              <p>Switch Lubing: {numSwitchLubing} - ₱{swtichLubingPrice.toFixed(2)}</p>
+              <p>Filming: {numFilming} - ₱{filmingPrice.toFixed(2)}</p>
+              <p>Stabilizer: {numStabilizer} - ₱{stabilizerPrice.toFixed(2)}</p>
+              <p>Case Foam (₱50): {caseFoam}</p>
+              <p>PE Foam (₱50): {PEFoam}</p>
+              <p>Case Foam: {caseFoam} - ₱{stabilizerPrice.toFixed(2)}</p>
             </>
           <p>Total: ₱{total.toFixed(2)}</p>
           
