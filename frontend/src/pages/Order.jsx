@@ -13,7 +13,7 @@ function Order() {
   const [switchType, setSwitchType] = useState("N/A"); // Switch type
   let [switchTypePrice, setSwitchTypePrice] = useState(0); // switch type brand price
   const [numSwitchLubing, setNumSwitchLubing] = useState(0); // Number of switches for lubing
-  const [swtichLubingPrice, setSwitchLubingPrice] = useState(0); // Number of switches for lubing
+  const [switchLubingPrice, setSwitchLubingPrice] = useState(0); // Number of switches for lubing
   const [numFilming, setNumFilming] = useState(0); // Number of films
   const [filmingPrice, setFilmingPrice] = useState(0); // Number of switches for lubing
   const [numStabilizer, setNumStabilizer] = useState(0); // Number of stabilizers
