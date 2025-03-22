@@ -5,7 +5,7 @@ import domtoimage from 'dom-to-image';
 function Order() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [type, setType] = useState("New");
+  const [type, setType] = useState("New Customized Keyboard");
   const [keyboardSize, setKeyboardSize] = useState("N/A"); // Keyboard size
   let [keyboardSizePrice, setKeyboardSizePrice] = useState(0); // Keyboard size price
   const [keyCapBrand, setKeyCapBrand] = useState("N/A"); // Keycap brand
