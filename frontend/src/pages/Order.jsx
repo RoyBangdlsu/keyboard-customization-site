@@ -312,7 +312,7 @@ function Order() {
               <p>Keyboard Size: {keyboardSize} - ₱{keyboardSizePrice.toFixed(2)}</p>
               <p>Keycap Brand: {keyCapBrand} - ₱{keyCapBrandPrice.toFixed(2)}</p>
               <p>Switch Type: {switchType} - ₱{switchTypePrice.toFixed(2)}</p>
-              <p>Switch Lubing: {numSwitchLubing} - ₱{swtichLubingPrice.toFixed(2)}</p>
+              <p>Switch Lubing: {numSwitchLubing} - ₱{switchLubingPrice.toFixed(2)}</p>
               <p>Filming: {numFilming} - ₱{filmingPrice.toFixed(2)}</p>
               <p>Stabilizer: {numStabilizer} - ₱{stabilizerPrice.toFixed(2)}</p>
               <p>Tape Layer: {numTapeLayer} - ₱{tapeLayerPrice.toFixed(2)}</p>
