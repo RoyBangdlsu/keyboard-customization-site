@@ -97,16 +97,24 @@ function Customize() {
   );
   const [selectedKey, setSelectedKey] = useState(null);
   const [designs, setDesigns] = useState([]);
-  const [keyAddOns, setKeyAddOns] = useState({});
+  const [keyAddOns, setKeyAddOns] = useState(
+    JSON.parse(localStorage.getItem(getUserStorageKey('keyAddOns'))) || {}
+  )
   const [showAddOnsModal, setShowAddOnsModal] = useState(false);
 
   // Add-ons state
   const [numSwitchLubing, setNumSwitchLubing] = useState(0);
   const [numFilming, setNumFilming] = useState(0);
   const [numStabilizer, setNumStabilizer] = useState(0);
-  const [numTapeLayer, setNumTapeLayer] = useState(0);
-  const [caseFoam, setCaseFoam] = useState("No");
-  const [PEFoam, setPEFoam] = useState("No");
+  const [caseFoam, setCaseFoam] = useState(
+    localStorage.getItem(getUserStorageKey('caseFoam')) || "No"
+  );
+  const [PEFoam, setPEFoam] = useState(
+    localStorage.getItem(getUserStorageKey('PEFoam')) || "No"
+  );
+  const [numTapeLayer, setNumTapeLayer] = useState(
+    Number(localStorage.getItem(getUserStorageKey('numTapeLayer'))) || 0
+  );
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -132,8 +140,12 @@ function Customize() {
       localStorage.setItem(getUserStorageKey('keyboardSwitchType'), switchType);
       localStorage.setItem(getUserStorageKey('keyboardKeycapColors'), JSON.stringify(keycapColors));
       localStorage.setItem(getUserStorageKey('keyboardKeycapBrand'), keycapBrand);
+      localStorage.setItem(getUserStorageKey('keyAddOns'), JSON.stringify(keyAddOns));
+      localStorage.setItem(getUserStorageKey('caseFoam'), caseFoam); // Save caseFoam
+      localStorage.setItem(getUserStorageKey('PEFoam'), PEFoam); // Save PEFoam
+      localStorage.setItem(getUserStorageKey('numTapeLayer'), numTapeLayer); // Save numTapeLayer
     }
-  }, [layout, bodyColor, switchType, keycapColors, keycapBrand, loggedInUser]);
+  }, [layout, bodyColor, switchType, keycapColors, keycapBrand, keyAddOns, caseFoam, PEFoam, numTapeLayer, loggedInUser]);
 
   if (!loggedInUser) {
     return <div>Please log in to customize your keyboard.</div>;
@@ -147,11 +159,20 @@ function Customize() {
       setSwitchType(baseState.switchType);
       setKeycapColors(baseState.keycapColors);
       setKeycapBrand(baseState.keycapBrand);
-      localStorage.setItem('keyboardLayout', baseState.layout);
-      localStorage.setItem('keyboardBodyColor', baseState.bodyColor);
-      localStorage.setItem('keyboardSwitchType', baseState.switchType);
-      localStorage.setItem('keyboardKeycapColors', JSON.stringify(baseState.keycapColors));
-      localStorage.setItem('keyboardKeycapBrand', baseState.keycapBrand);
+      setKeyAddOns({}); // Reset keyAddOns
+      setCaseFoam("No"); // Reset caseFoam
+      setPEFoam("No"); // Reset PEFoam
+      setNumTapeLayer(0); // Reset numTapeLayer
+  
+      localStorage.setItem(getUserStorageKey('keyboardLayout'), baseState.layout);
+      localStorage.setItem(getUserStorageKey('keyboardBodyColor'), baseState.bodyColor);
+      localStorage.setItem(getUserStorageKey('keyboardSwitchType'), baseState.switchType);
+      localStorage.setItem(getUserStorageKey('keyboardKeycapColors'), JSON.stringify(baseState.keycapColors));
+      localStorage.setItem(getUserStorageKey('keyboardKeycapBrand'), baseState.keycapBrand);
+      localStorage.setItem(getUserStorageKey('keyAddOns'), JSON.stringify({})); // Reset keyAddOns
+      localStorage.setItem(getUserStorageKey('caseFoam'), "No"); // Reset caseFoam
+      localStorage.setItem(getUserStorageKey('PEFoam'), "No"); // Reset PEFoam
+      localStorage.setItem(getUserStorageKey('numTapeLayer'), 0); // Reset numTapeLayer
     }
   };
 
@@ -306,12 +327,19 @@ function Customize() {
     let lubingCount = 0;
     let filmingCount = 0;
 
-    Object.values(keyAddOns).forEach((addOns) => {
-      if (addOns.stabilizers) stabilizerCount++;
-      if (addOns.lubing) lubingCount++;
-      if (addOns.filming) filmingCount++;
+    // Iterate through the keycapLayouts
+  keycapLayouts[layout].forEach((row) => {
+    row.forEach((key) => {
+      if (key !== '' && key !== ' ') { // Skip empty spaces
+        const addOns = keyAddOns[key];
+        if (addOns) {
+          if (addOns.stabilizers) stabilizerCount++;
+          if (addOns.lubing) lubingCount++;
+          if (addOns.filming) filmingCount++;
+        }
+      }
     });
-
+  });
     // Update the state with the counts
     setNumStabilizer(stabilizerCount);
     setNumSwitchLubing(lubingCount);
@@ -329,6 +357,10 @@ function Customize() {
           localStorage.setItem('keyboardSwitchType', switchType);
           localStorage.setItem('keyboardLayout', layout);
           localStorage.setItem('keyboardKeycapBrand', keycapBrand);
+          localStorage.setItem('keyAddOns', JSON.stringify(keyAddOns)); // Save keyAddOns
+          localStorage.setItem('caseFoam', caseFoam); // Save caseFoam
+          localStorage.setItem('PEFoam', PEFoam); // Save PEFoam
+          localStorage.setItem('numTapeLayers', numTapeLayer); // Save numTapeLayer
 
           // Save add-ons counts to localStorage
           localStorage.setItem('PEFoam', PEFoam);
@@ -351,19 +383,21 @@ function Customize() {
     e.preventDefault();
     const designName = prompt('Enter a name for your design:');
     if (!designName) return;
-
+  
     const keyboardElement = document.querySelector('.keyboard-body');
     if (!keyboardElement) {
       alert('Keyboard element not found.');
       return;
     }
-
+  
     const keycapsColor = JSON.stringify(keycapColors);
+    const keyAddOnsData = JSON.stringify(keyAddOns); // Include keyAddOns
+  
     try {
       const dataUrl = await domtoimage.toPng(keyboardElement); // Convert the keyboard to a Base64 image
       const keyboardImage = dataUrl;
-
-      const response = await fetch(`${API_BASE_URL}/api/designs/save`, {    // http://localhost:5000 or ${API_BASE_URL}
+  
+      const response = await fetch(`${API_BASE_URL}/api/designs/save`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -375,6 +409,10 @@ function Customize() {
           switchType,
           keycapBrand,
           keyboardImage,
+          keyAddOns: keyAddOnsData, // Include keyAddOns
+          caseFoam, // Include caseFoam
+          PEFoam, // Include PEFoam
+          numTapeLayer, // Include numTapeLayer
         }),
       });
   
@@ -384,8 +422,8 @@ function Customize() {
       } else {
         alert('Failed to save design: ' + data.message);
       }
-    } catch(error) {
-        alert('Failed to save design.' + error);
+    } catch (error) {
+      alert('Failed to save design.' + error);
     }
   };
 
@@ -411,6 +449,10 @@ function Customize() {
     setKeycapColors(JSON.parse(design.keycapsColor));
     setSwitchType(design.switchType);
     setKeycapBrand(design.keycapBrand);
+    setKeyAddOns(JSON.parse(design.keyAddOns || '{}'));
+    setCaseFoam(design.caseFoam || "No"); // Load caseFoam
+    setPEFoam(design.PEFoam || "No"); // Load PEFoam
+    setNumTapeLayer(design.numTapeLayer || 0); // Load numTapeLayer
   };
 
   const deleteDesign = async (designId) => {
