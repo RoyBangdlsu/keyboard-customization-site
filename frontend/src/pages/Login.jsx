@@ -16,8 +16,16 @@ function Login() {
     const data = await res.json();
     if (data.token) {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       alert("Login successful!");
-      navigate("/"); // Redirect to Home after login
+
+      // ✅ If admin, redirect to admin page
+      if (email === "admin" && password === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/"); // ✅ Regular user goes to home
+      }
     } else {
       alert(data.message);
     }
