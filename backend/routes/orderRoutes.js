@@ -1,9 +1,12 @@
 import express from "express";
+import { placeNewOrder, loadOrders } from "../controllers/orderController.js";
+
 const router = express.Router();
 
-// Example route
-router.get("/", (req, res) => {
-  res.send("Order API is working!");
-});
+// Route to place a new order
+router.post("/placeneworder", placeNewOrder);
 
-export default router; // ✅ Ensure this line is present
+// Route to get all orders
+router.get('/load/:customerEmail', loadOrders);
+
+export default router;

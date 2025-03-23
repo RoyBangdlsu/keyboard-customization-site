@@ -1,0 +1,173 @@
+/* Customize.css */
+.keyboard-customization {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background: url('https://i.imgur.com/UpdN1u3.jpeg') no-repeat center center fixed; /* Add your background image path */
+    background-size: cover; /* Ensure the background covers the entire screen */
+    min-height: 100vh; /* Ensure the container takes up the full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .keyboard-customization h1 {
+    color: rgb(0, 0, 0); /* Set text color to white (or any color that contrasts with the background) */
+    border: 2px solid transparent; /* Transparent border */
+    padding: 10px 20px; /* Add padding for better spacing */
+    border-radius: 10px; /* Rounded corners */
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for better readability */
+    display: inline-block; /* Ensure the border wraps around the text */
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .option label {
+    font-weight: bold;
+  }
+  
+  .option select,
+  .option input[type="color"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .preview {
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .keyboard-body {
+    padding: 10px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    display: inline-block;
+    background-color: #f0f0f0;
+  }
+  
+  .keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .keyboard-row {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .keycap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    height: 15px;
+  }
+  
+  .keycap.empty {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+  }
+  
+  .keycap:hover:not(.empty) {
+    background-color: #e0e0e0;
+  }
+  
+  .actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .actions button {
+    padding: 10px 20px;
+    background-color: #BADDFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .actions button:hover {
+    background-color: #f782ff;
+  }
+
+  .load-designs {
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .designs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .design-item {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  
+  .design-item img {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .design-item h3 {
+    margin: 5px 0;
+  }
+  
+  .design-item p {
+    margin: 2px 0;
+    font-size: 14px;
+  }
+
+  .design-item button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .design-item button:hover {
+    background-color: #0056b3;
+}

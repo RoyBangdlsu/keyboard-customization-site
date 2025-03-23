@@ -1,0 +1,45 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: url("https://i.imgur.com/sypfl5p.jpeg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.about-container {
+  margin-top: 80px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+.about-content {
+  width: 600px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 2rem; 
+}
+
+.justified {
+  text-align: justify;
+}
+
+.below-section {
+  display: flex; 
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2rem; 
+}
+
+.image-wrapper {
+  position: relative; 
+}
+
+.below-image {
+  width: 400px; 
+  border-radius: 8px;
+  display: block;
+}
