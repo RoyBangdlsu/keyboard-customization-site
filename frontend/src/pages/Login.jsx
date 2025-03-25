@@ -11,34 +11,33 @@ function Login() {
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      alert("Login successful!");
-
-      // ✅ If admin, redirect to admin page
-      if (email === "admin@gmail.com" && password === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/"); // ✅ Regular user goes to home
-      }
+    // ✅ If admin, redirect to admin page
+    if (email === "admin@gmail.com" && password === "admin") {
+      navigate("/admin");
     } else {
-      alert(data.message);
+      //navigate("/"); // ✅ Regular user goes to home
+      e.preventDefault();
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        alert("Login successful!");
+      } else {
+        alert(data.message);
+      }
     }
   };
 
   return (
     <div
       style={{
-        background: "url('../src/assets/bg.jpg')",
+        background: "url('https://i.imgur.com/OM3MMmv.jpeg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100vh",
