@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { BiUser } from "react-icons/bi";
+import { AiOutlineUnlock } from "react-icons/ai";
 import "./Login.css";
 
 function Login() {
@@ -10,7 +12,7 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${API_BASE_URL}/api/orders/placeneworder`, {
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -23,7 +25,7 @@ function Login() {
       alert("Login successful!");
 
       // ✅ If admin, redirect to admin page
-      if (email === "admin" && password === "admin") {
+      if (email === "admin@gmail.com" && password === "admin") {
         navigate("/admin");
       } else {
         navigate("/"); // ✅ Regular user goes to home
@@ -34,27 +36,62 @@ function Login() {
   };
 
   return (
-    <div className="p-8 bg-white shadow-xl rounded-lg w-1/3 mx-auto border border-gray-200">
-      <h1 className="text-3xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleLogin} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 border rounded-lg"
-        />
-        <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-800">
-          Login
-        </button>
-      </form>
+    <div
+      style={{
+        background: "url('../src/assets/bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div className="login-container">
+        <h1 className="custom-heading">Login</h1>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="relative-my4">
+            <BiUser className="input-icon"/>
+            <input
+              type="email"
+              value={email}
+              placeholder=" "
+              onChange={(e) => setEmail(e.target.value)}
+              className="custom-input floating-input"
+            />
+            <label htmlFor="email" className="floating-label">Your Email</label>
+          </div>
+          <div className="relative-my4">
+            <AiOutlineUnlock className="input-icon" />
+            <input
+              type="password"
+              value={password}
+              placeholder=" "
+              onChange={(e) => setPassword(e.target.value)}
+              className="custom-input floating-input"
+            />
+            <label htmlFor="password" className="floating-label">Your Password</label>
+          </div>
+          <div className="custom-flex">
+            <div className="flex">
+              <input type="checkbox" id="" name="" />
+              <label htmlFor="Remember Me" className="white-text">Remember Me</label>
+            </div>
+            <Link to='' className="text1">Forgot Password?</Link>
+          </div>
+          <div>
+            <button 
+              type="submit" 
+              className="custom-button"
+            >
+              Login
+            </button>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <span style={{ color: "white" }}>Don't have an account? <Link className="text1" to="/signup">Register</Link></span>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
