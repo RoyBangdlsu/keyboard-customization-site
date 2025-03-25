@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";  // ✅ Import Profile page
 import ForgotPassword from "./pages/ForgotPassword";
-
+import Admin from "./pages/Admin";
 
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />  {/* ✅ Profile Route */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin" element={<Admin />} />
         
         <Route path="*" element={<h1>404 Page Not Found</h1>} /> {/* ✅ Catch all unknown routes */}
 

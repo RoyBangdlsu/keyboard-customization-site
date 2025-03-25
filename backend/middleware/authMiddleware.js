@@ -21,3 +21,13 @@ export const protect = async (req, res, next) => {
     res.status(401).json({ message: "No token, authorization denied" });
   }
 };
+
+
+// ✅ Add isAdmin function
+export const isAdmin = (req, res, next) => {
+  if (req.user && req.user.email === "admin") { // Check admin status
+    next();
+  } else {
+    res.status(403).json({ message: "Not authorized as admin" });
+  }
+};
