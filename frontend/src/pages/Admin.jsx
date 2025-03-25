@@ -6,7 +6,7 @@ function Admin() {
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -25,7 +25,7 @@ function Admin() {
     };
 
     fetchUsers();
-  }, [navigate]);
+  }, [navigate]);*/
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -36,7 +36,7 @@ function Admin() {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      
+      <button onClick={handleLogout}>Logout</button>
       <ul>
         {users.map((user) => (
           <li key={user._id}>{user.name} ({user.email})</li>
