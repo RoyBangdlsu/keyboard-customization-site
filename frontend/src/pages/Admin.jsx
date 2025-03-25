@@ -36,7 +36,7 @@ function Admin() {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      <button onClick={handleLogout}>Logout</button>
+      
       <ul>
         {users.map((user) => (
           <li key={user._id}>{user.name} ({user.email})</li>
