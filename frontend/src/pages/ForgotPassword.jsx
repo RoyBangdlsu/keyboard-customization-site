@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import "./ForgotPassword.css";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -31,21 +33,33 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="login-container">
-      <h1 className="custom-heading">Forgot Password</h1>
-      <form onSubmit={handleForgotPassword}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="custom-input"
-          required
-        />
-        <button type="submit" className="custom-button">Send Temporary Password</button>
-      </form>
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
+    <div className="login-page">
+      <div className="login-container">
+        <h1 className="custom-heading">Forgot Password</h1>
+        <form onSubmit={handleForgotPassword} className="space-y-4">
+          <div className="relative-my4">
+            <input
+              type="email"
+              value={email}
+              placeholder=" "
+              onChange={(e) => setEmail(e.target.value)}
+              className="custom-input floating-input"
+              required
+            />
+            <label htmlFor="email" className="floating-label">Enter your email</label>
+          </div>
+          <button type="submit" className="custom-button">
+            Send Temporary Password
+          </button>
+        </form>
+        {message && <p className="success-message">{message}</p>}
+        {error && <p className="error-message">{error}</p>}
+        <div style={{ textAlign: "center" }}>
+          <span style={{ color: "white" }}>
+            Remembered your password? <Link className="text1" to="/login">Login</Link>
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

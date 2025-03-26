@@ -3,13 +3,11 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: black; /* navbar background is black */
+    background-color: transparent; /* now transparent by default */
     z-index: 99;
     transition: background-color 300ms ease;
-    /* Removed horizontal padding from here */
   }
   
-  /* Constrain and center the navbar content */
   .navbar-container {
     max-width: 1200px;   /* Match the login bg container width */
     margin: 0 auto;      /* Centers the container */
@@ -17,20 +15,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
+}
+
+.navbar.scrolled {
+    background-color: black; 
+}
   
-  .navbar.scrolled {
-    background-color: transparent;
-  }
-  
-  /* Ensure the logo and title stay on the same row */
   .navbar-brand {
     display: flex;
-    flex-direction: row;  /* Explicitly use row layout */
+    flex-direction: row; 
     align-items: center;
   }
   
-  /* Logo styling */
   .navbar-logo {
     height: 40px;        /* Adjust as needed */
     margin-right: 10px; 

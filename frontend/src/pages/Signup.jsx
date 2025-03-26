@@ -28,17 +28,8 @@ function Signup() {
   };
 
   return (
-    <div
-    style={{
-      background: "url('https://i.imgur.com/OM3MMmv.jpeg')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    }}>
-    <div className="login-container">
+    <div className="signup-page">
+    <div className="signup-container">
       <h1 className="custom-heading">Registration</h1>
       <form onSubmit={handleSignup} className="space-y-4">
         <div className="relative-my4">
@@ -88,7 +79,7 @@ function Signup() {
         <button type="submit" className="custom-button">Register</button>
       </form>
       <div style={{ textAlign: "center", marginTop: "1rem" }}>
-        <span>Already have an account? <Link className="text1" to="/login">Sign In</Link></span>
+        <span style={{ color: "white" }}>Already have an account? <Link className="text1" to="/login">Sign In</Link></span>
       </div>
     </div>
     </div>

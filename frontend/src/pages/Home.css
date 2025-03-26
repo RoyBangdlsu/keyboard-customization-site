@@ -1,7 +1,9 @@
 
 .hero-container {
     position: relative;
-    height: 100vh; 
+    margin-top: -100px;
+    padding-top: 150px; /* This pushes the content below the navbar */
+    min-height: 100vh; 
     background: url("https://i.imgur.com/PhECHzo.jpeg") no-repeat center center;
     background-size: cover;
     display: flex;

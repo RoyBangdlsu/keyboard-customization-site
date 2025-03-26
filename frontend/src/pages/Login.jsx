@@ -35,17 +35,7 @@ function Login() {
   };
 
   return (
-    <div
-      style={{
-        background: "url('https://i.imgur.com/OM3MMmv.jpeg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <div className="login-page">
       <div className="login-container">
         <h1 className="custom-heading">Login</h1>
         <form onSubmit={handleLogin} className="space-y-4">
@@ -76,7 +66,7 @@ function Login() {
               <input type="checkbox" id="" name="" />
               <label htmlFor="Remember Me" className="white-text">Remember Me</label>
             </div>
-            <Link to='' className="text1">Forgot Password?</Link>
+            <Link to='/forgot-password' className="text1">Forgot Password?</Link>
           </div>
           <div>
             <button 
