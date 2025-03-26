@@ -2,6 +2,8 @@
 .modify-container {
     background: url("https://i.imgur.com/ssEiF8W.jpeg") no-repeat center center fixed;
     background-size: cover;
+    margin-top: -100px;
+    padding-top: 50px; /* This pushes the content below the navbar */
     min-height: 100vh; 
     display: flex;
     flex-direction: column;

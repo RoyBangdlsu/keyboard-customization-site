@@ -1,12 +1,13 @@
 /* Customize.css */
 .keyboard-customization {
     font-family: 'Montserrat', sans-serif;
-    margin: 0 auto;
+    margin-top: -100px;
+    padding-top: 50px; /* This pushes the content below the navbar */
+    min-height: 100vh; 
     padding: 20px;
     text-align: center;
     background: url('https://i.imgur.com/UpdN1u3.jpeg') no-repeat center center fixed; /* Add your background image path */
     background-size: cover; /* Ensure the background covers the entire screen */
-    min-height: 100vh; /* Ensure the container takes up the full viewport height */
     display: flex;
     flex-direction: column;
     justify-content: center;
