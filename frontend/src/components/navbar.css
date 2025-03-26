@@ -106,3 +106,12 @@
 .navbar-navigations.logout-button:hover {
   color: #BADDFF;
 }
+
+.navbar-navigations.active {
+  /* Change the color or add any styling for the active link */
+  color: #BADDFF;
+}
+
+.navbar-navigations.active::after {
+  transform: scaleX(1);
+}
