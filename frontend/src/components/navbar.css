@@ -9,7 +9,7 @@
   }
   
   .navbar-container {
-    max-width: 1200px;   /* Match the login bg container width */
+    max-width: 1200px;   
     margin: 0 auto;      /* Centers the container */
     padding: 20px 100px; /* Padding to create spacing on left and right */
     display: flex;
@@ -33,12 +33,13 @@
     margin-left: -50px;  /* Space between the logo and title */
   }
   
-  /* Title styling */
   .navbar-title {
     color: white;
     margin: 0;
     margin-right: 250px;
+    text-shadow: 1px 1px 2px black;
   }
+  
   
   .navbar-navigations {
     position: relative;
