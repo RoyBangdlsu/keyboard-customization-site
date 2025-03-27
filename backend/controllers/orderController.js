@@ -40,7 +40,7 @@ export const placeNewOrder = async (req, res) => {
 
     const newOrder = new Order({
       customerName: customerName, 
-      customerEmail: customerEmail,
+      customerEmail: email,
       serviceType: type,
       address: address, 
       keyboardSize: keyboardSize,
