@@ -14,6 +14,7 @@ function Login() {
     // ✅ If admin, redirect to admin page
     if (email === "admin@gmail.com" && password === "admin") {
       navigate("/admin");
+      window.location.reload();
     } else {
       e.preventDefault();
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {

@@ -82,16 +82,16 @@ function Navbar() {
         >
           About
         </NavLink>
-        <NavLink
-          to="/customize"
-          className={({ isActive }) =>
-            "navbar-navigations" + (isActive ? " active" : "")
-          }
-        >
-          Customize
-        </NavLink>
         {isLoggedIn ? (
           <>
+          <NavLink
+              to="/customize"
+              className={({ isActive }) =>
+                "navbar-navigations" + (isActive ? " active" : "")
+              }
+            >
+              Customize
+            </NavLink>
             <NavLink
               to="/profile"
               className={({ isActive }) =>
