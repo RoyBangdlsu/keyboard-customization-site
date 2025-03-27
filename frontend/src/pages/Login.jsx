@@ -15,7 +15,6 @@ function Login() {
     if (email === "admin@gmail.com" && password === "admin") {
       navigate("/admin");
     } else {
-      //navigate("/"); // ✅ Regular user goes to home
       e.preventDefault();
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
@@ -28,6 +27,7 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(data.user));
 
         alert("Login successful!");
+        navigate("/"); // ✅ Regular user goes to home
       } else {
         alert(data.message);
       }
