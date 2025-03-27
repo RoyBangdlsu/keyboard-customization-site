@@ -296,7 +296,7 @@ function Order() {
       <h1 className="text-xl font-bold">Review Order</h1>
         <div>
             <>
-            <p>Keyboard Preview</p>
+            <p>Keyboard Preview {user.email}</p>
             {/* Display the keyboard image */}
             {keyboardImage && (
               <div className="mt-4">
