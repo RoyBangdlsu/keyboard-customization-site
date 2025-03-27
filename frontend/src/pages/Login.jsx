@@ -22,12 +22,12 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
-      if (data.token) {
+      if (res.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
+        localStorage.setItem("user", JSON.stringify({ name: data.user.name })); // ✅ Store user name
         alert("Login successful!");
-        navigate("/"); // ✅ Regular user goes to home
+        navigate("/");
+        window.location.reload(); // ✅ Ensure Navbar updates immediately
       } else {
         alert(data.message);
       }
