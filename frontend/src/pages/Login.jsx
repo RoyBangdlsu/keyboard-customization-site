@@ -25,7 +25,8 @@ function Login() {
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify({ name: data.user.name , email: data.user.email })); // ✅ Store user name
+        localStorage.setItem("user", JSON.stringify({ name: data.user.name })); // ✅ Store user name
+        localStorage.setItem("user", JSON.stringify({ email: data.user.email })); // ✅ Store user name
         alert("Login successful!");
         navigate("/");
         window.location.reload(); // ✅ Ensure Navbar updates immediately
