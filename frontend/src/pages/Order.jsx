@@ -323,19 +323,19 @@ function Order() {
               <p>Keycap Brand: {keyCapBrand} - ₱{keyCapBrandPrice.toFixed(2)}</p>
               <p>Switch Type: {switchType} - ₱{switchTypePrice.toFixed(2)}</p>
               <div className="mt-2">
-              <p>Switch Lubing: {lubingKeys.length} keys - ₱{switchLubingPrice.toFixed(2)}</p>
-              {lubingKeys.length > 0 && (
+              <p>Switch Lubing: {lubingKeyList.length} keys - ₱{switchLubingPrice.toFixed(2)}</p>
+              {lubingKeyList.length > 0 && (
                 <div className="ml-4 text-sm text-gray-600">
-                  <p>Lubed keys: {lubingKeys.join(", ")}</p>
+                  <p>Lubed keys: {lubingKeyList.join(", ")}</p>
                 </div>
               )}
             </div>
 
             <div className="mt-2">
-              <p>Filming: {filmingKeys.length} keys - ₱{filmingPrice.toFixed(2)}</p>
-              {filmingKeys.length > 0 && (
+              <p>Filming: {filmingKeyList.length} keys - ₱{filmingPrice.toFixed(2)}</p>
+              {filmingKeyList.length > 0 && (
                 <div className="ml-4 text-sm text-gray-600">
-                  <p>Filmed keys: {filmingKeys.join(", ")}</p>
+                  <p>Filmed keys: {filmingKeyList.join(", ")}</p>
                 </div>
               )}
             </div>
