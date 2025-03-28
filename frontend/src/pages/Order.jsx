@@ -23,6 +23,9 @@ function Order() {
   const [caseFoam, setCaseFoam] = useState(""); // Case Foam choice
   const [PEFoam, setPEFoam] = useState(""); // PE Foam choice
   const [address, setAddress] = useState(""); // Address input
+  const [stabilizerKeyList, setStabilizerKeyList] = useState([]);
+  const [lubingKeyList, setLubingKeyList] = useState([]);
+  const [filmingKeyList, setFilmingKeyList] = useState([]);
   const [keyboardImage, setKeyboardImage] = useState(""); // Address input
   const [total, setTotal] = useState(0); // Total cost
 
@@ -43,6 +46,13 @@ function Order() {
     const storedNumTapeLayer = localStorage.getItem("numTapeLayer");
     const storedPEFoam = localStorage.getItem("PEFoam");
     const storedCaseFoam = localStorage.getItem("caseFoam");
+    const storedStabilizerKeys = JSON.parse(localStorage.getItem('stabilizerKeyList') || '[]');
+    const storedLubingKeys = JSON.parse(localStorage.getItem('lubingKeyList') || '[]');
+    const storedFilmingKeys = JSON.parse(localStorage.getItem('filmingKeyList') || '[]');
+    
+    setStabilizerKeyList(storedStabilizerKeys);
+    setLubingKeyList(storedLubingKeys);
+    setFilmingKeyList(storedFilmingKeys);
   
     let calculatedTotal = 0;
   

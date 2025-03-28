@@ -5,18 +5,36 @@ import './customize.css';
 
 // Define the AddOnsModal component
 const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
-  const currentAddOns = keyAddOns[selectedKey] || { stabilizers: false, lubing: false, filming: false };
+const currentAddOns = keyAddOns[selectedKey] || { stabilizers: false, lubing: false, filming: false };
+const [stabilizerKeys, setStabilizerKeys] = useState([]);
+const [lubingKeys, setLubingKeys] = useState([]);
+const [filmingKeys, setFilmingKeys] = useState([]);
 
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setKeyAddOns((prevAddOns) => ({
+const handleCheckboxChange = (e) => {
+  const { name, checked } = e.target;
+  setKeyAddOns((prevAddOns) => {
+    const newAddOns = {
       ...prevAddOns,
       [selectedKey]: {
         ...currentAddOns,
         [name]: checked,
       },
-    }));
-  };
+    };
+
+    // Update the key arrays based on the new state
+    const stabilizers = [];
+    const lubings = [];
+    const filmings = [];
+    
+    Object.entries(newAddOns).forEach(([key, addOns]) => {
+      if (addOns.stabilizers) stabilizers.push(key);
+      if (addOns.lubing) lubings.push(key);
+      if (addOns.filming) filmings.push(key);
+    });
+
+    return newAddOns;
+  });
+};
 
   return (
     <div className="add-ons-modal">
@@ -369,6 +387,9 @@ function Customize() {
           localStorage.setItem('numStabilizer', stabilizerCount);
           localStorage.setItem('numSwitchLubing', lubingCount);
           localStorage.setItem('numFilming', filmingCount);
+          localStorage.setItem('stabilizerKeyList', JSON.stringify(stabilizerKeys));
+          localStorage.setItem('lubingKeyList', JSON.stringify(lubingKeys));
+          localStorage.setItem('filmingKeyList', JSON.stringify(filmingKeys));
 
           // Navigate to the Order page
           navigate("/order");
