@@ -322,19 +322,19 @@ function Customize() {
 
   // Handle the "Order This Design" button click
   const handleOrder = () => {
-    // Enumerate the keys with each add-on
-    const stabilizerKeys = [];
-    const lubingKeys = [];
-    const filmingKeys = [];
   
+    const stabilizerKeysSet = new Set();
+    const lubingKeysSet = new Set();
+    const filmingKeysSet = new Set();
+
     keycapLayouts[layout].forEach((row) => {
       row.forEach((key) => {
         if (key !== '' && key !== ' ') {
           const addOns = keyAddOns[key];
           if (addOns) {
-            if (addOns.stabilizers) stabilizerKeys.push(key);
-            if (addOns.lubing) lubingKeys.push(key);
-            if (addOns.filming) filmingKeys.push(key);
+            if (addOns.stabilizers) stabilizerKeysSet.add(key);
+            if (addOns.lubing) lubingKeysSet.add(key);
+            if (addOns.filming) filmingKeysSet.add(key);
           }
         }
       });
