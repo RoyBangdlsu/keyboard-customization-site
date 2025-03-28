@@ -322,23 +322,32 @@ function Order() {
               <p>Keyboard Size: {keyboardSize} - ₱{keyboardSizePrice.toFixed(2)}</p>
               <p>Keycap Brand: {keyCapBrand} - ₱{keyCapBrandPrice.toFixed(2)}</p>
               <p>Switch Type: {switchType} - ₱{switchTypePrice.toFixed(2)}</p>
-              <p>Switch Lubing: {numSwitchLubing} - ₱{switchLubingPrice.toFixed(2)}</p>
-              <p>Filming: {numFilming} - ₱{filmingPrice.toFixed(2)}</p>
               <div className="mt-2">
+              <p>Switch Lubing: {lubingKeys.length} keys - ₱{switchLubingPrice.toFixed(2)}</p>
+              {lubingKeys.length > 0 && (
+                <div className="ml-4 text-sm text-gray-600">
+                  <p>Lubed keys: {lubingKeys.join(", ")}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-2">
+              <p>Filming: {filmingKeys.length} keys - ₱{filmingPrice.toFixed(2)}</p>
+              {filmingKeys.length > 0 && (
+                <div className="ml-4 text-sm text-gray-600">
+                  <p>Filmed keys: {filmingKeys.join(", ")}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-2">
               <p>Stabilizers: {numStabilizer} keys - ₱{stabilizerPrice.toFixed(2)}</p>
               {stabilizerKeyList.length > 0 && (
                 <div className="ml-4 text-sm text-gray-600">
-                  <p>Keys with stabilizers:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {stabilizerKeyList.map((key, index) => (
-                      <span key={index} className="bg-gray-100 px-2 py-1 rounded">
-                        {key}
-                      </span>
-                    ))}
-                  </div>
+                  <p>Keys with stabilizers: {stabilizerKeyList.join(", ")}</p>
                 </div>
               )}
-              </div>
+            </div>
               <p>Tape Layer: {numTapeLayer} - ₱{tapeLayerPrice.toFixed(2)}</p>
               <p>Case Foam (₱50): {caseFoam}</p>
               <p>PE Foam (₱50): {PEFoam}</p>
