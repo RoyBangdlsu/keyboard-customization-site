@@ -339,7 +339,11 @@ function Customize() {
         }
       });
     });
-  
+
+    // Convert Sets to Arrays
+    const stabilizerKeys = Array.from(stabilizerKeysSet);
+    const lubingKeys = Array.from(lubingKeysSet);
+    const filmingKeys = Array.from(filmingKeysSet);  
     // Update the counts
     setNumStabilizer(stabilizerKeys.length);
     setNumSwitchLubing(lubingKeys.length);
