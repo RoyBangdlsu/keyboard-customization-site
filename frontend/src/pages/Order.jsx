@@ -280,7 +280,10 @@ function Order() {
         keyboardImage, 
         keyCapBrandPrice,
         keyboardSizePrice, 
-        switchTypePrice 
+        switchTypePrice,
+        stabilizerKeys: JSON.stringify(stabilizerKeyList),
+        lubingKeys: JSON.stringify(lubingKeyList),
+        filmingKeys: JSON.stringify(filmingKeyList)
       }),
     });
 
