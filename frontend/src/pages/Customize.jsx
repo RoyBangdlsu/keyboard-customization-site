@@ -5,40 +5,18 @@ import './customize.css';
 
 // Define the AddOnsModal component
 const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
-const currentAddOns = keyAddOns[selectedKey] || { stabilizers: false, lubing: false, filming: false };
-const [stabilizerKeys, setStabilizerKeys] = useState([]);
-const [lubingKeys, setLubingKeys] = useState([]);
-const [filmingKeys, setFilmingKeys] = useState([]);
+  const currentAddOns = keyAddOns[selectedKey] || { stabilizers: false, lubing: false, filming: false };
 
-const handleCheckboxChange = (e) => {
-  const { name, checked } = e.target;
-  setKeyAddOns((prevAddOns) => {
-    const newAddOns = {
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setKeyAddOns((prevAddOns) => ({
       ...prevAddOns,
       [selectedKey]: {
         ...currentAddOns,
         [name]: checked,
       },
-    };
-
-    // Update the key arrays based on the new state
-    const stabilizers = [];
-    const lubings = [];
-    const filmings = [];
-    
-    Object.entries(newAddOns).forEach(([key, addOns]) => {
-      if (addOns.stabilizers) stabilizers.push(key);
-      if (addOns.lubing) lubings.push(key);
-      if (addOns.filming) filmings.push(key);
-    });
-
-    setStabilizerKeys(stabilizers);
-    setLubingKeys(lubings);
-    setFilmingKeys(filmings);
-
-    return newAddOns;
-  });
-};
+    }));
+  };
 
   return (
     <div className="add-ons-modal">
@@ -344,29 +322,29 @@ function Customize() {
 
   // Handle the "Order This Design" button click
   const handleOrder = () => {
-    // Count the number of stabilizers, lubing, and filming
-    let stabilizerCount = 0;
-    let lubingCount = 0;
-    let filmingCount = 0;
-
-    // Iterate through the keycapLayouts
-  keycapLayouts[layout].forEach((row) => {
-    row.forEach((key) => {
-      if (key !== '' && key !== ' ') { // Skip empty spaces
-        const addOns = keyAddOns[key];
-        if (addOns) {
-          if (addOns.stabilizers) stabilizerCount++;
-          if (addOns.lubing) lubingCount++;
-          if (addOns.filming) filmingCount++;
+    // Enumerate the keys with each add-on
+    const stabilizerKeys = [];
+    const lubingKeys = [];
+    const filmingKeys = [];
+  
+    keycapLayouts[layout].forEach((row) => {
+      row.forEach((key) => {
+        if (key !== '' && key !== ' ') {
+          const addOns = keyAddOns[key];
+          if (addOns) {
+            if (addOns.stabilizers) stabilizerKeys.push(key);
+            if (addOns.lubing) lubingKeys.push(key);
+            if (addOns.filming) filmingKeys.push(key);
+          }
         }
-      }
+      });
     });
-  });
-    // Update the state with the counts
-    setNumStabilizer(stabilizerCount);
-    setNumSwitchLubing(lubingCount);
-    setNumFilming(filmingCount);
-
+  
+    // Update the counts
+    setNumStabilizer(stabilizerKeys.length);
+    setNumSwitchLubing(lubingKeys.length);
+    setNumFilming(filmingKeys.length);
+  
     // Export the keyboard layout as a PNG
     const keyboardElement = document.querySelector('.keyboard-body');
     if (keyboardElement) {
@@ -374,27 +352,26 @@ function Customize() {
         .then((dataUrl) => {
           // Save the Base64 image string to localStorage
           localStorage.setItem('keyboardImage', dataUrl);
-
+  
           // Save other keyboard details to localStorage
           localStorage.setItem('keyboardSwitchType', switchType);
           localStorage.setItem('keyboardLayout', layout);
           localStorage.setItem('keyboardKeycapBrand', keycapBrand);
-          localStorage.setItem('keyAddOns', JSON.stringify(keyAddOns)); // Save keyAddOns
-          localStorage.setItem('caseFoam', caseFoam); // Save caseFoam
-          localStorage.setItem('PEFoam', PEFoam); // Save PEFoam
-          localStorage.setItem('numTapeLayers', numTapeLayer); // Save numTapeLayer
-
-          // Save add-ons counts to localStorage
-          localStorage.setItem('PEFoam', PEFoam);
+          localStorage.setItem('keyAddOns', JSON.stringify(keyAddOns));
           localStorage.setItem('caseFoam', caseFoam);
+          localStorage.setItem('PEFoam', PEFoam);
           localStorage.setItem('numTapeLayers', numTapeLayer);
-          localStorage.setItem('numStabilizer', stabilizerCount);
-          localStorage.setItem('numSwitchLubing', lubingCount);
-          localStorage.setItem('numFilming', filmingCount);
+  
+          // Save counts to localStorage
+          localStorage.setItem('numStabilizer', stabilizerKeys.length);
+          localStorage.setItem('numSwitchLubing', lubingKeys.length);
+          localStorage.setItem('numFilming', filmingKeys.length);
+  
+          // Save the key lists to localStorage
           localStorage.setItem('stabilizerKeyList', JSON.stringify(stabilizerKeys));
           localStorage.setItem('lubingKeyList', JSON.stringify(lubingKeys));
           localStorage.setItem('filmingKeyList', JSON.stringify(filmingKeys));
-
+  
           // Navigate to the Order page
           navigate("/order");
         })
