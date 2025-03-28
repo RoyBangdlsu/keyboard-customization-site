@@ -32,6 +32,10 @@ const handleCheckboxChange = (e) => {
       if (addOns.filming) filmings.push(key);
     });
 
+    setStabilizerKeys(stabilizers);
+    setLubingKeys(lubings);
+    setFilmingKeys(filmings);
+
     return newAddOns;
   });
 };
