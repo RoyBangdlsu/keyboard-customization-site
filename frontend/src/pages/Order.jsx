@@ -324,7 +324,21 @@ function Order() {
               <p>Switch Type: {switchType} - ₱{switchTypePrice.toFixed(2)}</p>
               <p>Switch Lubing: {numSwitchLubing} - ₱{switchLubingPrice.toFixed(2)}</p>
               <p>Filming: {numFilming} - ₱{filmingPrice.toFixed(2)}</p>
-              <p>Stabilizer: {numStabilizer} - ₱{stabilizerPrice.toFixed(2)}</p>
+              <div className="mt-2">
+              <p>Stabilizers: {numStabilizer} keys - ₱{stabilizerPrice.toFixed(2)}</p>
+              {stabilizerKeyList.length > 0 && (
+                <div className="ml-4 text-sm text-gray-600">
+                  <p>Keys with stabilizers:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {stabilizerKeyList.map((key, index) => (
+                      <span key={index} className="bg-gray-100 px-2 py-1 rounded">
+                        {key}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              </div>
               <p>Tape Layer: {numTapeLayer} - ₱{tapeLayerPrice.toFixed(2)}</p>
               <p>Case Foam (₱50): {caseFoam}</p>
               <p>PE Foam (₱50): {PEFoam}</p>
