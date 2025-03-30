@@ -24,7 +24,7 @@ function Admin() {
 
   return (
     <div>
-      <h1>Admin Dashboard</h1>
+      <h1>Roy test</h1>
       <ul>
         {users.map((user) => (
           <li key={user._id}>
