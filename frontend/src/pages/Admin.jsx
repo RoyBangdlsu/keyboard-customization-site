@@ -7,17 +7,27 @@ function Admin() {
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+
+    // ✅ Only allow access to admin
+    if (!token || !user || user.email !== "admin@gmail.com") {
+      navigate("/");
+      return;
+    }
+
     const fetchUsers = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await fetch(`${API_BASE_URL}/api/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
+
         if (res.status === 200) {
           setUsers(data);
         } else {
-          navigate("/login");
+          console.error("Unauthorized or server error");
         }
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -37,10 +47,13 @@ function Admin() {
     <div>
       <h1>Admin Dashboard</h1>
       <button onClick={handleLogout}>Logout</button>
+
       <ul>
-        {/*users.map((user) => (
-          <li key={user._id}>{user.name} ({user.email})</li>
-        ))*/}
+        {users.map((user) => (
+          <li key={user._id}>
+            {user.name} ({user.email})
+          </li>
+        ))}
       </ul>
     </div>
   );
