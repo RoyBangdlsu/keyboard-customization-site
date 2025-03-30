@@ -11,12 +11,6 @@ function Admin() {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-
-      if (!token || !storedUser?.isAdmin) {
-        navigate("/");
-        return;
-      }
 
       try {
         const res = await fetch(`${API_BASE_URL}/api/admin/users`, {
@@ -31,19 +25,17 @@ function Admin() {
           setUsers(data);
         } else {
           setError(data.message || "Failed to load users.");
-          navigate("/");
         }
       } catch (err) {
         console.error("Error fetching users:", err);
         setError("Server error.");
-        navigate("/");
       } finally {
         setLoading(false);
       }
     };
 
     fetchUsers();
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
