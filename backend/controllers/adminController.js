@@ -16,8 +16,15 @@ export const adminLogin = async (req, res) => {
 // Get all users (for admin)
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
-    res.json(users);
+    const users = await User.find({})
+      .select("-password -__v") // Exclude password and version key
+      .sort({ createdAt: -1 }); // Sort by newest first
+    
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch users" });
   }
@@ -26,8 +33,13 @@ export const getAllUsers = async (req, res) => {
 // Delete user (for admin)
 export const deleteUser = async (req, res) => {
   try {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({ message: "User deleted successfully" });
+    const user = await User.findByIdAndDelete(req.params.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    } else {
+      res.json({ message: "User deleted successfully" });
+    }
   } catch (error) {
     res.status(500).json({ message: "Failed to delete user" });
   }
