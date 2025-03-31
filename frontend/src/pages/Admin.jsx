@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './Admin.css';
 
 function Admin() {
   const [users, setUsers] = useState([]);
@@ -43,22 +44,67 @@ function Admin() {
     navigate("/login");
   };
 
+  const handleDeleteUser = async (userId) => {
+    const token = localStorage.getItem("token");
+    
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        setUsers(users.filter(user => user._id !== userId));
+      } else {
+        const data = await res.json();
+        setError(data.message || "Failed to delete user.");
+      }
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      setError("Server error.");
+    }
+  };
+
   return (
     <div className="admin-container">
-      <h1 className="custom-heading">Admin Dashboard</h1>
-      <button onClick={handleLogout} className="custom-button logout-btn">Logout</button>
+      <div className="admin-header">
+        <h1 className="admin-title">Admin Dashboard</h1>
+        <button onClick={handleLogout} className="logout-btn">Logout</button>
+      </div>
 
-      {loading && <p>Loading users...</p>}
-      {error && <p className="error-message">{error}</p>}
+      {loading && <div className="loading">Loading users...</div>}
+      {error && <div className="error-message">{error}</div>}
 
       {!loading && !error && (
-        <ul className="user-list">
-          {users.map((user) => (
-            <li key={user._id}>
-              <strong>{user.name}</strong> ({user.email})
-            </li>
-          ))}
-        </ul>
+        <div className="users-table-container">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <button 
+                      onClick={() => handleDeleteUser(user._id)}
+                      className="delete-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
