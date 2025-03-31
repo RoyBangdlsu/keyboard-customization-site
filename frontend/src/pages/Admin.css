@@ -2,7 +2,13 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    background: url('https://i.imgur.com/UpdN1u3.jpeg') no-repeat center center fixed; /* Add your background image path */
+    background-size: cover; /* Ensure the background covers the entire screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
   .admin-header {
