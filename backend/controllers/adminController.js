@@ -5,35 +5,11 @@ import jwt from "jsonwebtoken";
 export const adminLogin = async (req, res) => {
   const { username, password } = req.body;
 
-  try {
-    // Verify admin credentials (consider using environment variables)
-    if (username === process.env.ADMIN_USERNAME && 
-        password === process.env.ADMIN_PASSWORD) {
-      
-      // Create JWT token with admin role
-      const token = jwt.sign(
-        { 
-          id: "admin", 
-          role: "admin",
-          email: "admin@gmail.com" 
-        }, 
-        process.env.JWT_SECRET, 
-        { expiresIn: "1h" }
-      );
-
-      res.json({ 
-        token,
-        user: {
-          name: "Admin",
-          email: "admin@gmail.com",
-          role: "admin"
-        }
-      });
-    } else {
-      res.status(401).json({ message: "Invalid admin credentials" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: "Server error during admin login" });
+  if (username === "admin" && password === "admin") {
+    const token = jwt.sign({ id: "admin", role: "admin" }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    res.json({ token });
+  } else {
+    res.status(401).json({ message: "Invalid admin credentials" });
   }
 };
 
