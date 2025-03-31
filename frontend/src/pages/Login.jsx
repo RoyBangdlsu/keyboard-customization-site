@@ -15,29 +15,56 @@ function Login() {
   
     // ✅ Admin login shortcut
     if (email === "admin@gmail.com" && password === "admin") {
-      localStorage.setItem("token", "admin-token"); // optional dummy
-      localStorage.setItem("user", JSON.stringify({ name: "Admin", email: "admin@gmail.com", isAdmin: true }));
-      navigate("/admin");
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: "admin", password: "admin" }),
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify({ 
+            name: "Admin", 
+            email: "admin@gmail.com", 
+            role: "admin" 
+          }));
+          navigate("/admin");
+        } else {
+          alert(data.message || "Admin login failed");
+        }
+      } catch (error) {
+        alert("Error during admin login");
+      }
       return;
     }
     
-  
     // Regular user login
-    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-  
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify({ name: data.user.name, email: data.user.email }));
-      alert("Login successful!");
-      navigate("/");
-      window.location.reload();
-    } else {
-      alert(data.message);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify({ 
+          name: data.user.name, 
+          email: data.user.email,
+          role: data.user.role || "user" 
+        }));
+        alert("Login successful!");
+        navigate("/");
+        window.location.reload();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Error during login");
     }
   };
   
