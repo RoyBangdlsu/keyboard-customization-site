@@ -9,34 +9,32 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
+  const [isAdmin, setisAdmin] = useState(false);
+  
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // ✅ First line
-  
-    // ✅ Admin login shortcut
-    if (email === "admin@gmail.com" && password === "admin") {
-      localStorage.setItem("token", "your_secret_key"); // optional dummy
-      localStorage.setItem("user", JSON.stringify({ name: "Admin", email: "admin@gmail.com", isAdmin: true }));
-      navigate("/admin");
-      return;
-    }
-    
-    // Regular user login
-    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-  
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify({ name: data.user.name, email: data.user.email }));
-      alert("Login successful!");
-      navigate("/");
-      window.location.reload();
-    } else {
-      alert(data.message);
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        
+        // Redirect to admin dashboard if user.isAdmin === true
+        navigate(data.user.isAdmin ? "/admin" : "/");
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      alert("Network error");
     }
   };
   
