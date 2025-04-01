@@ -43,11 +43,12 @@
   
   .navbar-navigations {
     position: relative;
-    display: inline-block; /* ensures the pseudo-element width matches the link */
+    display: inline-block;
     color: white;
     text-decoration: none;
     margin-left: 10px;
     transition: color 200ms ease;
+    text-shadow: 1px 1px 2px black;
   }
   
   .navbar-navigations::after {
@@ -84,6 +85,7 @@
   font-family: inherit;
   cursor: pointer;
   transition: color 200ms ease;
+  text-shadow: 1px 1px 2px black;
 }
 
 /* Underline effect */
