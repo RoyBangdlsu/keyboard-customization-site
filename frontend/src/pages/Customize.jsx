@@ -433,17 +433,25 @@ function Customize() {
     }
   };
 
-  // Load all designs for the logged-in user
   const loadDesigns = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);    // http://localhost:5000 or ${API_BASE_URL}
+      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);
       const data = await response.json();
       if (response.ok) {
-        setDesigns(data.designs);
+        // Ensure all designs have the new fields with default values if missing
+        const processedDesigns = data.designs.map(design => ({
+          ...design,
+          keyAddOns: design.keyAddOns || "{}", // Default empty object if missing
+          caseFoam: design.caseFoam || "No", // Default "No" if missing
+          PEFoam: design.PEFoam || "No", // Default "No" if missing
+          numTapeLayer: design.numTapeLayer || 0 // Default 0 if missing
+        }));
+        setDesigns(processedDesigns);
       } else {
         alert('Failed to load designs OR you have no designs.');
       }
     } catch (error) {
+      console.error('Error loading designs:', error);
       alert('Failed to load designs.');
     }
   };
@@ -464,7 +472,7 @@ function Customize() {
   const deleteDesign = async (designId) => {
     if (window.confirm('Are you sure you want to delete this design?')) {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, {    // http://localhost:5000 or ${API_BASE_URL}
+        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, {    // ${API_BASE_URL} or ${API_BASE_URL}
           method: 'DELETE',
         });
   
