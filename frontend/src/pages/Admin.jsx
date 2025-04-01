@@ -16,7 +16,7 @@ function Admin() {
       try {
         const res = await fetch(`${API_BASE_URL}/api/admin/users`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`,
           },
         });
 

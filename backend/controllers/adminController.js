@@ -14,6 +14,8 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "1h" }     // Token expiry
     );
 
+    console.log(token);
+
     // Send the token to the frontend
     res.json({ 
       token, 
