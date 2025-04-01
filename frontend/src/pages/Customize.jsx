@@ -20,44 +20,52 @@ const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
 
   return (
     <div className="add-ons-modal">
-      <h3>Add-ons for {selectedKey}</h3>
-      <div>
-        <label>
-          Stabilizers:
-          <input
-            type="checkbox"
-            name="stabilizers"
-            checked={currentAddOns.stabilizers}
-            onChange={handleCheckboxChange}
-          />
-        </label>
+      <h3>
+        Add-ons for <span className="key-emphasis">{selectedKey}</span>
+      </h3>
+      <div className="add-ons-container">
+        <div className="row">
+          <div className="column1">Stabilizers:</div>
+          <div className="column2"></div>
+          <div className="column3">
+            <input
+              type="checkbox"
+              name="stabilizers"
+              checked={currentAddOns.stabilizers}
+              onChange={handleCheckboxChange}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="column1">Lubing:</div>
+          <div className="column2"></div>
+          <div className="column3">
+            <input
+              type="checkbox"
+              name="lubing"
+              checked={currentAddOns.lubing}
+              onChange={handleCheckboxChange}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="column1">Filming:</div>
+          <div className="column2"></div>
+          <div className="column3">
+            <input
+              type="checkbox"
+              name="filming"
+              checked={currentAddOns.filming}
+              onChange={handleCheckboxChange}
+            />
+          </div>
+        </div>
       </div>
-      <div>
-        <label>
-          Lubing:
-          <input
-            type="checkbox"
-            name="lubing"
-            checked={currentAddOns.lubing}
-            onChange={handleCheckboxChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Filming:
-          <input
-            type="checkbox"
-            name="filming"
-            checked={currentAddOns.filming}
-            onChange={handleCheckboxChange}
-          />
-        </label>
-      </div>
-      <button onClick={onClose}>Close</button>
+      <button className="close-btn" onClick={onClose}>Close</button>
     </div>
   );
 };
+
 
 // Main Customize component
 function Customize() {
@@ -599,8 +607,8 @@ function Customize() {
 
       {/* Color Picker for Keycaps */}
       {selectedKey && (
-        <div className="color-picker">
-          <label>Select color for: {selectedKey}</label>
+        <div className="color-picker-box">
+          <label className="color-label">Select color for: <span className="key-emphasis">{selectedKey}</span></label>
           <input
             type="color"
             value={keycapColors[selectedKey] || '#FFFFFF'}
