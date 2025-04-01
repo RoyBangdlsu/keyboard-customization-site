@@ -1,17 +1,18 @@
 
 .hero-container {
+    font-family: 'Montserrat', sans-serif;
+    background: url("https://i.imgur.com/PhECHzo.jpeg") no-repeat center center;
+    background-size: cover;
     position: relative;
     margin-top: -100px;
     padding-top: 150px; /* This pushes the content below the navbar */
     min-height: 100vh; 
-    background: url("https://i.imgur.com/PhECHzo.jpeg") no-repeat center center;
-    background-size: cover;
     display: flex;
     align-items: center;              
     justify-content: space-between;  
     padding: 2rem;
     box-sizing: border-box;
-    overflow: hidden;                
+    overflow: hidden; 
   }
   
   .hero-overlay {

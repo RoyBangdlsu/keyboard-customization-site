@@ -1,9 +1,12 @@
 .profile {
   font-family: 'Montserrat', sans-serif;
     margin: 0 auto;
+    margin-top: -100px;
+    padding-top: 150px; /* This pushes the content below the navbar */
+    min-height: 100vh; 
     padding: 20px;
     text-align: center;
-    background: url('../src/assets/bg2.jpg') no-repeat center center fixed;
+    background: url('https://i.imgur.com/OM3MMmv.jpeg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     flex-direction: column;
@@ -13,7 +16,8 @@
 
 .profile-container {
     max-width: 800px;
-    margin: 50px auto;
+    margin-top: 100px;
+    margin-left: 230px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;

@@ -61,6 +61,7 @@
     max-width: 100%;
     overflow-x: auto;
     box-sizing: border-box;
+    margin-bottom: 20px;
   }
   
   .keyboard-body {
@@ -117,7 +118,7 @@
   
   .actions button {
     padding: 10px 20px;
-    background-color: #BADDFF;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
@@ -125,7 +126,7 @@
   }
   
   .actions button:hover {
-    background-color: black;
+    background-color: #BADDFF;
   }
 
   .load-designs {
@@ -178,3 +179,97 @@
   .design-item button:hover {
     background-color: #0056b3;
 }
+
+.add-ons-modal {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.key-emphasis {
+    font-weight: bold;
+    padding: 5px 10px;
+    background-color: #BADDFF;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.add-ons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.column1 {
+    width: 40%;
+    text-align: left;
+    font-weight: bold;
+}
+
+.column2 {
+    width: 20%; /* Adds spacing */
+}
+
+.column3 {
+    width: 40%;
+    text-align: right;
+}
+
+.close-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    background-color: #BADDFF;
+}
+
+.color-picker-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+
+.color-picker-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.color-label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.color-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+

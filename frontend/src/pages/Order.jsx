@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import domtoimage from 'dom-to-image';
+import "./Orders.css";
 
 function Order() {
   const navigate = useNavigate();
@@ -305,78 +306,252 @@ function Order() {
   const customerEmail = user.email;
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold">Review Order</h1>
-        <div>
-            <>
-            <p>Keyboard Preview</p>
-            {/* Display the keyboard image */}
-            {keyboardImage && (
-              <div className="mt-4">
-                <img
-                  src={keyboardImage}
-                  alt="Custom Keyboard Design"
-                  className="mt-2 border border-gray-300 rounded-md"
-                  style={{ maxWidth: '100%', height: 'auto' }}
-                />
-              </div>
-            )}
+    <div className="body-wrap">
+      <div className="container">
+        <div className="content">
+          {/* The main white box */}
+          <table className="main" width="100%" cellPadding="0" cellSpacing="0">
+            <tbody>
+              <tr>
+                <td className="content-wrap aligncenter">
+                  <table width="100%" cellPadding="0" cellSpacing="0">
+                    <tbody>
+                      {/* Heading */}
+                      <tr>
+                        <td className="content-block">
+                          <h2>Thanks for using our app</h2>
+                        </td>
+                      </tr>
 
-              <p>Keyboard Size: {keyboardSize} - ₱{keyboardSizePrice.toFixed(2)}</p>
-              <p>Keycap Brand: {keyCapBrand} - ₱{keyCapBrandPrice.toFixed(2)}</p>
-              <p>Switch Type: {switchType} - ₱{switchTypePrice.toFixed(2)}</p>
-              <div className="mt-2">
-              <p>Switch Lubing: {lubingKeyList.length} keys - ₱{switchLubingPrice.toFixed(2)}</p>
-              {lubingKeyList.length > 0 && (
-                <div className="ml-4 text-sm text-gray-600">
-                  <p>Lubed keys: {lubingKeyList.join(", ")}</p>
-                </div>
-              )}
-            </div>
+                      {/* Invoice details */}
+                      <tr>
+                        <td className="content-block">
+                          <table className="invoice">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  {/* Basic info: you can change this to your own data */}
+                                  {customerName} <br />
+                                  {customerEmail} <br />
+                                  {new Date().toLocaleDateString()}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <table
+                                    className="invoice-items"
+                                    cellPadding="0"
+                                    cellSpacing="0"
+                                  >
+                                    <tbody>
+                                      {/* If you want to show a keyboard preview image */}
+                                      {keyboardImage && (
+                                        <tr>
+                                          <td colSpan={2} style={{ textAlign: "center" }}>
+                                            <img
+                                              src={keyboardImage}
+                                              alt="Custom Keyboard Design"
+                                              style={{ maxWidth: "100%", height: "auto" }}
+                                            />
+                                          </td>
+                                        </tr>
+                                      )}
 
-            <div className="mt-2">
-              <p>Filming: {filmingKeyList.length} keys - ₱{filmingPrice.toFixed(2)}</p>
-              {filmingKeyList.length > 0 && (
-                <div className="ml-4 text-sm text-gray-600">
-                  <p>Filmed keys: {filmingKeyList.join(", ")}</p>
-                </div>
-              )}
-            </div>
+                                      {/* Keyboard Size */}
+                                      <tr>
+                                        <td>Keyboard Size: {keyboardSize}</td>
+                                        <td className="alignright">
+                                          ₱{keyboardSizePrice.toFixed(2)}
+                                        </td>
+                                      </tr>
 
-            <div className="mt-2">
-              <p>Stabilizers: {numStabilizer} keys - ₱{stabilizerPrice.toFixed(2)}</p>
-              {stabilizerKeyList.length > 0 && (
-                <div className="ml-4 text-sm text-gray-600">
-                  <p>Keys with stabilizers: {stabilizerKeyList.join(", ")}</p>
-                </div>
-              )}
-            </div>
-              <p>Tape Layer: {numTapeLayer} - ₱{tapeLayerPrice.toFixed(2)}</p>
-              <p>Case Foam (₱50): {caseFoam}</p>
-              <p>PE Foam (₱50): {PEFoam}</p>
-            </>
-          <p>Total: ₱{total.toFixed(2)}</p>
-          
-          <div className="mt-4">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              required
-            />
+                                      {/* Keycap Brand */}
+                                      <tr>
+                                        <td>Keycap Brand: {keyCapBrand}</td>
+                                        <td className="alignright">
+                                          ₱{keyCapBrandPrice.toFixed(2)}
+                                        </td>
+                                      </tr>
+
+                                      {/* Switch Type */}
+                                      <tr>
+                                        <td>Switch Type: {switchType}</td>
+                                        <td className="alignright">
+                                          ₱{switchTypePrice.toFixed(2)}
+                                        </td>
+                                      </tr>
+
+                                      {/* Lubing */}
+                                      <tr>
+                                        <td>
+                                          Switch Lubing: {lubingKeyList.length} keys
+                                          {lubingKeyList.length > 0 && (
+                                            <div style={{ fontSize: "0.9em", color: "#666" }}>
+                                              Lubed keys: {lubingKeyList.join(", ")}
+                                            </div>
+                                          )}
+                                        </td>
+                                        <td className="alignright">
+                                          ₱{switchLubingPrice.toFixed(2)}
+                                        </td>
+                                      </tr>
+
+                                      {/* Filming */}
+                                      <tr>
+                                        <td>
+                                          Filming: {filmingKeyList.length} keys
+                                          {filmingKeyList.length > 0 && (
+                                            <div style={{ fontSize: "0.9em", color: "#666" }}>
+                                              Filmed keys: {filmingKeyList.join(", ")}
+                                            </div>
+                                          )}
+                                        </td>
+                                        <td className="alignright">
+                                          ₱{filmingPrice.toFixed(2)}
+                                        </td>
+                                      </tr>
+
+                                      {/* Stabilizers */}
+                                      <tr>
+                                        <td>
+                                          Stabilizers: {numStabilizer} keys
+                                          {stabilizerKeyList.length > 0 && (
+                                            <div style={{ fontSize: "0.9em", color: "#666" }}>
+                                              Keys with stabilizers: {stabilizerKeyList.join(", ")}
+                                            </div>
+                                          )}
+                                        </td>
+                                        <td className="alignright">
+                                          ₱{stabilizerPrice.toFixed(2)}
+                                        </td>
+                                      </tr>
+
+                                      {/* Tape Layer */}
+                                      <tr>
+                                        <td>Tape Layer: {numTapeLayer}</td>
+                                        <td className="alignright">
+                                          ₱{tapeLayerPrice.toFixed(2)}
+                                        </td>
+                                      </tr>
+
+                                      {/* Case Foam */}
+                                      <tr>
+                                        <td>Case Foam: {caseFoam === "Yes" ? "Yes (₱50)" : "No"}</td>
+                                        <td className="alignright">
+                                          {caseFoam === "Yes" ? "₱50.00" : "₱0.00"}
+                                        </td>
+                                      </tr>
+
+                                      {/* PE Foam */}
+                                      <tr>
+                                        <td>PE Foam: {PEFoam === "Yes" ? "Yes (₱50)" : "No"}</td>
+                                        <td className="alignright">
+                                          {PEFoam === "Yes" ? "₱50.00" : "₱0.00"}
+                                        </td>
+                                      </tr>
+
+                                      {/* Total */}
+                                      <tr className="total">
+                                        <td className="alignright" width="80%">
+                                          Total
+                                        </td>
+                                        <td className="alignright">
+                                          ₱{total.toFixed(2)}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+
+                      {/* Address input */}
+                      <tr>
+                        <td className="content-block">
+                          <div>
+                            <label
+                              htmlFor="address"
+                              style={{
+                                display: "block",
+                                marginBottom: "5px",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Address
+                            </label>
+                            <input
+                              type="text"
+                              id="address"
+                              name="address"
+                              value={address}
+                              onChange={(e) => setAddress(e.target.value)}
+                              style={{
+                                width: "100%",
+                                padding: "8px",
+                                borderRadius: "4px",
+                                border: "1px solid #ccc",
+                              }}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+
+                      {/* Action buttons */}
+                      <tr>
+                        <td className="content-block">
+                          <button
+                            onClick={() => navigate("/customize")}
+                            style={{
+                              marginRight: "10px",
+                              padding: "10px 20px",
+                              backgroundColor: "#38a169",
+                              color: "#fff",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Edit Keyboard
+                          </button>
+                          <button
+                            onClick={handlePlaceOrder}
+                            style={{
+                              padding: "10px 20px",
+                              backgroundColor: "#38a169",
+                              color: "#fff",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Place Order
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* Footer */}
+          <div className="footer">
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td className="aligncenter content-block">
+                    Questions? Email <a href="mailto:support@company.inc">cobskeebs@company.inc</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
-          <button onClick={() => navigate("/customize")} className="mt-4 bg-green-500 text-white p-2 rounded-md">
-            Edit Keyboard
-          </button>
-          <button onClick={handlePlaceOrder} className="mt-4 bg-green-500 text-white p-2 rounded-md ml-2">
-            Place Order
-          </button>
         </div>
+      </div>
     </div>
   );
 }

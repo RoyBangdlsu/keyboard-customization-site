@@ -1,0 +1,112 @@
+/* Base wrapper (gray background) */
+.body-wrap {
+    background-color: #f6f6f6;
+    width: 100%;
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Container for the main content (white box) */
+  .container {
+    display: block;
+    max-width: 600px;
+    margin: 70px auto 0 auto; /* Adds a 50px gap above */
+    clear: both;
+    padding: 0 15px;
+  }
+  
+  
+  /* White content wrapper */
+  .content {
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+    padding: 20px;
+  }
+  
+  /* The main table (white box with border) */
+  .main {
+    background: #ffffff;
+    border: 1px solid #e9e9e9;
+    border-radius: 3px;
+  }
+  
+  /* Table cell that wraps the invoice content */
+  .content-wrap {
+    padding: 20px;
+  }
+  
+  /* Center text utility */
+  .aligncenter {
+    text-align: center;
+  }
+  
+  /* Blocks inside the content */
+  .content-block {
+    padding: 0 0 20px;
+    text-align: center;
+  }
+  
+  /* Invoice container table */
+  .invoice {
+    margin: 40px auto;
+    text-align: left;
+    width: 80%;
+  }
+  
+  /* Table for the items inside the invoice */
+  .invoice-items {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .invoice-items td {
+    border-top: 1px solid #eeeeee;
+    padding: 5px 0;
+  }
+  
+  /* Right align utility */
+  .alignright {
+    text-align: right;
+  }
+  
+  /* Row that shows the total */
+  .total td {
+    border-top: 2px solid #333333;
+    font-weight: 700;
+  }
+  
+  /* Footer at the bottom */
+  .footer {
+    width: 100%;
+    clear: both;
+    color: #999;
+    padding: 20px;
+    font-size: 12px;
+  }
+  
+  .footer a {
+    color: #999;
+    text-decoration: none;
+  }
+
+  .body-wrap {
+    background: url('https://i.imgur.com/ssEiF8W.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    margin-top: -100px;
+    padding-top: 150px; /* This pushes the content below the navbar */
+    min-height: 100vh; 
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .footer .content-block {
+    color: #fff;
+    text-shadow: 2px 2px 4px #000;
+  }
+  
+  .footer .content-block a {
+    color: #fff;
+    text-shadow: 2px 2px 4px #000;
+  }
+  
