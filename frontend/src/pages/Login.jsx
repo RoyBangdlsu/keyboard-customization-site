@@ -49,8 +49,9 @@ function Login() {
       };
       
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(userData));
-      navigate(userData.isAdmin ? "/admin" : "/");
+      localStorage.setItem("user", JSON.stringify({ name: data.user.name , email: data.user.email })); // ✅ Store user name
+      alert("Log In Successful!");
+      navigate("/");
     } else {
       alert(data.message);
     }
