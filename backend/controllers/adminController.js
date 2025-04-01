@@ -5,23 +5,37 @@ import jwt from "jsonwebtoken";
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
-  // Hardcoded admin check (use environment variables in production!)
+  // Check against hardcoded admin credentials
   if (email === "admin@gmail.com" && password === "admin") {
-    // Generate a REAL JWT token
+    // First check if this email exists in the database
+    const adminUser = await User.findOne({ email: "admin@gmail.com" });
+    
+    // If not, create a basic admin record (optional)
+    if (!adminUser) {
+      const newAdmin = await User.create({
+        name: "Admin",
+        email: "admin@gmail.com",
+        password: await bcrypt.hash("admin", 10)
+      });
+    }
+
+    // Generate token
     const token = jwt.sign(
-      { id: "admin", email: "admin@gmail.com", role: "admin" }, // Payload
-      process.env.JWT_SECRET, // Sign with your secret key
-      { expiresIn: "1h" }     // Token expiry
+      { 
+        userId: adminUser?._id || "admin", // Use either DB ID or fallback
+        email: "admin@gmail.com"
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
     );
 
-    localStorage.setItem("token", token); // optional dummy
-
-    console.log(token);
-
-    // Send the token to the frontend
     res.json({ 
       token, 
-      user: { email: "admin@gmail.com", role: "admin" } 
+      user: { 
+        name: "Admin",
+        email: "admin@gmail.com",
+        isAdmin: true // Virtually added
+      } 
     });
   } else {
     res.status(401).json({ message: "Invalid admin credentials" });

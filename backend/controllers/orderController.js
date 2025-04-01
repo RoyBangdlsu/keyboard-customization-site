@@ -158,6 +158,16 @@ export const loadOrders = async (req, res) => {
   }
 };
 
+// Load ALL orders (not customer-specific)
+export const loadAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({});
+    res.status(200).json({ orders });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const deleteOrder = async (req, res) => {
   try {
     const { orderId } = req.params;

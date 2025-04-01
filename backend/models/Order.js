@@ -18,7 +18,8 @@ const OrderSchema = new mongoose.Schema({
   caseFoam: { type: String, required: true },
   PEFoam: { type: String, required: true },
   price: { type: Number, required: true },
-  keyboardImage: { type: String, required: true}
+  keyboardImage: { type: String, required: true},
+  orderStatus: { type: String, default: "Pending" },
 }, { timestamps: true });
 
 export default mongoose.model("Order", OrderSchema);

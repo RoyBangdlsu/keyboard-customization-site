@@ -10,33 +10,88 @@ function Admin() {
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       const token = localStorage.getItem("token");
-
+      const user = JSON.parse(localStorage.getItem("user"));
+      
+      // Check if the logged-in user has the admin email
+      if (!token || !user || user.email !== "admin@gmail.com") {
+        navigate("/login");
+        return;
+      }
+  
       try {
-        const res = await fetch(`${API_BASE_URL}/api/admin/users`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
+        // Fetch users
+        const usersRes = await fetch(`${API_BASE_URL}/api/admin/users`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          setUsers(data);
+  
+        if (usersRes.ok) {
+          setUsers(await usersRes.json());
         } else {
-          setError(data.message || "Failed to load users.");
+          setError("Failed to load users");
         }
       } catch (err) {
-        console.error("Error fetching users:", err);
-        setError("Server error.");
+        setError("Error loading data");
       } finally {
         setLoading(false);
       }
     };
+  
+    fetchData();
+  }, [navigate]);
 
-    fetchUsers();
-  }, []);
+  const loadAllOrders = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/orders/loadall`);
+      const data = await response.json();
+      if (response.ok) {
+        setOrders(data.orders); // This will now contain ALL orders
+      } else {
+        alert('Failed to load orders: ' + data.message);
+      }
+    } catch (error) {
+      alert('Failed to load orders.');
+    }
+  };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+  
+        // Fetch user profile to verify admin status
+        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        const data = await res.json();
+        if (res.status === 200) {
+          setUser(data);
+          
+          // Only load all orders if user is admin
+          if (data.isAdmin) {
+            await loadAllOrders(); // This will load ALL orders now
+          } else {
+            // If not admin, redirect or show error
+            setError("Admin privileges required.");
+            navigate("/"); // Redirect to home or appropriate page
+          }
+        } else {
+          setError("Failed to fetch user details.");
+        }
+      } catch (err) {
+        setError("Error loading profile.");
+      }
+    };
+  
+    fetchUserData();
+  }, [navigate]); // Add navigate to dependency array
 
   const handleLogout = () => {
     localStorage.removeItem("token");

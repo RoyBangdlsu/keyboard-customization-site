@@ -10,17 +10,29 @@ function Login() {
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
+  // Replace the admin shortcut with a proper API call
   const handleLogin = async (e) => {
-    e.preventDefault(); // ✅ First line
-  
-    // ✅ Admin login shortcut
+    e.preventDefault();
+    
+    // Special handling for admin (optional - could just use regular login flow)
     if (email === "admin@gmail.com" && password === "admin") {
-      localStorage.setItem("token", "admin-token"); // optional dummy
-      localStorage.setItem("user", JSON.stringify({ name: "Admin", email: "admin@gmail.com", isAdmin: true }));
-      navigate("/admin");
+      const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/admin");
+      } else {
+        alert(data.message);
+      }
       return;
     }
-    
+  
     // Regular user login
     const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
@@ -30,11 +42,15 @@ function Login() {
   
     const data = await res.json();
     if (res.ok) {
+      // Add virtual isAdmin property based on email
+      const userData = {
+        ...data.user,
+        isAdmin: data.user.email === "admin@gmail.com"
+      };
+      
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify({ name: data.user.name, email: data.user.email }));
-      alert("Login successful!");
-      navigate("/");
-      window.location.reload();
+      localStorage.setItem("user", JSON.stringify(userData));
+      navigate(userData.isAdmin ? "/admin" : "/");
     } else {
       alert(data.message);
     }
