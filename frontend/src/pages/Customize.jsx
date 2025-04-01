@@ -529,7 +529,7 @@ function Customize() {
       </div>
 
       
-      <h1>Add-ons</h1>
+      <h2>Add-ons</h2>
       {/* Add-ons Section */}
       <div className="option">
           <div className="add-ons">
@@ -592,7 +592,7 @@ function Customize() {
       {/* Color Picker for Keycaps */}
       {selectedKey && (
         <div className="color-picker">
-          <label>Select color for {selectedKey}:</label>
+          <label>Select color for: {selectedKey}</label>
           <input
             type="color"
             value={keycapColors[selectedKey] || '#FFFFFF'}

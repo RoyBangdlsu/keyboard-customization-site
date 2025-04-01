@@ -1,20 +1,23 @@
 /* Customize.css */
 .keyboard-customization {
     font-family: 'Montserrat', sans-serif;
+    position: relative;
     margin-top: -100px;
-    padding-top: 50px; /* This pushes the content below the navbar */
+    padding-top: 150px; /* This pushes the content below the navbar */
     min-height: 100vh; 
-    padding: 20px;
-    text-align: center;
-    background: url('https://i.imgur.com/UpdN1u3.jpeg') no-repeat center center fixed; /* Add your background image path */
-    background-size: cover; /* Ensure the background covers the entire screen */
+    background: url("https://i.imgur.com/UpdN1u3.jpeg") no-repeat center center;
+    background-size: cover;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: center;              
+    justify-content: space-between;  
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;    
   }
 
   .keyboard-customization h1 {
+    margin-top: 80px;
     color: rgb(0, 0, 0); /* Set text color to white (or any color that contrasts with the background) */
     border: 2px solid transparent; /* Transparent border */
     padding: 10px 20px; /* Add padding for better spacing */
@@ -55,6 +58,9 @@
     background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent background for readability */
     padding: 20px;
     border-radius: 10px;
+    max-width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
   }
   
   .keyboard-body {
@@ -119,7 +125,7 @@
   }
   
   .actions button:hover {
-    background-color: #f782ff;
+    background-color: black;
   }
 
   .load-designs {
