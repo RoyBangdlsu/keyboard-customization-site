@@ -14,6 +14,8 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "1h" }     // Token expiry
     );
 
+    localStorage.setItem("token", token); // optional dummy
+
     console.log(token);
 
     // Send the token to the frontend
