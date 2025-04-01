@@ -55,7 +55,7 @@ function Admin() {
     }
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -91,7 +91,7 @@ function Admin() {
     };
   
     fetchUserData();
-  }, [navigate]); // Add navigate to dependency array
+  }, [navigate]); // Add navigate to dependency array*/
 
   const handleLogout = () => {
     localStorage.removeItem("token");
