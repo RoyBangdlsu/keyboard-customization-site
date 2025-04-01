@@ -26,37 +26,18 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    // Generate JWT with isAdmin flag (based on email)
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        isAdmin: email === process.env.ADMIN_EMAIL, // ✅ Dynamic admin check
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res.json({
-      token,
-      user: {
-        name: user.name,
-        email: user.email,
-        isAdmin: email === process.env.ADMIN_EMAIL, // Send to frontend
-      },
-    });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

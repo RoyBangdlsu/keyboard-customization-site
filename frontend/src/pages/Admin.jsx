@@ -45,14 +45,16 @@ function Admin() {
   };
 
   const handleDeleteUser = async (userId) => {
-    const token = localStorage.getItem("token");
+    const userData = JSON.parse(localStorage.getItem("user"));
     
+    if (!userData?.isAdmin) {
+      setError("Access denied. Admin privileges required.");
+      return;
+    }
+
     try {
-      const res = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
+      const res = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       if (res.ok) {
