@@ -52,6 +52,7 @@ function Login() {
       localStorage.setItem("user", JSON.stringify({ name: data.user.name , email: data.user.email })); // ✅ Store user name
       alert("Log In Successful!");
       navigate("/");
+      window.location.reload();
     } else {
       alert(data.message);
     }
