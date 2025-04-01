@@ -6,7 +6,7 @@ export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
   // Hardcoded admin check (use environment variables in production!)
-  if (email === "admin@gmail.com" && password === "admin123") {
+  if (email === "admin@gmail.com" && password === "admin") {
     // Generate a REAL JWT token
     const token = jwt.sign(
       { id: "admin", email: "admin@gmail.com", role: "admin" }, // Payload

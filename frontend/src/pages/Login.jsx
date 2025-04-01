@@ -15,7 +15,6 @@ function Login() {
   
     // ✅ Admin login shortcut
     if (email === "admin@gmail.com" && password === "admin") {
-      localStorage.setItem("token", "admin-token"); // optional dummy
       localStorage.setItem("user", JSON.stringify({ name: "Admin", email: "admin@gmail.com", isAdmin: true }));
       navigate("/admin");
       return;
