@@ -100,27 +100,34 @@ function Admin() {
   };
 
   const handleDeleteUser = async (userId) => {
+    const token = localStorage.getItem("token");
     const userData = JSON.parse(localStorage.getItem("user"));
     
-    if (!userData?.isAdmin) {
+    // Check admin status by email (since we don't have isAdmin field)
+    if (!userData || userData.email !== "admin@gmail.com") {
       setError("Access denied. Admin privileges required.");
       return;
     }
-
+  
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-
+  
       if (res.ok) {
+        // Optimistic UI update - remove the user from state immediately
         setUsers(users.filter(user => user._id !== userId));
+        setError(""); // Clear any previous errors
       } else {
         const data = await res.json();
         setError(data.message || "Failed to delete user.");
       }
     } catch (err) {
       console.error("Error deleting user:", err);
-      setError("Server error.");
+      setError("Network error. Please try again.");
     }
   };
 
