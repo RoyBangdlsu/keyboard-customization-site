@@ -272,4 +272,35 @@
   cursor: pointer;
 }
 
+.add-ons {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.add-on {
+  display: grid;
+  grid-template-columns: 150px 1fr; 
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-on:last-child {
+  margin-bottom: 0;
+}
+
+.add-on label {
+  font-weight: bold;
+}
+
+.add-on input,
+.add-on select {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
