@@ -25,9 +25,20 @@ export const protect = async (req, res, next) => {
 
 // ✅ Add isAdmin function
 export const isAdmin = (req, res, next) => {
-  if (req.user && req.user.email === "admin@gmail.com") { // Check admin status
-    next();
-  } else {
-    res.status(403).json({ message: "Not authorized as admin" });
+  const token = req.headers.authorization?.split(" ")[1]; // Get token from header
+
+  try {
+    // Verify the JWT
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Check if the decoded email is admin
+    if (decoded.email === "admin@gmail.com") {
+      req.user = decoded; // Attach user data to the request
+      next(); // Allow access
+    } else {
+      res.status(403).json({ message: "Not an admin" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };
