@@ -524,7 +524,7 @@ function Customize() {
         <div className="option">
           <label>Switch Type:</label>
           <select value={switchType} onChange={handleSwitchTypeChange}>
-          <option value="Default">Default</option>
+          <option value="N/A">Default</option>
             <option value="Outemu Brown">Outemu Brown</option>
             <option value="Outemu Blue">Outemu Blue</option>
             <option value="Outemu Red">Outemu Red</option>
