@@ -8,7 +8,7 @@ function Admin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const API_BASE_URL = "https://cobskeebs-frontend.onrender.com";
+  const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {

@@ -17,7 +17,7 @@ function Profile() {
   const [orders, setOrders] = useState([]); // State to store orders
 
   const navigate = useNavigate();
-  const API_BASE_URL = "https://cobskeebs-frontend.onrender.com";
+  const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
   // ✅ Fetch user details, designs, and orders when the page loads
   useEffect(() => {

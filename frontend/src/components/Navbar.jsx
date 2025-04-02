@@ -17,7 +17,7 @@ function Navbar() {
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       } else {
-        fetch("https://cobskeebs-frontend.onrender.com/api/auth/me", {
+        fetch("https://cobskeebsback.onrender.com/api/auth/me", {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         })
