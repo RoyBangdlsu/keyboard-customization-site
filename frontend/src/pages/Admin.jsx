@@ -4,7 +4,6 @@ import './Admin.css';
 
 function Admin() {
   const [users, setUsers] = useState([]);
-  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -26,22 +25,12 @@ function Admin() {
         const usersRes = await fetch(`${API_BASE_URL}/api/admin/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        // Fetch orders
-        const ordersRes = await fetch(`${API_BASE_URL}/api/orders/loadall`);
-        const ordersData = await ordersRes.json();
-        if (ordersRes.ok) {
-          setOrders(ordersData.orders); // Set the orders state
-        } else {
-          setError('Failed to load orders: ' + ordersData.message);
-        }
   
         if (usersRes.ok) {
           setUsers(await usersRes.json());
         } else {
           setError("Failed to load users");
         }
-
       } catch (err) {
         setError("Error loading data");
       } finally {
@@ -52,6 +41,57 @@ function Admin() {
     fetchData();
   }, [navigate]);
 
+  const loadAllOrders = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/orders/loadall`);
+      const data = await response.json();
+      if (response.ok) {
+        setOrders(data.orders); // This will now contain ALL orders
+      } else {
+        alert('Failed to load orders: ' + data.message);
+      }
+    } catch (error) {
+      alert('Failed to load orders.');
+    }
+  };
+
+  /*useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+  
+        // Fetch user profile to verify admin status
+        const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        const data = await res.json();
+        if (res.status === 200) {
+          setUser(data);
+          
+          // Only load all orders if user is admin
+          if (data.isAdmin) {
+            await loadAllOrders(); // This will load ALL orders now
+          } else {
+            // If not admin, redirect or show error
+            setError("Admin privileges required.");
+            navigate("/"); // Redirect to home or appropriate page
+          }
+        } else {
+          setError("Failed to fetch user details.");
+        }
+      } catch (err) {
+        setError("Error loading profile.");
+      }
+    };
+  
+    fetchUserData();
+  }, [navigate]); // Add navigate to dependency array*/
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -91,33 +131,6 @@ function Admin() {
     }
   };
 
-  const updateOrderStatus = async (orderId, newStatus) => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API_BASE_URL}/api/orders/${orderId}/status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (res.ok) {
-        // Update the order in state
-        setOrders(orders.map(order => 
-          order._id === orderId ? { ...order, orderStatus: newStatus } : order
-        ));
-      } else {
-        const data = await res.json();
-        setError(data.message || "Failed to update order status");
-      }
-    } catch (err) {
-      console.error("Error updating order status:", err);
-      setError("Network error. Please try again.");
-    }
-  };
-
   return (
     <div className="admin-container">
       <div className="admin-header">
@@ -125,84 +138,36 @@ function Admin() {
         <button onClick={handleLogout} className="logout-btn">Logout</button>
       </div>
 
-      {loading && <div className="loading">Loading users and orders...</div>}
+      {loading && <div className="loading">Loading users...</div>}
       {error && <div className="error-message">{error}</div>}
 
       {!loading && !error && (
-        <div className="main-container">
-          <div className="users-table-container">
-            <table className="users-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Actions</th>
+        <div className="users-table-container">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <button 
+                      onClick={() => handleDeleteUser(user._id)}
+                      className="delete-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user._id}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <button 
-                        onClick={() => handleDeleteUser(user._id)}
-                        className="delete-btn"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="orderss-table-container">
-            <table className="orders-table">
-              <thead>
-                <tr>
-                  <th>Design</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Service Type</th>
-                  <th>Price</th>
-                  <th>Order Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order._id}>
-                    <td>{order.keyboardImage}</td>
-                    <td>{order.customerName}</td>
-                    <td>{order.customerEmail}</td>
-                    <td>{order.serviceType}</td>
-                    <td>₱{order.price}</td>
-                    <td>
-                      <select 
-                        value={order.orderStatus}
-                        onChange={(e) => updateOrderStatus(order._id, e.target.value)}
-                        className="status-select"
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Shipped">Shipped</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
-                    </td>
-                    <td>
-                      <button 
-                        className="view-btn"
-                        onClick={() => navigate(`/order-details/${order._id}`)}
-                      >
-                        View Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
