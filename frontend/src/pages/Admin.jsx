@@ -168,7 +168,6 @@ function Admin() {
                   <th>Keyboard Size</th>
                   <th>Price</th>
                   <th>Status</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -191,14 +190,6 @@ function Admin() {
                         <option value="Shipped">Shipped</option>
                         <option value="Cancelled">Cancelled</option>
                       </select>
-                    </td>
-                    <td>
-                      <button 
-                        className="view-btn"
-                        onClick={() => navigate(`/order-details/${order._id}`)}
-                      >
-                        View Details
-                      </button>
                     </td>
                   </tr>
                 ))}
