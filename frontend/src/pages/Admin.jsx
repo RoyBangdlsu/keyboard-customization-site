@@ -4,7 +4,7 @@ import './Admin.css';
 
 function Admin() {
   const [users, setUsers] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]); // Add orders state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -51,7 +51,6 @@ function Admin() {
   
     fetchData();
   }, [navigate]);
-
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -157,26 +156,29 @@ function Admin() {
               </tbody>
             </table>
           </div>
-          <div className="orderss-table-container">
+          
+          <div className="orders-table-container">
+            <h2>All Orders</h2>
             <table className="orders-table">
               <thead>
                 <tr>
-                  <th>Design</th>
-                  <th>Name</th>
+                  <th>Customer</th>
                   <th>Email</th>
                   <th>Service Type</th>
+                  <th>Keyboard Size</th>
                   <th>Price</th>
-                  <th>Order Status</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
-                    <td>{order.keyboardImage}</td>
                     <td>{order.customerName}</td>
                     <td>{order.customerEmail}</td>
                     <td>{order.serviceType}</td>
-                    <td>₱{order.price}</td>
+                    <td>{order.keyboardSize}</td>
+                    <td>${order.price}</td>
                     <td>
                       <select 
                         value={order.orderStatus}
