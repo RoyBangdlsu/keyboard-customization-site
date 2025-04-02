@@ -10,11 +10,9 @@ function Login() {
   const navigate = useNavigate();
   const API_BASE_URL = "https://cobskeebsback.onrender.com";
 
-  // Replace the admin shortcut with a proper API call
   const handleLogin = async (e) => {
     e.preventDefault();
     
-    // Special handling for admin (optional - could just use regular login flow)
     if (email === "admin@gmail.com" && password === "admin") {
       const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: "POST",

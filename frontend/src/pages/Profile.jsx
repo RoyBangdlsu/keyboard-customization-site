@@ -283,6 +283,7 @@ function Profile() {
                 <p>Keyboard Size: {order.keyboardSize}</p>
                 <p>Keycap Brand: {order.keycapBrand}</p>
                 <p>Switch Type: {order.switchType}</p>
+                <p>Order Status: {order.orderStatus}</p>
                 <p>Price: ₱{order.price}</p>
                 <img
                   src={order.keyboardImage}
