@@ -305,7 +305,7 @@ function Customize() {
     if (key === 'Caps') return '69px';
     if (key === 'LShift' || key === 'RShift') return '119px';
     if (key === 'Enter') return '112px';
-    if (key === 'Ctrl' || key === 'Alt' || key === 'Win' || key === 'Menu') return '40px';
+    if (key === 'LCtrl' || key === 'RCtrl' || key === 'RAlt' || key === 'LAlt' || key === 'LWin' || key === 'RWin' || key === 'Menu') return '40px';
     if (key === '0 Ins') return '40px';
     if (key === '') return '12px'; // Empty space (non-interactable)
     if (key === ' ') return '20px';
