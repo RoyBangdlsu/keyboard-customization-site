@@ -55,7 +55,7 @@ function Navbar() {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser(null);
-    navigate("/home", { replace: true });
+    navigate("/", { replace: true });
     setTimeout(() => window.location.reload(), 500);
   };
 
