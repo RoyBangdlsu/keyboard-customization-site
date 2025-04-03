@@ -307,27 +307,24 @@ function Profile() {
                                             <tbody>
                                               <tr>
                                                 <td>Keyboard Size: {order.keyboardSize}</td>
-                                                <td className="alignright">₱{order.keyboardSizePrice.toFixed(2)}</td>
                                               </tr>
                                               <tr>
                                                 <td>Keycap Brand: {order.keycapBrand}</td>
-                                                <td className="alignright">₱{order.keyCapBrandPrice.toFixed(2)}</td>
                                               </tr>
                                               <tr>
                                                 <td>Switch Type: {order.switchType}</td>
-                                                <td className="alignright">₱{order.switchTypePrice.toFixed(2)}</td>
                                               </tr>
                                               <tr>
                                                 <td>Order Status:</td>
                                                 <td className="alignright">
-                                                  <span className={`order-status ${order.status ? order.status.toLowerCase() : ''}`}>
-                                                    {order.status}
+                                                  <span className={`order-status ${order.orderStatus ? order.orderStatus.toLowerCase() : ''}`}>
+                                                    {order.orderStatus}
                                                   </span>
                                                 </td>
                                               </tr>
                                               <tr className="total">
                                                 <td className="alignright" width="80%">Total</td>
-                                                <td className="alignright">₱{order.total.toFixed(2)}</td>
+                                                <td className="alignright">₱{order.price.toFixed(2)}</td>
                                               </tr>
                                             </tbody>
                                           </table>
