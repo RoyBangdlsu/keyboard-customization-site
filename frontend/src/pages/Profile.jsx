@@ -236,6 +236,7 @@ function Profile() {
 
       {/* Load Designs */}
       <div className="load-designs">
+        <h2 className="designs-title">Your Designs</h2>
         {designs.length > 0 ? (
           <div className="designs-list">
             {designs.map((design) => (
@@ -244,18 +245,24 @@ function Profile() {
                 <img
                   src={design.keyboardImage}
                   alt={design.designName}
-                  style={{ width: '410px', height: 'auto' }}
                 />
                 <p>Layout: {design.layout}</p>
                 <p>Switch Type: {design.switchType}</p>
                 <p>Keycap Brand: {design.keycapBrand}</p>
-                <button onClick={() => viewDesign(design)}>View</button>
-                <button onClick={() => deleteDesign(design._id)} style={{ backgroundColor: "#c82333" }}>Delete</button>
+                <div className="design-buttons">
+                  <button onClick={() => viewDesign(design)}>View</button>
+                  <button 
+                    onClick={() => deleteDesign(design._id)} 
+                    className="delete-btn"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         ) : (
-          <p>No designs found.</p>
+          <p className="no-designs">No designs found.</p>
         )}
       </div>
 
