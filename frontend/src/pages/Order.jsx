@@ -248,13 +248,14 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    alert("Order Processing Please Wait...");
 
     // Check if the address is empty
     if (!address.trim()) {
       alert("Please enter your address before placing the order.");
       return; // Exit the function early if the address is empty
     }
+
+    alert("Order Processing Please Wait...");
 
     // Proceed with placing the order if the address is provided
     const resNew = await fetch(`${API_BASE_URL}/api/orders/placeneworder`, {
