@@ -266,7 +266,6 @@ function Profile() {
         )}
       </div>
 
-<<<<<<< Updated upstream
       {/* Load Orders */}
       <div className="load-orders">
         <h2>Your Orders</h2>
@@ -283,128 +282,19 @@ function Profile() {
                 <p>Switch Type: {order.switchType}</p>
                 <p>Order Status: {order.orderStatus}</p>
                 <p>Price: ₱{order.price}</p>
-=======
-{/* Load Orders */}
-<div className="load-orders">
-  <h2 className="orders-title">Your Orders</h2>
-  {orders.length > 0 ? (
-    <div className="orders-list">
-      {orders.map((order) => (
-        <div key={order._id} className="order-item">
-          <div className="order-card">
-            <table className="main" width="100%" cellPadding="0" cellSpacing="0">
-              <tbody>
-                <tr>
-                  <td className="content-wrap aligncenter">
-                    <table width="100%" cellPadding="0" cellSpacing="0">
-                      <tbody>
-                        {/* Heading */}
-                        <tr>
-                          <td className="content-block">
-                            <h2>Order Invoice</h2>
-                          </td>
-                        </tr>
-                        {/* Customer Info */}
-                        <tr>
-                          <td className="content-block">
-                            <table className="invoice">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    {order.customerName} <br />
-                                    {order.customerEmail} <br />
-                                    {order.address} <br />
-                                    {order.createdAt
-                                      ? new Date(order.createdAt).toLocaleDateString()
-                                      : new Date().toLocaleDateString()}
-                                  </td>
-                                </tr>
-                                {/* Invoice Items */}
-                                <tr>
-                                  <td>
-                                    <table className="invoice-items" cellPadding="0" cellSpacing="0">
-                                      <tbody>
-                                        <tr>
-                                          <td>Keyboard Size: {order.keyboardSize}</td>
-                                          <td className="alignright">
-                                            ₱
-                                            {order.keyboardSizePrice
-                                              ? parseFloat(order.keyboardSizePrice).toFixed(2)
-                                              : "0.00"}
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Keycap Brand: {order.keycapBrand}</td>
-                                          <td className="alignright">
-                                            ₱
-                                            {order.keyCapBrandPrice
-                                              ? parseFloat(order.keyCapBrandPrice).toFixed(2)
-                                              : "0.00"}
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>Switch Type: {order.switchType}</td>
-                                          <td className="alignright">
-                                            ₱
-                                            {order.switchTypePrice
-                                              ? parseFloat(order.switchTypePrice).toFixed(2)
-                                              : "0.00"}
-                                          </td>
-                                        </tr>
-                                        {/* New Order Status Row */}
-                                        <tr>
-                                          <td>Order Status:</td>
-                                          <td className="alignright">
-                                            <span className={`order-status ${order.status ? order.status.toLowerCase() : ''}`}>
-                                              {order.status || 'Waiting For Review'}
-                                            </span>
-                                          </td>
-                                        </tr>
-                                        {/* Additional rows if needed */}
-                                        <tr className="total">
-                                          <td className="alignright" width="80%">
-                                            Total
-                                          </td>
-                                          <td className="alignright">
-                                            ₱
-                                            {order.total
-                                              ? parseFloat(order.total).toFixed(2)
-                                              : "0.00"}
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            {order.keyboardImage && (
-              <div className="order-image">
->>>>>>> Stashed changes
                 <img
                   src={order.keyboardImage}
                   alt="Custom Keyboard Design"
                 />
               </div>
-            )}
+            ))}
           </div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p>No orders found.</p>
-        )}
-      </div>
-    </div>
-  );
-}
+        ) : (
+          <p>No orders found.</p>
+              )}
+            </div>
+          </div>
+        );
+      }
 
 export default Profile;
