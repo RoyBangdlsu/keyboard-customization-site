@@ -255,7 +255,7 @@ function Order() {
       return; // Exit the function early if the address is empty
     }
 
-    alert("Order Processing Please Wait...");
+    alert("Order Processing Please Wait... Click Ok");
 
     // Proceed with placing the order if the address is provided
     const resNew = await fetch(`${API_BASE_URL}/api/orders/placeneworder`, {
