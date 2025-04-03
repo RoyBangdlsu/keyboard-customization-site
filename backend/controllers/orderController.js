@@ -182,3 +182,43 @@ export const deleteOrder = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { orderStatus: status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Send email notification to customer about status update
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: updatedOrder.customerEmail,
+      subject: `Order Status Update - ${updatedOrder._id}`,
+      html: `
+        <p>Your order status has been updated.</p>
+        <p><strong>Order ID:</strong> ${updatedOrder._id}</p>
+        <p><strong>New Status:</strong> ${status}</p>
+        <p>Thank you for choosing Cobs Keebs!</p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ 
+      message: 'Order status updated successfully',
+      updatedOrder 
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
