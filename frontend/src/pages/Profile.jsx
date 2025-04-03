@@ -268,31 +268,94 @@ function Profile() {
 
       {/* Load Orders */}
       <div className="load-orders">
-        <h2>Your Orders</h2>
+        <h2 className="orders-title">Your Orders</h2>
         {orders.length > 0 ? (
           <div className="orders-list">
             {orders.map((order) => (
               <div key={order._id} className="order-item">
-                <p>Customer Name: {order.customerName}</p>
-                <p>Customer Email: {order.customerEmail}</p>
-                <p>Address: {order.address}</p>
-                <p>Service Type: {order.serviceType}</p>
-                <p>Keyboard Size: {order.keyboardSize}</p>
-                <p>Keycap Brand: {order.keycapBrand}</p>
-                <p>Switch Type: {order.switchType}</p>
-                <p>Order Status: {order.orderStatus}</p>
-                <p>Price: ₱{order.price}</p>
-                <img
-                  src={order.keyboardImage}
-                  alt="Custom Keyboard Design"
-                />
+                <div className="order-card">
+                  <table className="main" width="100%" cellPadding="0" cellSpacing="0">
+                    <tbody>
+                      <tr>
+                        <td className="content-wrap aligncenter">
+                          <table width="100%" cellPadding="0" cellSpacing="0">
+                            <tbody>
+                              {/* Heading */}
+                              <tr>
+                                <td className="content-block">
+                                  <h2>Order Invoice</h2>
+                                </td>
+                              </tr>
+                              {/* Customer Info */}
+                              <tr>
+                                <td className="content-block">
+                                  <table className="invoice">
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <p>Customer Name: {order.customerName}</p>
+                                          <p>Customer Email: {order.customerEmail}</p>
+                                          <p>Address: {order.address}</p>
+                                          <p>Service Type: {order.serviceType}</p>
+                                          <p>Order Date: {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : new Date().toLocaleDateString()}</p>
+                                        </td>
+                                      </tr>
+                                      {/* Invoice Items */}
+                                      <tr>
+                                        <td>
+                                          <table className="invoice-items" cellPadding="0" cellSpacing="0">
+                                            <tbody>
+                                              <tr>
+                                                <td>Keyboard Size: {order.keyboardSize}</td>
+                                                <td className="alignright">₱{order.keyboardSizePrice ? parseFloat(order.keyboardSizePrice).toFixed(2) : "0.00"}</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Keycap Brand: {order.keycapBrand}</td>
+                                                <td className="alignright">₱{order.keyCapBrandPrice ? parseFloat(order.keyCapBrandPrice).toFixed(2) : "0.00"}</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Switch Type: {order.switchType}</td>
+                                                <td className="alignright">₱{order.switchTypePrice ? parseFloat(order.switchTypePrice).toFixed(2) : "0.00"}</td>
+                                              </tr>
+                                              <tr>
+                                                <td>Order Status:</td>
+                                                <td className="alignright">
+                                                  <span className={`order-status ${order.status ? order.status.toLowerCase() : ''}`}>
+                                                    {order.status || 'Waiting For Review'}
+                                                  </span>
+                                                </td>
+                                              </tr>
+                                              <tr className="total">
+                                                <td className="alignright" width="80%">Total</td>
+                                                <td className="alignright">₱{order.total ? parseFloat(order.total).toFixed(2) : "0.00"}</td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {order.keyboardImage && (
+                    <div className="order-image">
+                      <img src={order.keyboardImage} alt="Custom Keyboard Design" />
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
         ) : (
           <p>No orders found.</p>
-              )}
-            </div>
+        )}
+      </div>
           </div>
         );
       }
