@@ -76,7 +76,7 @@ function Customize() {
   const baseState = {
     layout: 'full',
     bodyColor: '#000000',
-    switchType: 'Outemu Blue',
+    switchType: 'N/A',
     keycapColors: {},
     keycapBrand: 'Akko', // Default keycap brand
   };

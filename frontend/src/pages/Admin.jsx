@@ -177,7 +177,7 @@ function Admin() {
                     <td>{order.customerEmail}</td>
                     <td>{order.serviceType}</td>
                     <td>{order.keyboardSize}</td>
-                    <td>${order.price}</td>
+                    <td>₱{order.price}</td>
                     <td>
                       <select 
                         value={order.orderStatus}
