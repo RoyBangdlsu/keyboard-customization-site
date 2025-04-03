@@ -248,6 +248,7 @@ function Order() {
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    alert("Order Processing Please Wait...");
 
     // Check if the address is empty
     if (!address.trim()) {
