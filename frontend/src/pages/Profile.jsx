@@ -88,13 +88,6 @@ function Profile() {
     }
   };
 
-  // ✅ Handle Logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
-
   // ✅ Handle Load Designs
   const loadDesigns = async (userEmail) => {
     try {
@@ -231,9 +224,6 @@ function Profile() {
 
               <button type="submit" className="custom-button">Change Password</button>
             </form>
-
-            {/* Logout Button */}
-            <button onClick={handleLogout} className="custom-button logout-btn">Logout</button>
 
             {/* Show Messages */}
             {message && <p className="success-message">{message}</p>}
