@@ -30,7 +30,7 @@ function Profile() {
         }
 
         // Fetch user profile
-        const res = await fetch(`http://localhost:5000/api/auth/profile`, {
+        const res = await fetch(`${API_BASE_URL}api/auth/profile`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -65,7 +65,7 @@ function Profile() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/auth/change-password`, {
+      const res = await fetch(`${API_BASE_URL}api/auth/change-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function Profile() {
   // ✅ Handle Load Designs
   const loadDesigns = async (userEmail) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/designs/load/${userEmail}`);
+      const response = await fetch(`${API_BASE_URL}api/designs/load/${userEmail}`);
       const data = await response.json();
       if (response.ok) {
         setDesigns(data.designs);
@@ -106,7 +106,7 @@ function Profile() {
   // ✅ Handle Load Orders
   const loadOrders = async (customerEmail) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/load/${customerEmail}`);
+      const response = await fetch(`${API_BASE_URL}api/orders/load/${customerEmail}`);
       const data = await response.json();
       if (response.ok) {
         setOrders(data.orders);
@@ -127,7 +127,7 @@ function Profile() {
   const deleteDesign = async (designId) => {
     if (window.confirm('Are you sure you want to delete this design?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/designs/delete/${designId}`, {
+        const response = await fetch(`${API_BASE_URL}api/designs/delete/${designId}`, {
           method: 'DELETE',
         });
 
