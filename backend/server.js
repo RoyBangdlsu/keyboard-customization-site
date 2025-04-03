@@ -22,7 +22,7 @@ const app = express(); // ✅ Initialize `app` FIRST
 // ✅ Enable CORS AFTER initializing `app`
 app.use(cors({
     origin: ["https://cobskeebs.onrender.com"], // Allow frontend URL
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true
 }));
 
