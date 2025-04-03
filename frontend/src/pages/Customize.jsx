@@ -124,6 +124,7 @@ function Customize() {
     Number(localStorage.getItem(getUserStorageKey('numTapeLayer'))) || 0
   );
   const [total, setTotal] = useState(0);
+  const [showDesigns, setShowDesigns] = useState(false);
 
   useEffect(() => {
     if (location.state?.design) {
@@ -197,11 +198,11 @@ function Customize() {
   const keycapLayouts = {
     full: [
       ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', ' ', 'PrtSc', 'ScrLk', 'Pause'],
-      ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', ' ', 'Ins', 'Home', 'PgUp', '', 'Num' ,'/', '*', '-'],
+      ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace', ' ', 'Ins', 'Home', 'PgUp', '', 'NumLk' ,'Num /', '*', 'Num -'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', ' ', 'Del', 'End', 'PgDn', '', 'Num7', 'Num8', 'Num9', '+'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter', ' ', ' ', ' ', ' ', ' ', 'Num4', 'Num5', 'Num6'],
       ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift', ' ', ' ', '↑', ' ', ' ', 'Num1', 'Num2', 'Num3', 'Num Enter'],
-      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→' ,' ', '0 Ins', 'Num Del'],
+      ['LCtrl', 'LWin', 'LAlt', 'Space', 'RAlt', 'RWin', 'Menu', 'RCtrl', ' ','←', '↓', '→' ,' ', '0 Ins', 'Num Del'],
     ],
     tkl: [
       ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', ' ', 'PrtSc', 'ScrLk', 'Pause'],
@@ -209,7 +210,7 @@ function Customize() {
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', ' ', 'Del', 'End', 'PgDn'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
       ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift', ' ', ' ', '↑'],
-      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl', ' ','←', '↓', '→'],
+      ['LCtrl', 'LWin', 'LAlt', 'Space', 'RAlt', 'RWin', 'Menu', 'RCtrl', ' ','←', '↓', '→'],
     ],
     '75': [
       ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12'],
@@ -217,14 +218,14 @@ function Customize() {
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
       ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift'],
-      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl'],
+      ['LCtrl', 'LWin', 'LAlt', 'Space', 'RAlt', 'RWin', 'Menu', 'RCtrl'],
     ],
     '60': [
       ['Esc', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
       ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
       ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
       ['LShift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'RShift'],
-      ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl'],
+      ['LCtrl', 'LWin', 'LAlt', 'Space', 'RAlt', 'RWin', 'Menu', 'RCtrl'],
     ],
   };
 
@@ -443,21 +444,23 @@ function Customize() {
 
   const loadDesigns = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);
-      const data = await response.json();
-      if (response.ok) {
-        // Ensure all designs have the new fields with default values if missing
-        const processedDesigns = data.designs.map(design => ({
-          ...design,
-          keyAddOns: design.keyAddOns || "{}", // Default empty object if missing
-          caseFoam: design.caseFoam || "No", // Default "No" if missing
-          PEFoam: design.PEFoam || "No", // Default "No" if missing
-          numTapeLayer: design.numTapeLayer || 0 // Default 0 if missing
-        }));
-        setDesigns(processedDesigns);
-      } else {
-        alert('Failed to load designs OR you have no designs.');
+      if (!showDesigns) {
+        const response = await fetch(`${API_BASE_URL}/api/designs/load/${userEmail}`);
+        const data = await response.json();
+        if (response.ok) {
+          const processedDesigns = data.designs.map(design => ({
+            ...design,
+            keyAddOns: design.keyAddOns || "{}",
+            caseFoam: design.caseFoam || "No",
+            PEFoam: design.PEFoam || "No",
+            numTapeLayer: design.numTapeLayer || 0
+          }));
+          setDesigns(processedDesigns);
+        } else {
+          alert('Failed to load designs OR you have no designs.');
+        }
       }
+      setShowDesigns(!showDesigns); // Toggle visibility
     } catch (error) {
       console.error('Error loading designs:', error);
       alert('Failed to load designs.');
@@ -633,30 +636,39 @@ function Customize() {
         <button onClick={handleReset}>Reset</button>
         <button onClick={handleOrder}>Order this Design</button>
         <button onClick={saveDesign}>Save Design</button>
-        <button onClick={loadDesigns}>Load Design</button>
+        <button onClick={loadDesigns}>
+          {showDesigns ? 'Hide Designs' : 'Load Design'}
+        </button>
       </div>
 
       {/* Load Designs */}
-      <div className="load-designs">
-        {designs.length > 0 && (
-          <div className="designs-list">
-            {designs.map((design) => (
-              <div key={design._id} className="design-item" onClick={() => applyDesign(design)}>
-                <h3>{design.designName}</h3>
-                <img
-                  src={design.keyboardImage}
-                  alt={design.designName}
-                  style={{ width: '100px', height: 'auto' }}
-                />
-                <p>Layout: {design.layout}</p>
-                <p>Switch Type: {design.switchType}</p>
-                <p>Keycap Brand: {design.keycapBrand}</p>
-                <button onClick={() => deleteDesign(design._id)} style={{ backgroundColor: "#c82333" }}>Delete</button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {showDesigns && (
+        <div className="load-designs">
+          {designs.length > 0 ? (
+            <div className="designs-list">
+              {designs.map((design) => (
+                <div key={design._id} className="design-item" onClick={() => applyDesign(design)}>
+                  <h3>{design.designName}</h3>
+                  <img
+                    src={design.keyboardImage}
+                    alt={design.designName}
+                    style={{ width: '100px', height: 'auto' }}
+                  />
+                  <p>Layout: {design.layout}</p>
+                  <p>Switch Type: {design.switchType}</p>
+                  <p>Keycap Brand: {design.keycapBrand}</p>
+                  <button onClick={(e) => {
+                    e.stopPropagation();
+                    deleteDesign(design._id);
+                  }} style={{ backgroundColor: "#c82333" }}>Delete</button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No designs found</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
