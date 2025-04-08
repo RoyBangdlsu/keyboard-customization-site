@@ -43,7 +43,14 @@ export const placeNewOrder = async (req, res) => {
     const email = customerEmail;
     const adminEmail = "rappykarlopi@gmail.com";
 
+    // Generate order number (format: COBS-YYYYMMDD-XXXX)
+    const now = new Date();
+    const datePart = now.toISOString().slice(0, 10).replace(/-/g, '');
+    const randomPart = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
+    const orderNumber = `COBS-${datePart}-${randomPart}`;
+
     const newOrder = new Order({
+      orderNumber, // Add the generated order number
       customerName,
       customerEmail,
       serviceType: type,
@@ -52,11 +59,11 @@ export const placeNewOrder = async (req, res) => {
       keycapBrand: keyCapBrand,
       switchType,
       switchLubing: numSwitchLubing,
-      lubingKeys: lubingKeys || "None", // Store as string
+      lubingKeys: lubingKeys || "None",
       filming: numFilming,
-      filmingKeys: filmingKeys || "None", // Store as string
+      filmingKeys: filmingKeys || "None",
       stabilizers: numStabilizer,
-      stabilizerKeys: stabilizerKeys || "None", // Store as string
+      stabilizerKeys: stabilizerKeys || "None",
       tapeLayers: numTapeLayer,
       caseFoam,
       PEFoam,
@@ -66,19 +73,19 @@ export const placeNewOrder = async (req, res) => {
 
     await newOrder.save();
     
-    // Email content with formatted key lists
     const formatKeys = (keys) => {
       if (!keys || keys === "None") return "None";
       return keys.split(',').map(key => key.trim()).join(', ');
     };
 
-    // Send Email Notification
+    // Update email content to include order number
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Order Confirmation - Cobs Keebs",
+      subject: `Order Confirmation - ${orderNumber}`,
       html: `
         <p>Thank you for your order!</p>
+        <p><strong>Order Number:</strong> ${orderNumber}</p>
         <p><strong>Order Details:</strong></p>
         <ul>
           <li>Keyboard Size: ${keyboardSize} - ₱${keyboardSizePrice.toFixed(2)}</li>
@@ -107,9 +114,10 @@ export const placeNewOrder = async (req, res) => {
     const adminMailOptions = {
       from: process.env.EMAIL_USER,
       to: adminEmail,
-      subject: "New Order Received - Cobs Keebs",
+      subject: `New Order Received - ${orderNumber}`,
       html: `
         <p>A new order has been placed!</p>
+        <p><strong>Order Number:</strong> ${orderNumber}</p>
         <p><strong>Order Details:</strong></p>
         <ul>
           <li>Customer Name: ${customerName}</li>
@@ -146,7 +154,6 @@ export const placeNewOrder = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 // Load all orders for a user
 export const loadOrders = async (req, res) => {
   try {
@@ -198,7 +205,6 @@ export const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    // Send email notification to customer about status update
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: updatedOrder.customerEmail,

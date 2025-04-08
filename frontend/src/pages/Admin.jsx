@@ -173,6 +173,7 @@ function Admin() {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
+                    <td>{order.orderNumber}</td>
                     <td>{order.customerName}</td>
                     <td>{order.customerEmail}</td>
                     <td>{order.serviceType}</td>
