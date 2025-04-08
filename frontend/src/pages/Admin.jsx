@@ -162,6 +162,7 @@ function Admin() {
             <table className="orders-table">
               <thead>
                 <tr>
+                  <th>Order Number</th>
                   <th>Customer</th>
                   <th>Email</th>
                   <th>Service Type</th>
