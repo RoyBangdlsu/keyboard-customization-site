@@ -373,7 +373,7 @@ function Customize() {
           localStorage.setItem('keyAddOns', JSON.stringify(keyAddOns));
           localStorage.setItem('caseFoam', caseFoam);
           localStorage.setItem('PEFoam', PEFoam);
-          localStorage.setItem('numTapeLayers', numTapeLayer);
+          localStorage.setItem('numTapeLayer', numTapeLayer);
   
           // Save counts to localStorage
           localStorage.setItem('numStabilizer', stabilizerKeys.length);
