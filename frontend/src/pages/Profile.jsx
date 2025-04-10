@@ -293,6 +293,7 @@ function Profile() {
                                     <tbody>
                                       <tr>
                                         <td>
+                                          <p>Order Number: {order.orderNumber}</p>
                                           <p>Customer Name: {order.customerName}</p>
                                           <p>Customer Email: {order.customerEmail}</p>
                                           <p>Address: {order.address}</p>
