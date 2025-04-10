@@ -15,6 +15,7 @@ function Admin() {
       const token = localStorage.getItem("token");
       const user = JSON.parse(localStorage.getItem("user"));
       
+      // Check if the logged-in user has the admin email
       if (!token || !user || user.email !== "admin@gmail.com") {
         navigate("/login");
         return;
@@ -38,6 +39,7 @@ function Admin() {
   
         if (usersRes.ok) {
           const usersData = await usersRes.json();
+          // Filter out admin@gmail.com from the users list
           setUsers(usersData.filter(user => user.email !== "admin@gmail.com"));
         } else {
           setError("Failed to load users");
@@ -59,48 +61,34 @@ function Admin() {
     navigate("/login");
   };
 
-  const handleDeleteUser = async (userId, userEmail) => {
+  const handleDeleteUser = async (userId) => {
     const token = localStorage.getItem("token");
     const userData = JSON.parse(localStorage.getItem("user"));
     
+    // Check admin status by email
     if (!userData || userData.email !== "admin@gmail.com") {
       setError("Access denied. Admin privileges required.");
       return;
     }
-
+  
     try {
-      // First delete all orders for this user
-      const deleteOrdersRes = await fetch(`${API_BASE_URL}/api/orders/deletebyemail/${userEmail}`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (!deleteOrdersRes.ok) {
-        const data = await deleteOrdersRes.json();
-        throw new Error(data.message || "Failed to delete user's orders");
-      }
-
-      // Then delete the user
-      const deleteUserRes = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (deleteUserRes.ok) {
+  
+      if (res.ok) {
         setUsers(users.filter(user => user._id !== userId));
-        setOrders(orders.filter(order => order.customerEmail !== userEmail));
         setError("");
       } else {
-        const data = await deleteUserRes.json();
+        const data = await res.json();
         setError(data.message || "Failed to delete user.");
       }
     } catch (err) {
-      console.error("Error deleting user and orders:", err);
-      setError(err.message || "Network error. Please try again.");
+      console.error("Error deleting user:", err);
+      setError("Network error. Please try again.");
     }
   };
 
@@ -159,7 +147,7 @@ function Admin() {
                     <td>{user.email}</td>
                     <td>
                       <button 
-                        onClick={() => handleDeleteUser(user._id, user.email)}
+                        onClick={() => handleDeleteUser(user._id)}
                         className="delete-btn"
                       >
                         Delete
