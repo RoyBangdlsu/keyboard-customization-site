@@ -15,7 +15,6 @@ function Admin() {
       const token = localStorage.getItem("token");
       const user = JSON.parse(localStorage.getItem("user"));
       
-      // Check if the logged-in user has the admin email
       if (!token || !user || user.email !== "admin@gmail.com") {
         navigate("/login");
         return;
@@ -39,7 +38,6 @@ function Admin() {
   
         if (usersRes.ok) {
           const usersData = await usersRes.json();
-          // Filter out admin@gmail.com from the users list
           setUsers(usersData.filter(user => user.email !== "admin@gmail.com"));
         } else {
           setError("Failed to load users");
@@ -69,7 +67,7 @@ function Admin() {
       setError("Access denied. Admin privileges required.");
       return;
     }
-  
+
     try {
       // First delete all orders for this user
       const deleteOrdersRes = await fetch(`${API_BASE_URL}/api/orders/deletebyemail/${userEmail}`, {
@@ -78,12 +76,12 @@ function Admin() {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!deleteOrdersRes.ok) {
         const data = await deleteOrdersRes.json();
         throw new Error(data.message || "Failed to delete user's orders");
       }
-  
+
       // Then delete the user
       const deleteUserRes = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
         method: "DELETE",
@@ -91,10 +89,9 @@ function Admin() {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (deleteUserRes.ok) {
         setUsers(users.filter(user => user._id !== userId));
-        // Also remove any orders from state that belonged to this user
         setOrders(orders.filter(order => order.customerEmail !== userEmail));
         setError("");
       } else {
@@ -162,7 +159,7 @@ function Admin() {
                     <td>{user.email}</td>
                     <td>
                       <button 
-                        onClick={() => handleDeleteUser(user._id)}
+                        onClick={() => handleDeleteUser(user._id, user.email)}
                         className="delete-btn"
                       >
                         Delete
