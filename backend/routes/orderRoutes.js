@@ -24,4 +24,7 @@ router.delete('/delete/:orderId', deleteOrder);
 // Route to update order status
 router.patch('/:orderId/status', updateOrderStatus);
 
+// Add this route to your orderRoutes.js
+router.delete('/deletebyemail/:customerEmail', deleteOrdersByEmail);
+
 export default router;
