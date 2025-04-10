@@ -68,14 +68,6 @@ function Signup() {
               Your Password
             </label>
         </div>
-        <div className="custom-flex">
-            <div className="flex">
-              <input type="checkbox" id="terms" name="terms" />
-              <label htmlFor="terms" className="white-text">
-                I agree to the terms &amp; conditions
-              </label>
-            </div>
-          </div>
         <button type="submit" className="custom-button">Register</button>
       </form>
       <div style={{ textAlign: "center", marginTop: "1rem" }}>

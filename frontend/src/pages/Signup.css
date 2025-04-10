@@ -125,12 +125,6 @@
     background-color: #ffffff;           /* hover:bg-emerald-600 (assumed as #059669) */
     color: #BADDFF;                      /* hover:text-white */
   }
-  
-  .custom-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 
   .text1 {
     color: #BADDFF;
