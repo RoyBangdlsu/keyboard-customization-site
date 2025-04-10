@@ -192,11 +192,11 @@ export const deleteOrder = async (req, res) => {
 
 export const updateOrderStatus = async (req, res) => {
   try {
-    const { orderNumber } = req.params;  // Changed from orderId to orderNumber
+    const { orderId } = req.params;
     const { status } = req.body;
 
-    const updatedOrder = await Order.findOneAndUpdate(
-      { orderNumber },
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
       { orderStatus: status },
       { new: true }
     );
@@ -211,7 +211,7 @@ export const updateOrderStatus = async (req, res) => {
       subject: `Order Status Update - ${updatedOrder.orderNumber}`,
       html: `
         <p>Your order status has been updated.</p>
-        <p><strong>Order Number:</strong> ${updatedOrder.orderNumber}</p>
+        <p><strong>Order ID:</strong> ${updatedOrder.orderNumber}</p>
         <p><strong>New Status:</strong> ${status}</p>
         <p>Thank you for choosing Cobs Keebs!</p>
       `
