@@ -4,7 +4,7 @@ import './Admin.css';
 
 function Admin() {
   const [users, setUsers] = useState([]);
-  const [orders, setOrders] = useState([]); // Add orders state
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -30,14 +30,17 @@ function Admin() {
         // Fetch orders
         const ordersRes = await fetch(`${API_BASE_URL}/api/orders/loadall`);
         const ordersData = await ordersRes.json();
+        
         if (ordersRes.ok) {
-          setOrders(ordersData.orders); // Set the orders state
+          setOrders(ordersData.orders);
         } else {
           setError('Failed to load orders: ' + ordersData.message);
         }
   
         if (usersRes.ok) {
-          setUsers(await usersRes.json());
+          const usersData = await usersRes.json();
+          // Filter out admin@gmail.com from the users list
+          setUsers(usersData.filter(user => user.email !== "admin@gmail.com"));
         } else {
           setError("Failed to load users");
         }
@@ -62,7 +65,7 @@ function Admin() {
     const token = localStorage.getItem("token");
     const userData = JSON.parse(localStorage.getItem("user"));
     
-    // Check admin status by email (since we don't have isAdmin field)
+    // Check admin status by email
     if (!userData || userData.email !== "admin@gmail.com") {
       setError("Access denied. Admin privileges required.");
       return;
@@ -77,9 +80,8 @@ function Admin() {
       });
   
       if (res.ok) {
-        // Optimistic UI update - remove the user from state immediately
         setUsers(users.filter(user => user._id !== userId));
-        setError(""); // Clear any previous errors
+        setError("");
       } else {
         const data = await res.json();
         setError(data.message || "Failed to delete user.");
@@ -103,7 +105,6 @@ function Admin() {
       });
 
       if (res.ok) {
-        // Update the order in state
         setOrders(orders.map(order => 
           order._id === orderId ? { ...order, orderStatus: newStatus } : order
         ));
@@ -130,6 +131,7 @@ function Admin() {
       {!loading && !error && (
         <div className="main-container">
           <div className="users-table-container">
+            <h2>Users</h2>
             <table className="users-table">
               <thead>
                 <tr>
