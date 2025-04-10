@@ -192,11 +192,11 @@ export const deleteOrder = async (req, res) => {
 
 export const updateOrderStatus = async (req, res) => {
   try {
-    const { orderId } = req.params;
+    const { orderNumber } = req.params;  // Changed from orderId to orderNumber
     const { status } = req.body;
 
-    const updatedOrder = await Order.findByIdAndUpdate(
-      orderId,
+    const updatedOrder = await Order.findOneAndUpdate(
+      { orderNumber },
       { orderStatus: status },
       { new: true }
     );
@@ -208,10 +208,10 @@ export const updateOrderStatus = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: updatedOrder.customerEmail,
-      subject: `Order Status Update - ${updatedOrder._id}`,
+      subject: `Order Status Update - ${updatedOrder.orderNumber}`,
       html: `
         <p>Your order status has been updated.</p>
-        <p><strong>Order ID:</strong> ${updatedOrder._id}</p>
+        <p><strong>Order Number:</strong> ${updatedOrder.orderNumber}</p>
         <p><strong>New Status:</strong> ${status}</p>
         <p>Thank you for choosing Cobs Keebs!</p>
       `
