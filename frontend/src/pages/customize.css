@@ -304,3 +304,48 @@
   border-radius: 4px;
 }
 
+/* Help Tooltip Styles */
+.help-tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  font-size: 12px;
+  cursor: help;
+  margin-left: 5px;
+}
+
+.help-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Add-ons Modal Tooltip Adjustments */
+.add-ons-modal .help-icon {
+  margin-left: 8px;
+}
+
+.add-ons-modal .help-tooltip {
+  width: 220px;
+  font-size: 13px;
+}

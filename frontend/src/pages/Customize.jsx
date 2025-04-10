@@ -3,7 +3,29 @@ import { useNavigate, useLocation } from "react-router-dom";
 import domtoimage from 'dom-to-image';
 import './customize.css';
 
-// Define the AddOnsModal component
+// Help Tooltip Component
+const HelpTooltip = ({ content }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div className="help-tooltip-container">
+      <span 
+        className="help-icon"
+        onMouseEnter={() => setIsVisible(true)}
+        onMouseLeave={() => setIsVisible(false)}
+      >
+        ?
+      </span>
+      {isVisible && (
+        <div className="help-tooltip">
+          {content}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Define the AddOnsModal component with tooltips
 const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
   const currentAddOns = keyAddOns[selectedKey] || { stabilizers: false, lubing: false, filming: false };
 
@@ -25,7 +47,10 @@ const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
       </h3>
       <div className="add-ons-container">
         <div className="row">
-          <div className="column1">Stabilizers:</div>
+          <div className="column1">
+            Stabilizers:
+            <HelpTooltip content="Add stabilizers for larger keys (like Space, Shift, Enter) to prevent wobble and improve consistency" />
+          </div>
           <div className="column2"></div>
           <div className="column3">
             <input
@@ -37,7 +62,10 @@ const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
           </div>
         </div>
         <div className="row">
-          <div className="column1">Lubing:</div>
+          <div className="column1">
+            Switch Lubing:
+            <HelpTooltip content="Apply lubricant to switches for smoother keypresses and reduced friction noise" />
+          </div>
           <div className="column2"></div>
           <div className="column3">
             <input
@@ -49,7 +77,10 @@ const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
           </div>
         </div>
         <div className="row">
-          <div className="column1">Filming:</div>
+          <div className="column1">
+            Filming:
+            <HelpTooltip content="Install switch films to reduce housing wobble and improve sound consistency" />
+          </div>
           <div className="column2"></div>
           <div className="column3">
             <input
@@ -66,7 +97,6 @@ const AddOnsModal = ({ selectedKey, keyAddOns, setKeyAddOns, onClose }) => {
   );
 };
 
-
 // Main Customize component
 function Customize() {
   const navigate = useNavigate();
@@ -78,14 +108,13 @@ function Customize() {
     bodyColor: '#000000',
     switchType: 'N/A',
     keycapColors: {},
-    keycapBrand: 'Akko', // Default keycap brand
+    keycapBrand: 'Akko',
   };
 
   const loggedInUser = localStorage.getItem("user");
   const user = JSON.parse(localStorage.getItem("user"));
   const userEmail = user.email;
 
-  // Load saved state for the logged-in user
   const getUserStorageKey = (key) => `user_${loggedInUser}_${key}`;
 
   const [layout, setLayout] = useState(
@@ -107,10 +136,8 @@ function Customize() {
   const [designs, setDesigns] = useState([]);
   const [keyAddOns, setKeyAddOns] = useState(
     JSON.parse(localStorage.getItem(getUserStorageKey('keyAddOns'))) || {}
-  )
+  );
   const [showAddOnsModal, setShowAddOnsModal] = useState(false);
-
-  // Add-ons state
   const [numSwitchLubing, setNumSwitchLubing] = useState(0);
   const [numFilming, setNumFilming] = useState(0);
   const [numStabilizer, setNumStabilizer] = useState(0);
@@ -138,9 +165,9 @@ function Customize() {
   }, [location.state]);
 
   // Audio references for switch sounds
-  let brownSound = new Audio('./sounds/brown.wav'); // Path to brown switch sound
-  let blueSound = new Audio('./sounds/blue.wav'); // Path to blue switch sound
-  let redSound = new Audio('./sounds/red.wav'); // Path to red switch sound
+  let brownSound = new Audio('./sounds/brown.wav');
+  let blueSound = new Audio('./sounds/blue.wav');
+  let redSound = new Audio('./sounds/red.wav');
 
   useEffect(() => {
     if (loggedInUser) {
@@ -150,9 +177,9 @@ function Customize() {
       localStorage.setItem(getUserStorageKey('keyboardKeycapColors'), JSON.stringify(keycapColors));
       localStorage.setItem(getUserStorageKey('keyboardKeycapBrand'), keycapBrand);
       localStorage.setItem(getUserStorageKey('keyAddOns'), JSON.stringify(keyAddOns));
-      localStorage.setItem(getUserStorageKey('caseFoam'), caseFoam); // Save caseFoam
-      localStorage.setItem(getUserStorageKey('PEFoam'), PEFoam); // Save PEFoam
-      localStorage.setItem(getUserStorageKey('numTapeLayer'), numTapeLayer); // Save numTapeLayer
+      localStorage.setItem(getUserStorageKey('caseFoam'), caseFoam);
+      localStorage.setItem(getUserStorageKey('PEFoam'), PEFoam);
+      localStorage.setItem(getUserStorageKey('numTapeLayer'), numTapeLayer);
     }
   }, [layout, bodyColor, switchType, keycapColors, keycapBrand, keyAddOns, caseFoam, PEFoam, numTapeLayer, loggedInUser]);
 
@@ -160,7 +187,6 @@ function Customize() {
     return <div>Please log in to customize your keyboard.</div>;
   }
 
-  // Reset design to base state
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset this design?')) {
       setLayout(baseState.layout);
@@ -168,33 +194,23 @@ function Customize() {
       setSwitchType(baseState.switchType);
       setKeycapColors(baseState.keycapColors);
       setKeycapBrand(baseState.keycapBrand);
-      setKeyAddOns({}); // Reset keyAddOns
-      setCaseFoam("No"); // Reset caseFoam
-      setPEFoam("No"); // Reset PEFoam
-      setNumTapeLayer(0); // Reset numTapeLayer
+      setKeyAddOns({});
+      setCaseFoam("No");
+      setPEFoam("No");
+      setNumTapeLayer(0);
   
       localStorage.setItem(getUserStorageKey('keyboardLayout'), baseState.layout);
       localStorage.setItem(getUserStorageKey('keyboardBodyColor'), baseState.bodyColor);
       localStorage.setItem(getUserStorageKey('keyboardSwitchType'), baseState.switchType);
       localStorage.setItem(getUserStorageKey('keyboardKeycapColors'), JSON.stringify(baseState.keycapColors));
       localStorage.setItem(getUserStorageKey('keyboardKeycapBrand'), baseState.keycapBrand);
-      localStorage.setItem(getUserStorageKey('keyAddOns'), JSON.stringify({})); // Reset keyAddOns
-      localStorage.setItem(getUserStorageKey('caseFoam'), "No"); // Reset caseFoam
-      localStorage.setItem(getUserStorageKey('PEFoam'), "No"); // Reset PEFoam
-      localStorage.setItem(getUserStorageKey('numTapeLayer'), 0); // Reset numTapeLayer
+      localStorage.setItem(getUserStorageKey('keyAddOns'), JSON.stringify({}));
+      localStorage.setItem(getUserStorageKey('caseFoam'), "No");
+      localStorage.setItem(getUserStorageKey('PEFoam'), "No");
+      localStorage.setItem(getUserStorageKey('numTapeLayer'), 0);
     }
   };
 
-  // Save state to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('keyboardLayout', layout);
-    localStorage.setItem('keyboardBodyColor', bodyColor);
-    localStorage.setItem('keyboardSwitchType', switchType);
-    localStorage.setItem('keyboardKeycapColors', JSON.stringify(keycapColors));
-    localStorage.setItem('keyboardKeycapBrand', keycapBrand);
-  }, [layout, bodyColor, switchType, keycapColors, keycapBrand]);
-
-  // Define keycap layouts for Full, TKL, 75%, and 60% keyboards
   const keycapLayouts = {
     full: [
       ['Esc', '', 'F1', 'F2', 'F3', 'F4', '', 'F5', 'F6', 'F7', 'F8', '', 'F9', 'F10', 'F11', 'F12', ' ', 'PrtSc', 'ScrLk', 'Pause'],
@@ -229,22 +245,18 @@ function Customize() {
     ],
   };
 
-  // Handles Layout changes
   const handleLayoutChange = (event) => {
     setLayout(event.target.value);
   };
 
-  // Handles changes to Keyboard Body Color
   const handleBodyColorChange = (event) => {
     setBodyColor(event.target.value);
   };
 
-  // Handles changes to Key Switches (Blue, Red, Brown, etc.)
   const handleSwitchTypeChange = (event) => {
     setSwitchType(event.target.value);
   };
 
-  // Play sound for the currently selected switch type
   const playSwitchSound = () => {
     switch (switchType) {
       case 'Outemu Brown':
@@ -261,18 +273,15 @@ function Customize() {
     }
   };
 
-  // Handles changes to Keycap Brand
   const handleKeycapBrandChange = (event) => {
     setKeycapBrand(event.target.value);
   };
 
-  // Handle right-click on keycaps
   const handleRightClick = (key, e) => {
-    e.preventDefault(); // Prevent the default context menu
-    setSelectedKey(key); // Set the selected key
-    setShowAddOnsModal(true); // Show the add-ons modal
+    e.preventDefault();
+    setSelectedKey(key);
+    setShowAddOnsModal(true);
 
-    // Initialize add-ons for the new key if it doesn't already have any
     if (!keyAddOns[key]) {
       setKeyAddOns((prevAddOns) => ({
         ...prevAddOns,
@@ -281,7 +290,6 @@ function Customize() {
     }
   };
 
-  // Handle color change for the selected keycap
   const handleKeycapColorChange = (event) => {
     if (selectedKey) {
       setKeycapColors((prevColors) => ({
@@ -291,12 +299,10 @@ function Customize() {
     }
   };
 
-  // Close the add-ons modal
   const closeAddOnsModal = () => {
     setShowAddOnsModal(false);
   };
 
-  // Determine the width of a keycap based on its label
   const getKeycapWidth = (key) => {
     if (key === 'Space') return '305px';
     if (key === 'Backspace') return '104px';
@@ -307,12 +313,11 @@ function Customize() {
     if (key === 'Enter') return '112px';
     if (key === 'LCtrl' || key === 'RCtrl' || key === 'RAlt' || key === 'LAlt' || key === 'LWin' || key === 'RWin' || key === 'Menu') return '40px';
     if (key === '0 Ins') return '40px';
-    if (key === '') return '12px'; // Empty space (non-interactable)
+    if (key === '') return '12px';
     if (key === ' ') return '20px';
-    return '20px'; // Default keycap size
+    return '20px';
   };
 
-  // Export the keyboard layout as a PNG using dom-to-image
   const exportAsPNG = () => {
     const keyboardElement = document.querySelector('.keyboard-body');
     if (keyboardElement) {
@@ -329,9 +334,7 @@ function Customize() {
     }
   };
 
-  // Handle the "Order This Design" button click
   const handleOrder = () => {
-  
     const stabilizerKeysSet = new Set();
     const lubingKeysSet = new Set();
     const filmingKeysSet = new Set();
@@ -349,24 +352,18 @@ function Customize() {
       });
     });
 
-    // Convert Sets to Arrays
     const stabilizerKeys = Array.from(stabilizerKeysSet);
     const lubingKeys = Array.from(lubingKeysSet);
     const filmingKeys = Array.from(filmingKeysSet);  
-    // Update the counts
     setNumStabilizer(stabilizerKeys.length);
     setNumSwitchLubing(lubingKeys.length);
     setNumFilming(filmingKeys.length);
   
-    // Export the keyboard layout as a PNG
     const keyboardElement = document.querySelector('.keyboard-body');
     if (keyboardElement) {
       domtoimage.toPng(keyboardElement)
         .then((dataUrl) => {
-          // Save the Base64 image string to localStorage
           localStorage.setItem('keyboardImage', dataUrl);
-  
-          // Save other keyboard details to localStorage
           localStorage.setItem('keyboardSwitchType', switchType);
           localStorage.setItem('keyboardLayout', layout);
           localStorage.setItem('keyboardKeycapBrand', keycapBrand);
@@ -374,18 +371,12 @@ function Customize() {
           localStorage.setItem('caseFoam', caseFoam);
           localStorage.setItem('PEFoam', PEFoam);
           localStorage.setItem('numTapeLayer', numTapeLayer);
-  
-          // Save counts to localStorage
           localStorage.setItem('numStabilizer', stabilizerKeys.length);
           localStorage.setItem('numSwitchLubing', lubingKeys.length);
           localStorage.setItem('numFilming', filmingKeys.length);
-  
-          // Save the key lists to localStorage
           localStorage.setItem('stabilizerKeyList', JSON.stringify(stabilizerKeys));
           localStorage.setItem('lubingKeyList', JSON.stringify(lubingKeys));
           localStorage.setItem('filmingKeyList', JSON.stringify(filmingKeys));
-  
-          // Navigate to the Order page
           navigate("/order");
         })
         .catch((error) => {
@@ -406,10 +397,10 @@ function Customize() {
     }
   
     const keycapsColor = JSON.stringify(keycapColors);
-    const keyAddOnsData = JSON.stringify(keyAddOns); // Include keyAddOns
+    const keyAddOnsData = JSON.stringify(keyAddOns);
   
     try {
-      const dataUrl = await domtoimage.toPng(keyboardElement); // Convert the keyboard to a Base64 image
+      const dataUrl = await domtoimage.toPng(keyboardElement);
       const keyboardImage = dataUrl;
   
       const response = await fetch(`${API_BASE_URL}/api/designs/save`, {
@@ -424,10 +415,10 @@ function Customize() {
           switchType,
           keycapBrand,
           keyboardImage,
-          keyAddOns: keyAddOnsData, // Include keyAddOns
-          caseFoam, // Include caseFoam
-          PEFoam, // Include PEFoam
-          numTapeLayer, // Include numTapeLayer
+          keyAddOns: keyAddOnsData,
+          caseFoam,
+          PEFoam,
+          numTapeLayer,
         }),
       });
   
@@ -460,14 +451,13 @@ function Customize() {
           alert('Failed to load designs OR you have no designs.');
         }
       }
-      setShowDesigns(!showDesigns); // Toggle visibility
+      setShowDesigns(!showDesigns);
     } catch (error) {
       console.error('Error loading designs:', error);
       alert('Failed to load designs.');
     }
   };
 
-  // Apply a selected design
   const applyDesign = (design) => {
     setLayout(design.layout);
     setBodyColor(design.bodyColor);
@@ -475,20 +465,19 @@ function Customize() {
     setSwitchType(design.switchType);
     setKeycapBrand(design.keycapBrand);
     setKeyAddOns(JSON.parse(design.keyAddOns || '{}'));
-    setCaseFoam(design.caseFoam || "No"); // Load caseFoam
-    setPEFoam(design.PEFoam || "No"); // Load PEFoam
-    setNumTapeLayer(design.numTapeLayer || 0); // Load numTapeLayer
+    setCaseFoam(design.caseFoam || "No");
+    setPEFoam(design.PEFoam || "No");
+    setNumTapeLayer(design.numTapeLayer || 0);
   };
 
   const deleteDesign = async (designId) => {
     if (window.confirm('Are you sure you want to delete this design?')) {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, {    // ${API_BASE_URL} or ${API_BASE_URL}
+        const response = await fetch(`${API_BASE_URL}/api/designs/delete/${designId}`, {
           method: 'DELETE',
         });
   
         if (response.ok) {
-          // Remove the deleted design from the state
           setDesigns((prevDesigns) => prevDesigns.filter((design) => design._id !== designId));
           alert('Design deleted successfully!');
         } else {
@@ -527,12 +516,11 @@ function Customize() {
         <div className="option">
           <label>Switch Type:</label>
           <select value={switchType} onChange={handleSwitchTypeChange}>
-          <option value="N/A">Default</option>
+            <option value="N/A">Default</option>
             <option value="Outemu Brown">Outemu Brown</option>
             <option value="Outemu Blue">Outemu Blue</option>
             <option value="Outemu Red">Outemu Red</option>
           </select>
-          {/* Button to play switch sound */}
           <button onClick={playSwitchSound} style={{ marginLeft: '10px' }}>Play Sound</button>
         </div>
 
@@ -547,36 +535,43 @@ function Customize() {
         </div>
       </div>
 
-      
       <h2>Add-ons</h2>
-      {/* Add-ons Section */}
       <div className="option">
-          <div className="add-ons">
-            <div className="add-on">
-              <label>Tape Mod:</label>
-              <input
-                type="number"
-                value={numTapeLayer}
-                onChange={(e) => setNumTapeLayer(Number(e.target.value))}
-                min="0"
-              />
-            </div>
-            <div className="add-on">
-              <label>Case Foam:</label>
-              <select value={caseFoam} onChange={(e) => setCaseFoam(e.target.value)}>
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
-              </select>
-            </div>
-            <div className="add-on">
-              <label>PE Foam:</label>
-              <select value={PEFoam} onChange={(e) => setPEFoam(e.target.value)}>
-                <option value="No">No</option>
-                <option value="Yes">Yes</option>
-              </select>
-            </div>
+        <div className="add-ons">
+          <div className="add-on">
+            <label>
+              Tape Mod:
+              <HelpTooltip content="Number of tape layers applied under the PCB to modify sound (typically 1-3 layers)" />
+            </label>
+            <input
+              type="number"
+              value={numTapeLayer}
+              onChange={(e) => setNumTapeLayer(Number(e.target.value))}
+              min="0"
+            />
+          </div>
+          <div className="add-on">
+            <label>
+              Case Foam:
+              <HelpTooltip content="Dampening foam placed in the keyboard case to reduce echo and improve sound" />
+            </label>
+            <select value={caseFoam} onChange={(e) => setCaseFoam(e.target.value)}>
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div className="add-on">
+            <label>
+              PE Foam:
+              <HelpTooltip content="Thin polyethylene foam between PCB and plate for sound dampening" />
+            </label>
+            <select value={PEFoam} onChange={(e) => setPEFoam(e.target.value)}>
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
           </div>
         </div>
+      </div>
 
       <div className="preview">
         <h2>Preview</h2>
@@ -597,7 +592,7 @@ function Customize() {
                     }}
                     onContextMenu={(e) => key !== '' && handleRightClick(key, e)}
                   >
-                    {key} {/* Only display the key label */}
+                    {key}
                   </div>
                 ))}
               </div>
@@ -608,7 +603,6 @@ function Customize() {
         <p>Keycap Brand: {keycapBrand}</p>
       </div>
 
-      {/* Color Picker for Keycaps */}
       {selectedKey && (
         <div className="color-picker-box">
           <label className="color-label">Select color for: <span className="key-emphasis">{selectedKey}</span></label>
@@ -620,7 +614,6 @@ function Customize() {
         </div>
       )}
 
-      {/* Add-ons Modal */}
       {showAddOnsModal && (
         <AddOnsModal
           selectedKey={selectedKey}
@@ -630,7 +623,6 @@ function Customize() {
         />
       )}
 
-      {/* Buttons */}
       <div className="actions">
         <button onClick={exportAsPNG}>Export as PNG</button>
         <button onClick={handleReset}>Reset</button>
@@ -641,7 +633,6 @@ function Customize() {
         </button>
       </div>
 
-      {/* Load Designs */}
       {showDesigns && (
         <div className="load-designs">
           {designs.length > 0 ? (
