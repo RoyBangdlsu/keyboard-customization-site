@@ -41,7 +41,7 @@ export const placeNewOrder = async (req, res) => {
     } = req.body;
 
     const email = customerEmail;
-    const adminEmail = "rappykarlopi@gmail.com";
+    const adminEmail = "johnjacob03.jjp@gmail.com";
 
     // Generate order number (format: COBS-YYYYMMDD-XXXX)
     const now = new Date();
