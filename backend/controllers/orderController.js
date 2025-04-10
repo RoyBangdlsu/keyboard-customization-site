@@ -228,21 +228,3 @@ export const updateOrderStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-export const deleteOrdersByEmail = async (req, res) => {
-  try {
-    const { customerEmail } = req.params;
-    const result = await Order.deleteMany({ customerEmail });
-    
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'No orders found for this user' });
-    }
-
-    res.status(200).json({ 
-      message: `Successfully deleted ${result.deletedCount} orders`,
-      deletedCount: result.deletedCount
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
