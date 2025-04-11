@@ -546,7 +546,7 @@ function Order() {
               <tbody>
                 <tr>
                   <td className="aligncenter content-block">
-                    Questions? Email <a href="mailto:support@company.inc">cobskeebs@company.inc</a>
+                    Questions? Email <a href="mailto:support@company.inc">johnjacob03.jjp@gmail.com</a>
                   </td>
                 </tr>
               </tbody>
